@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "unaverage.strategic_ench.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AnvilScreenHandlerMixin",
+    "DamageEnchantmentsMixin",
+    "EnchantmentHelperMixin",
+    "EntityMixin",
+    "ItemStackMixin",
+    "PlayerEntityMixin",
+    "ProtectionEnchantmentMixin",
+    "ThornEnchantmentMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
