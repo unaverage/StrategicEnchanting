@@ -66,7 +66,6 @@ public class ItemStackMixin {
         EnchantmentHelper.set(enchantments, self);
     }
 
-    //TODO there exists a bug with this mixin where a crash happens with EnchantedShulkers when a shulker is attempted to be enchhanted by an anvil
     /**
      * Injects capping at {@link ItemStack#setNbt(NbtCompound)} of an item
      * Setting the nbt of an item from another is a way to transfer enchantments between those items
@@ -85,10 +84,15 @@ public class ItemStackMixin {
 
         var enchantments = EnchantmentHelper.get(self);
 
+        //I'm not sure why this fixes the issue with EnchantedShulker mod
+        //I'm also not sure why this doesn't work in the dev environment, only the real environment
+        if (enchantments.isEmpty()) return;
+
         var cap = GlobalConfig.INSTANCE.enchantmentCaps.getCapacity(self.getItem());
 
         GlobalConfig.INSTANCE.enchantmentCaps.capEnchantmentMap(enchantments, cap, item->false);
 
+        //This function is probably the root cause of the problem with EnchantedShulker
         EnchantmentHelper.set(enchantments, self);
     }
 }
