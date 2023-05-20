@@ -18,12 +18,14 @@ import java.util.function.Predicate;
  */
 public class EnchantmentCaps {
 
-    static Map<String, Object> DEFAULT = Map.of(
-        Round_2_3rd_to_Half.class.getSimpleName(), Round_2_3rd_to_Half.DEFAULT,
-        Round_3_5th_to_Half.class.getSimpleName(), Round_3_5th_to_Half.DEFAULT,
-        ItemCapacities.class.getSimpleName(), ItemCapacities.DEFAULT,
-        CustomWeights.class.getSimpleName(), CustomWeights.DEFAULT
-    );
+    static Map<String, Object> getDefault(boolean hasFile) {
+        return Map.of(
+            Round_2_3rd_to_Half.class.getSimpleName(), Round_2_3rd_to_Half.DEFAULT,
+            Round_3_5th_to_Half.class.getSimpleName(), Round_3_5th_to_Half.DEFAULT,
+            ItemCapacities.class.getSimpleName(), ItemCapacities.getDefault(hasFile),
+            CustomWeights.class.getSimpleName(), CustomWeights.getDefault(hasFile)
+        );
+    }
 
     final Round_2_3rd_to_Half round_2_3rd_to_half;
     final Round_3_5th_to_Half round_3_5th_to_half;
@@ -227,23 +229,27 @@ public class EnchantmentCaps {
     }
 
     static class ItemCapacities {
-        static final Map<String, Number> DEFAULT = new ImmutableMap.Builder<String, Number>()
-            .put("minecraft\":\"wooden_\".+\"", -1)
-            .put("minecraft\":\"leather_\".+\"", -1)
-            .put("minecraft\":\"stone_\".+\"", -1)
-            .put("minecraft\":\"golden_\".+\"", -1)
-            .put("minecraft\":\"chainmail_\".+\"", 3)
-            .put("minecraft\":\"iron_\".+\"", 3)
-            .put("minecraft\":\"diamond_\".+\"", 2)
-            .put("minecraft\":\"netherite_\".+\"", 1.5)
-            .put("minecraft\":\"bow", 2.5)
-            .put("minecraft\":\"crossbow", 2.5)
-            .put("minecraft\":\"elytra", 2)
-            .put("minecraft\":\"shears", 2)
-            .put("minecraft\":\"enchanted_book", -1)
-            //endregion
+        static Map<String, Number> getDefault(boolean newFile){
+            if (!newFile) return Map.of();
 
-            .build();
+            return new ImmutableMap.Builder<String, Number>()
+                .put("minecraft\":\"wooden_\".+\"", -1)
+                .put("minecraft\":\"leather_\".+\"", -1)
+                .put("minecraft\":\"stone_\".+\"", -1)
+                .put("minecraft\":\"golden_\".+\"", -1)
+                .put("minecraft\":\"chainmail_\".+\"", 3)
+                .put("minecraft\":\"iron_\".+\"", 3)
+                .put("minecraft\":\"diamond_\".+\"", 2)
+                .put("minecraft\":\"netherite_\".+\"", 1.5)
+                .put("minecraft\":\"bow", 2.5)
+                .put("minecraft\":\"crossbow", 2.5)
+                .put("minecraft\":\"elytra", 2)
+                .put("minecraft\":\"shears", 2)
+                .put("minecraft\":\"enchanted_book", -1)
+                //endregion
+
+                .build();
+        }
         Map<String, Number> map;
 
         ItemCapacities(Config c) {
@@ -271,9 +277,11 @@ public class EnchantmentCaps {
     }
 
     static class CustomWeights{
-        static final Map<String,List<Number>> DEFAULT = Map.of(
-            "modid\":\"example_enchantment", List.of(0.25, 0.5, 0.75, 1.0)
-        );
+        static Map<String,List<Number>> getDefault(boolean newFile){
+            if (!newFile) return Map.of();
+
+            return Map.of("modid\":\"example_enchantment", List.of(0.25, 0.5, 0.75, 1.0));
+        }
 
         final Map<String,List<Number>> value;
 

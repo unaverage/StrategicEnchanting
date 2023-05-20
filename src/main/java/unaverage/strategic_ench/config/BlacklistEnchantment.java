@@ -13,9 +13,13 @@ import java.util.Set;
  * Contains configuration value relating to whether enchantments are blacklisted from appearing within the game
  */
 public class BlacklistEnchantment {
-    static final Set<String> DEFAULT = ImmutableSet.of(
-        "minecraft:protection"
-    );
+    static Set<String> getDefault(boolean newFile){
+        if (!newFile) return Set.of();
+
+        return ImmutableSet.of(
+            "minecraft:protection"
+        );
+    }
 
     final Set<String> current;
 

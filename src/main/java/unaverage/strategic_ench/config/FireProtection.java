@@ -15,10 +15,12 @@ import java.util.Set;
  */
 public class FireProtection {
     public static int COOL_DOWN_SEC = 30;
-    static Map<String, Object> DEFAULT = Map.of(
-        SecondsOfLavaImmunityPerLevel.class.getSimpleName(), SecondsOfLavaImmunityPerLevel.DEFAULT,
-        AddMobProtection.class.getSimpleName(), AddMobProtection.DEFAULT
-    );
+    static Map<String, Object> getDefault(boolean newFile){
+        return Map.of(
+            SecondsOfLavaImmunityPerLevel.class.getSimpleName(), SecondsOfLavaImmunityPerLevel.DEFAULT,
+            AddMobProtection.class.getSimpleName(), AddMobProtection.getDefault(newFile)
+        );
+    }
 
     SecondsOfLavaImmunityPerLevel secondsOfLavaImmunityPerLevel;
     AddMobProtection addMobProtection;
@@ -67,10 +69,14 @@ public class FireProtection {
     }
 
     static class AddMobProtection {
-        static final Set<String> DEFAULT = ImmutableSet.of(
-            "minecraft:blaze",
-            "minecraft:magma_cube"
-        );
+        static Set<String> getDefault(boolean newFile){
+            if (!newFile) return Set.of();
+
+            return ImmutableSet.of(
+                "minecraft:blaze",
+                "minecraft:magma_cube"
+            );
+        }
 
         Set<String> value;
 

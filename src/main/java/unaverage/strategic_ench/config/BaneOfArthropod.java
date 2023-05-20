@@ -14,9 +14,11 @@ import java.util.Set;
  * Contains configs relating to change to the bane of arthropod enchantment
  */
 public class BaneOfArthropod {
-    static final Map<String, Object> DEFAULT = Map.of(
-        ExtraAffectedMobs.class.getSimpleName(), ExtraAffectedMobs.DEFAULT
-    );
+    static Map<String, Object> getDefault(boolean newFile){
+        return Map.of(
+            ExtraAffectedMobs.class.getSimpleName(), ExtraAffectedMobs.getDefault(newFile)
+        );
+    }
 
     final ExtraAffectedMobs extraAffectedMobs;
 
@@ -39,10 +41,15 @@ public class BaneOfArthropod {
     }
 
     static class ExtraAffectedMobs {
-        static final Set<String> DEFAULT = ImmutableSet.of(
-            "minecraft:guardian",
-            "minecraft:elder_guardian"
-        );
+        static Set<String> getDefault(boolean newFile){
+            if (!newFile) return Set.of();
+
+            return ImmutableSet.of(
+                "minecraft:guardian",
+                "minecraft:elder_guardian"
+            );
+        }
+
 
         public Set<String> value;
 
