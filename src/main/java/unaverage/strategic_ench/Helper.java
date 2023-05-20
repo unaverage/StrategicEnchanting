@@ -1,13 +1,16 @@
 package unaverage.strategic_ench;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
 public class Helper {
-    private static final Map<Pair<Object, Object>, Object> cacheMap = new HashMap<>();
+    private static final Map<Pair<?, ?>, Object> cacheMap = new HashMap<>();
 
     /**
      * Gets the value that is configured to be associated with the item
@@ -20,43 +23,45 @@ public class Helper {
      * @param <O> The type of the value
      */
     public static <I, O> O getValueFromConfig(I item, Map<String, O> configMap, Registry<I> registry){
+        var cacheKey = Pair.of(item, configMap);
+
         @SuppressWarnings("unchecked")
-        var cached = (O)cacheMap.get(Pair.of(item, configMap));
+        var cached = (O)cacheMap.get(cacheKey);
         if (cached != null) return cached;
 
-        var id = registry
+        var itemID = registry
             .getKey(item)
             .map(itemRegistryKey -> itemRegistryKey.getValue().toString())
             .orElse(null);
 
-        if (id == null) return null;
+        if (itemID == null) return null;
 
         //Runs the loop twice
         //First time it checks for exact equality
         //Second time, it tests for regex
         for (var o: configMap.entrySet()){
-            var testedKey = o.getKey();
+            var testedID = o.getKey();
             var testedValue = o.getValue();
 
-            if (id.equals(testedKey)){
-                cacheMap.put(Pair.of(item, configMap), testedValue);
+            if (itemID.equals(testedID)){
+                cacheMap.put(cacheKey, testedValue);
 
                 return testedValue;
             }
         }
         for (var o: configMap.entrySet()){
-            var testedKey = o.getKey();
+            var testedID = o.getKey();
             var testedValue = o.getValue();
 
             try {
-                if (id.matches(testedKey)) {
-                    cacheMap.put(Pair.of(item, configMap), testedValue);
+                if (itemID.matches(testedID)) {
+                    cacheMap.put(cacheKey, testedValue);
 
                     return testedValue;
                 }
             }
             catch (PatternSyntaxException e){
-                StrategicEnchanting.LOGGER.warn(testedKey + " is not valid regex");
+                StrategicEnchanting.LOGGER.warn(testedID + " is not valid regex");
             }
         }
 
@@ -65,38 +70,39 @@ public class Helper {
     }
 
     public static <I> boolean contains(I item, Set<String> map, Registry<I> registry){
-        @SuppressWarnings("unchecked")
-        var cached = (Boolean)cacheMap.get(Pair.of(item, map));
+        var cachedKey = Pair.of(item, map);
+
+        var cached = (Boolean)cacheMap.get(cachedKey);
         if (cached != null) return cached;
 
-        var id = registry
+        var itemID = registry
             .getKey(item)
             .map(itemRegistryKey -> itemRegistryKey.getValue().toString())
             .orElse(null);
 
-        if (id == null) return false;
+        if (itemID == null) return false;
 
-        for (var key: map){
-            if (id.equals(key)){
+        for (var testedID: map){
+            if (itemID.equals(testedID)){
                 cacheMap.put(Pair.of(item, map), true);
 
                 return true;
             }
         }
-        for (var key: map){
+        for (var id: map){
             try {
-                if (id.matches(key)) {
-                    cacheMap.put(Pair.of(item, map), true);
+                if (itemID.matches(id)) {
+                    cacheMap.put(cachedKey, true);
 
                     return true;
                 }
             }
             catch (PatternSyntaxException e){
-                StrategicEnchanting.LOGGER.warn(key + " is not valid regex");
+                StrategicEnchanting.LOGGER.warn(id + " is not valid regex");
             }
         }
 
-        cacheMap.put(Pair.of(item, map), false);
+        cacheMap.put(cachedKey, false);
         return false;
     }
 

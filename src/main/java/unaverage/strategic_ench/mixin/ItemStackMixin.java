@@ -53,7 +53,7 @@ public class ItemStackMixin {
         method = "addEnchantment",
         at = @At(value = "RETURN")
     )
-    private void injectCappingOnSet(Enchantment enchantment, int level, CallbackInfo ci){
+    private void injectCappingOnAddEnch(Enchantment enchantment, int level, CallbackInfo ci){
         var self = (ItemStack)(Object)this;
 
         var enchantments = EnchantmentHelper.get(self);
