@@ -25,7 +25,7 @@ public class GlobalConfig {
 
     static final String FILE_NAME = StrategicEnchanting.MOD_ID + ".json";
 
-    static Map<String, Object> getDefault(boolean newFile){
+    static Map<String, Object> getDefaultConfig(boolean newFile){
         return Map.of(
             EnchantmentCaps.class.getSimpleName(), EnchantmentCaps.getDefault(newFile),
             BlacklistEnchantment.class.getSimpleName(), BlacklistEnchantment.getDefault(newFile),
@@ -60,8 +60,14 @@ public class GlobalConfig {
             var configPath = FabricLoader.getInstance().getConfigDir().resolve(FILE_NAME);
 
             var isNewFile = !Files.exists(configPath);
-            var map = getDefault(isNewFile);
-            var config = ConfigFactory.parseMap(map);
+
+            var fallback = ConfigFactory.parseMap(
+                getDefaultConfig(isNewFile)
+            );
+
+            var config = ConfigFactory
+                .parseFile(configPath.toFile())
+                .withFallback(fallback);
 
             INSTANCE = new GlobalConfig(config);
 
