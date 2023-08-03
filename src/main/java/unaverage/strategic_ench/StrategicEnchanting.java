@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import unaverage.strategic_ench.config.GlobalConfig;
 
 public class StrategicEnchanting implements ModInitializer {
-	public static final String MOD_ID = "strategic_ench";
+	public static final String MOD_ID = "unaverage/strategic_ench";
 	public static final Logger LOGGER = LoggerFactory.getLogger("capped");
 
 	@Override

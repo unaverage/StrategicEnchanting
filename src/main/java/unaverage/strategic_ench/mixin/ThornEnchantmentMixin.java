@@ -2,13 +2,10 @@ package unaverage.strategic_ench.mixin;
 
 import net.minecraft.enchantment.ThornsEnchantment;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import unaverage.strategic_ench.config.GlobalConfig;
-
-import java.util.function.Consumer;
 
 @Mixin(ThornsEnchantment.class)
 public class ThornEnchantmentMixin {
