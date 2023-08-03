@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.strategic_ench.config.GlobalConfig;
+
+import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
+import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -53,8 +55,9 @@ public class PlayerEntityMixin {
         //the original result
         var result = EnchantmentHelper.getAttackDamage(stack, group);
 
-        if (GlobalConfig.INSTANCE == null) return result;
-        if (!GlobalConfig.INSTANCE.baneOfArthropod.isExtraAffectedMob(this.targetParam.getType())) return result;
+        if (!configInitialized) return result;
+
+        if (!affectedByBaneOfAnthropod(this.targetParam.getType())) return result;
 
         var level = EnchantmentHelper.getEquipmentLevel(Enchantments.BANE_OF_ARTHROPODS, self);
         if (level == 0) return result;

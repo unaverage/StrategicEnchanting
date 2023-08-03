@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.strategic_ench.config.FireProtection;
-import unaverage.strategic_ench.config.GlobalConfig;
+
+import static unaverage.strategic_ench.config.GlobalConfigKt.*;
 
 
 @Mixin(Entity.class)
@@ -44,10 +44,10 @@ public abstract class EntityMixin {
      */
     @Inject(method = "setOnFireFromLava", at = @At("HEAD"), cancellable = true)
     private void injectFireResBonus(CallbackInfo ci){
-        if (GlobalConfig.INSTANCE == null) return;
-        if (!GlobalConfig.INSTANCE.fireProtection.hasLavaImmunity()) return;
-        //noinspection ConstantConditions
+        if (!configInitialized) return;
+        if (!fireProtectionHasLavaDuration()) return;
 
+        //noinspection ConstantConditions
         if (!((Object)this instanceof LivingEntity thisAsLivingEntity)) return;
 
         //If cooldown is zero, then it can reapply the countdown for lava immunity
@@ -65,7 +65,7 @@ public abstract class EntityMixin {
             }
             if (levels == 0) return;
 
-            var duration = GlobalConfig.INSTANCE.fireProtection.getLavaImmunityDuration(levels);
+            var duration = getFireProtectionLavaImmunityDuration(levels);
 
             this.lavaImmunityCountDown = duration;
 
@@ -77,7 +77,8 @@ public abstract class EntityMixin {
                 )
             );
 
-            this.lavaImmunityCoolDown = FireProtection.COOL_DOWN_SEC * 20;
+            //30 seconds of cooldown
+            this.lavaImmunityCoolDown = 30 * 20;
         }
 
         //actually applies the lava immunity if the countdown is not zero

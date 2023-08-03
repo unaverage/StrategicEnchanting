@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.strategic_ench.config.GlobalConfig;
+
+import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
+import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(DamageEnchantment.class)
 public class DamageEnchantmentsMixin {
@@ -28,8 +30,8 @@ public class DamageEnchantmentsMixin {
         if (this.typeIndex != 2) return;
         if (level == 0) return;
 
-        if (GlobalConfig.INSTANCE == null) return;
-        if (!GlobalConfig.INSTANCE.baneOfArthropod.isExtraAffectedMob(livingEntity.getType())) return;
+        if (!configInitialized) return;
+        if (!affectedByBaneOfAnthropod(livingEntity.getType())) return;
 
         int i = 20 + user.getRandom().nextInt(10 * level);
         livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, i, 3));

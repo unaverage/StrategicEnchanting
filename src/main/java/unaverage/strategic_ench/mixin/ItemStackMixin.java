@@ -16,9 +16,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import unaverage.strategic_ench.config.GlobalConfig;
 
 import java.util.List;
+
+import static unaverage.strategic_ench.HelperKt.*;
+import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -32,15 +34,16 @@ public class ItemStackMixin {
         locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void injectExtraToolTip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+        if (!configInitialized) return;
+        
         var self = (ItemStack)(Object)this;
 
         var enchantments = EnchantmentHelper.get(self);
         if (enchantments.isEmpty()) return;
-
-        if (GlobalConfig.INSTANCE == null) return;
-        var weight = GlobalConfig.INSTANCE.enchantmentCaps.getWeight(enchantments);
-        var cap = GlobalConfig.INSTANCE.enchantmentCaps.getCapacity(self.getItem());
-        if (cap == -1) return;
+        
+        var weight = getWeight(enchantments);
+        var cap = getCapacity(self.getItem());
+        if (cap == null || cap < 0) return;
 
         var text = "Enchantment Capacity: %.1f/%s".formatted(weight, cap);
 
@@ -54,14 +57,17 @@ public class ItemStackMixin {
         at = @At(value = "RETURN")
     )
     private void injectCappingOnAddEnch(Enchantment enchantment, int level, CallbackInfo ci){
+        if (!configInitialized) return;
+        
         var self = (ItemStack)(Object)this;
 
         var enchantments = EnchantmentHelper.get(self);
 
-        if (GlobalConfig.INSTANCE == null) return;
-        var cap = GlobalConfig.INSTANCE.enchantmentCaps.getCapacity(self.getItem());
-
-        GlobalConfig.INSTANCE.enchantmentCaps.capEnchantmentMap(enchantments, cap, item->false);
+        capEnchantmentMap(
+            enchantments,
+            getCapacity(self.getItem()),
+            item->false
+        );
 
         EnchantmentHelper.set(enchantments, self);
     }
@@ -78,19 +84,21 @@ public class ItemStackMixin {
         at = @At(value = "RETURN")
     )
     private void injectCappingOnSetNBT(NbtCompound nbt, CallbackInfo ci){
+        if (!configInitialized) return;
+        
         var self = (ItemStack)(Object)this;
-
-        if (GlobalConfig.INSTANCE == null) return;
-
+        
         var enchantments = EnchantmentHelper.get(self);
 
         //I'm not sure why this fixes the issue with EnchantedShulker mod
         //I'm also not sure why this doesn't work in the dev environment, only the real environment
         if (enchantments.isEmpty()) return;
 
-        var cap = GlobalConfig.INSTANCE.enchantmentCaps.getCapacity(self.getItem());
-
-        GlobalConfig.INSTANCE.enchantmentCaps.capEnchantmentMap(enchantments, cap, item->false);
+        capEnchantmentMap(
+            enchantments,
+            getCapacity(self.getItem()),
+            item->false
+        );
 
         //This function is probably the root cause of the problem with EnchantedShulker
         EnchantmentHelper.set(enchantments, self);

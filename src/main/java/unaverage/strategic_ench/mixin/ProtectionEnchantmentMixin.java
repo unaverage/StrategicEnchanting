@@ -8,7 +8,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.strategic_ench.config.GlobalConfig;
+
+import static unaverage.strategic_ench.config.GlobalConfigKt.fireProtectionProtectsAgainst;
+import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(ProtectionEnchantment.class)
 public class ProtectionEnchantmentMixin {
@@ -19,13 +21,14 @@ public class ProtectionEnchantmentMixin {
      */
     @Inject(method = "getProtectionAmount", at = @At(value = "TAIL"), cancellable = true)
     private void injectFireProtectionExtraProtection(int level, DamageSource source, CallbackInfoReturnable<Integer> cir){
+        if (!configInitialized) return;
+
         if (this.protectionType != ProtectionEnchantment.Type.FIRE) return;
 
         var attacker = source.getAttacker();
         if (attacker == null) return;
 
-        if (GlobalConfig.INSTANCE == null) return;
-        if (!GlobalConfig.INSTANCE.fireProtection.protectsAgainst(attacker.getType())) return;
+        if (!fireProtectionProtectsAgainst(attacker.getType())) return;
 
         cir.setReturnValue(level*2);
     }
