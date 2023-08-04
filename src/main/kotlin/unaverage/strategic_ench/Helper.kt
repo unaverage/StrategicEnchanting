@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
+import net.minecraft.util.Identifier
 import unaverage.strategic_ench.config.GlobalConfig
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
@@ -63,6 +64,16 @@ fun Set<String>.cachedContain(id: String): Boolean {
         }
         false
     } as Boolean
+}
+
+
+fun <T> getItemFromId(id: String, registry: Registry<T>): T?{
+    return registry.get(
+        Identifier(
+            id.split(':').getOrElse(0){ return null },
+            id.split(':').getOrElse(1){ return null }
+        )
+    )
 }
 
 /**
