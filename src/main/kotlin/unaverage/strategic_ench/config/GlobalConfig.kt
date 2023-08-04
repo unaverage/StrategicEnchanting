@@ -118,8 +118,14 @@ fun runGlobalConfig() {
                 .memberProperties
                 .firstOrNull { it.name == k }
                 ?.let {
-                    it as KMutableProperty<*>
-                    it.setter.call(obj, v)
+                    try {
+                        it as KMutableProperty<*>
+                        it.setter.call(obj, v)
+                    }
+                    catch (e: Exception){
+                        throw RuntimeException("$k $v", e)
+                    }
+
                     return@forEach
                 }
 
@@ -192,5 +198,22 @@ object GlobalConfig: Config{
 
     object Thorns: Config{
         var NoLongerWearsDownArmor = true
+    }
+
+    object Zombie: Config{
+        val LessKnockBack = true
+    }
+
+    object Pig: Config{
+        var extraFood = listOf(
+            "minecraft:baked_potato",
+            "minecraft:bread",
+            "minecraft:apple",
+            "minecraft:potato",
+            "minecraft:wheat",
+            "minecraft:egg",
+        )
+
+        var saddledSpeedMultiplier = 1.5
     }
 }

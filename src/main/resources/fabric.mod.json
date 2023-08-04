@@ -18,7 +18,7 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "preLaunch": [
       "unaverage.strategic_ench.StrategicEnchanting"
     ]
   },
