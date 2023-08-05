@@ -226,4 +226,8 @@ object GlobalConfig: Config{
     object Shields: Config{
         var NoLongerPreventsKnockBack = true
     }
+
+    object FrostWalker{
+        var meltsAtNight = true
+    }
 }
