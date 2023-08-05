@@ -50,8 +50,6 @@ public class PlayerEntityMixin {
         )
     )
     private float addExtraMobDamage(ItemStack stack, EntityGroup group){
-        var self = (PlayerEntity) (Object)this;
-
         //the original result
         var result = EnchantmentHelper.getAttackDamage(stack, group);
 
@@ -59,7 +57,7 @@ public class PlayerEntityMixin {
 
         if (!affectedByBaneOfAnthropod(this.targetParam.getType())) return result;
 
-        var level = EnchantmentHelper.getEquipmentLevel(Enchantments.BANE_OF_ARTHROPODS, self);
+        var level = EnchantmentHelper.getEquipmentLevel(Enchantments.BANE_OF_ARTHROPODS, (PlayerEntity)(Object)this);
         if (level == 0) return result;
 
         return result + level * 2.5f;

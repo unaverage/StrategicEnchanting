@@ -4,6 +4,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralTextContent;
@@ -11,6 +12,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,7 +25,9 @@ import static unaverage.strategic_ench.HelperKt.*;
 import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin {
+public abstract class ItemStackMixin {
+    @Shadow public abstract Item getItem();
+
     @Inject(
         method = "getTooltip",
         at = @At(
@@ -58,18 +62,16 @@ public class ItemStackMixin {
     )
     private void injectCappingOnAddEnch(Enchantment enchantment, int level, CallbackInfo ci){
         if (!configInitialized) return;
-        
-        var self = (ItemStack)(Object)this;
 
-        var enchantments = EnchantmentHelper.get(self);
+        var enchantments = EnchantmentHelper.get((ItemStack)(Object)this);
 
         capEnchantmentMap(
             enchantments,
-            getCapacity(self.getItem()),
+            getCapacity(this.getItem()),
             item->false
         );
 
-        EnchantmentHelper.set(enchantments, self);
+        EnchantmentHelper.set(enchantments, (ItemStack)(Object)this);
     }
 
     /**
@@ -86,9 +88,7 @@ public class ItemStackMixin {
     private void injectCappingOnSetNBT(NbtCompound nbt, CallbackInfo ci){
         if (!configInitialized) return;
         
-        var self = (ItemStack)(Object)this;
-        
-        var enchantments = EnchantmentHelper.get(self);
+        var enchantments = EnchantmentHelper.get((ItemStack)(Object)this);
 
         //I'm not sure why this fixes the issue with EnchantedShulker mod
         //I'm also not sure why this doesn't work in the dev environment, only the real environment
@@ -96,11 +96,11 @@ public class ItemStackMixin {
 
         capEnchantmentMap(
             enchantments,
-            getCapacity(self.getItem()),
+            getCapacity(this.getItem()),
             item->false
         );
 
         //This function is probably the root cause of the problem with EnchantedShulker
-        EnchantmentHelper.set(enchantments, self);
+        EnchantmentHelper.set(enchantments, (ItemStack)(Object)this);
     }
 }
