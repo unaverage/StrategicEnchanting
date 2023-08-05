@@ -36,8 +36,9 @@ public abstract class IngredientMixin {
 
         if (!configInitialized) throw new RuntimeException("should not happen");
 
-        List<Item> result = new ArrayList<>();
+        if (GlobalConfig.Pig.INSTANCE.getExtraFood().isEmpty()) return;
 
+        List<Item> result = new ArrayList<>();
         for (String id: GlobalConfig.Pig.INSTANCE.getExtraFood()){
             Item item = HelperKt.getItemFromId(id, Registries.ITEM);
             if (item == null){
