@@ -11,10 +11,9 @@ import java.util.regex.PatternSyntaxException
 
 
 
-private val cacheMap: MutableMap<Any?, Any?> = HashMap()
-
+private val cachedGetID: MutableMap<Any?, Any?> = HashMap()
 fun <T> T.cachedGetID(r: Registry<T>): String {
-    return cacheMap.getOrPut(this){
+    return cachedGetID.getOrPut(this){
         r
         .getKey(this)
         .map { itemRegistryKey -> itemRegistryKey.getValue().toString() }
@@ -22,9 +21,9 @@ fun <T> T.cachedGetID(r: Registry<T>): String {
     } as String
 }
 
-
+private val cachedGet: MutableMap<Any?, Any?> = HashMap()
 fun <T> Map<String, T>.cachedGet(itemID: String): T? {
-    return cacheMap.getOrPut(itemID){
+    return cachedGet.getOrPut(itemID){
         //Runs the loop twice
         //First time it checks for exact equality
         //Second time, it tests for regex
@@ -46,8 +45,10 @@ fun <T> Map<String, T>.cachedGet(itemID: String): T? {
     } as T?
 }
 
+
+private val cachedContain: MutableMap<Any?, Boolean> = HashMap()
 fun Set<String>.cachedContain(id: String): Boolean {
-    return cacheMap.getOrPut(id){
+    return cachedContain.getOrPut(id){
         for (testedID in this) {
             if (id == testedID) {
                 return@getOrPut true
@@ -63,7 +64,7 @@ fun Set<String>.cachedContain(id: String): Boolean {
             }
         }
         false
-    } as Boolean
+    }
 }
 
 

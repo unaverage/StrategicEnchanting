@@ -120,10 +120,11 @@ fun runGlobalConfig() {
                 ?.let {
                     try {
                         it as KMutableProperty<*>
+
                         it.setter.call(obj, v)
                     }
                     catch (e: Exception){
-                        throw RuntimeException("$k $v", e)
+                        throw RuntimeException("$k $v ${if (v==null) "null" else v::class}", e)
                     }
 
                     return@forEach
@@ -201,19 +202,24 @@ object GlobalConfig: Config{
     }
 
     object Zombie: Config{
-        val LessKnockBack = true
+        var LessKnockBack = true
     }
 
     object Pig: Config{
-        var extraFood = listOf(
+        var ExtraFood = listOf(
             "minecraft:baked_potato",
             "minecraft:bread",
+            "minecraft:carrot",
             "minecraft:apple",
             "minecraft:potato",
             "minecraft:wheat",
             "minecraft:egg",
         )
 
-        var saddledSpeedMultiplier = 1.5
+        var SaddledSpeedMultiplier = 5.0
+    }
+
+    object Animals: Config{
+        var healWhenAte = true
     }
 }
