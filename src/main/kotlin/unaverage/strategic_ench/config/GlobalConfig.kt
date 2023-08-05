@@ -222,4 +222,8 @@ object GlobalConfig: Config{
     object Animals: Config{
         var healWhenAte = true
     }
+
+    object Shields: Config{
+        var NoLongerPreventsKnockBack = true
+    }
 }
