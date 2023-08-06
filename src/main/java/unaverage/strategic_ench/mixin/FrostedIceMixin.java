@@ -6,9 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.strategic_ench.config.Config;
 import unaverage.strategic_ench.config.GlobalConfig;
-import unaverage.strategic_ench.config.GlobalConfigKt;
 
 @Mixin(FrostedIceBlock.class)
 public class FrostedIceMixin {

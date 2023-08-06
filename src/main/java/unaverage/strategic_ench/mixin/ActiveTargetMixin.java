@@ -24,7 +24,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void injectMobsDontAttackVillagerGolems(MobEntity mob, Class targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate targetPredicate, CallbackInfo ci){
+    public void injectMobsDontAttackVillagerGolems(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
         if (!GlobalConfig.Zombie.INSTANCE.getOnlyAttacksIronGoblems()) return;
 
         if (mob instanceof ZombieEntity) return;
@@ -41,7 +41,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void injectVillagerGolemsDontAttackMobs(MobEntity mob, Class targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate targetPredicate, CallbackInfo ci){
+    public void injectVillagerGolemsDontAttackMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
         if (!GlobalConfig.Zombie.INSTANCE.getOnlyAttacksIronGoblems()) return;
 
         if (!(mob instanceof IronGolemEntity)) return;

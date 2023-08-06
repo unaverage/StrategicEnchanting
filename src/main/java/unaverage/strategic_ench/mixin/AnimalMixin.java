@@ -49,6 +49,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(
         method = "canEat",
         at = @At("RETURN"),

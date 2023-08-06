@@ -18,8 +18,10 @@ import static unaverage.strategic_ench.config.GlobalConfigKt.*;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
+    @SuppressWarnings("unused")
     @Shadow public abstract boolean isInLava();
 
+    @SuppressWarnings("unused")
     @Shadow public abstract void extinguish();
 
     @Unique

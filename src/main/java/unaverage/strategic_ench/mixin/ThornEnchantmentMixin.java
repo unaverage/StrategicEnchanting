@@ -1,7 +1,6 @@
 package unaverage.strategic_ench.mixin;
 
 import net.minecraft.enchantment.ThornsEnchantment;
-import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -19,7 +18,7 @@ public class ThornEnchantmentMixin {
         method = "onUserDamaged",
         constant = @Constant(intValue = 2)
     )
-    private <T extends LivingEntity> int doNoDamage(int constant){
+    private int doNoDamage(int constant){
         if (!configInitialized) return constant;
 
         return thornsWearDownArmor() ? 0 : constant;

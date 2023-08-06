@@ -1,6 +1,5 @@
 package unaverage.strategic_ench.mixin;
 
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,6 @@ import unaverage.strategic_ench.StrategicEnchanting;
 import unaverage.strategic_ench.config.GlobalConfig;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
