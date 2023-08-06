@@ -17,8 +17,7 @@
     "PigMixin",
     "PlayerEntityMixin",
     "ProtectionEnchantmentMixin",
-    "ThornEnchantmentMixin",
-    "ZombieMixin"
+    "ThornEnchantmentMixin"
   ],
   "client": [
   ],

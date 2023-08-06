@@ -1,5 +1,5 @@
 package unaverage.strategic_ench.mixin;
-
+/*
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.ZombieEntity;
@@ -9,8 +9,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.strategic_ench.config.GlobalConfig;
 
+
 @Mixin(ZombieEntity.class)
 public abstract class ZombieMixin {
+
     @Inject(
         method = "createZombieAttributes",
         at = @At("RETURN")
@@ -22,4 +24,4 @@ public abstract class ZombieMixin {
             EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, .75
         );
     }
-}
+}*/

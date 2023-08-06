@@ -125,8 +125,8 @@ object GlobalConfig: Config{
         @JvmField
         var thorn_no_longer_wears_down_armor = true
 
-        @JvmField
-        var zombies_are_more_knockback_resistant = true
+        //@JvmField
+        //var zombies_are_more_knockback_resistant = true
 
         @JvmField
         var village_golems_and_nonzombies_no_longer_attack_each_other = true
