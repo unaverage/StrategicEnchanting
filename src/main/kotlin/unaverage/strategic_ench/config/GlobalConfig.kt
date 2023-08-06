@@ -203,6 +203,8 @@ object GlobalConfig: Config{
 
     object Zombie: Config{
         var LessKnockBack = true
+
+        var onlyAttacksIronGoblems = true;
     }
 
     object Pig: Config{
@@ -227,7 +229,7 @@ object GlobalConfig: Config{
         var NoLongerPreventsKnockBack = true
     }
 
-    object FrostWalker{
+    object FrostWalker: Config{
         var meltsAtNight = true
     }
 }

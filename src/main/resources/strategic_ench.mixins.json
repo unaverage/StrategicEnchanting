@@ -4,6 +4,7 @@
   "package": "unaverage.strategic_ench.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ActiveTargetMixin",
     "AnimalMixin",
     "AnvilScreenHandlerMixin",
     "DamageEnchantmentsMixin",
