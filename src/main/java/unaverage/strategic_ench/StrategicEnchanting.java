@@ -15,6 +15,10 @@ public class StrategicEnchanting implements PreLaunchEntrypoint {
 
 	}
 
+	public static void logInvalidConfig(String invalid){
+
+	}
+
 	@Override
 	public void onPreLaunch() {
 		runGlobalConfig();

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import static unaverage.strategic_ench.HelperKt.capEnchantmentMap;
 import static unaverage.strategic_ench.HelperKt.getCapacity;
 import static unaverage.strategic_ench.config.GlobalConfigKt.enchantmentIsBlacklisted;
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
@@ -28,8 +27,6 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "set", at = @At("HEAD"))
     private static void injectCappingAtSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
-        if (!configInitialized) return;
-
         capEnchantmentMap(
             enchantments,
             getCapacity(stack.getItem()),
@@ -43,8 +40,6 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "generateEnchantments", at = @At("RETURN"))
     private static void injectCappingAtGenerate(Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
-        if (!configInitialized) return;
-        
         var originalList = cir.getReturnValue();
 
         //converts the list of EnchantmentLevelEntries to an enchantment map
@@ -74,8 +69,6 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "getPossibleEntries", at = @At("RETURN"))
     private static void removeBlacklistedEnchantments(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
-        if (!configInitialized) return;
-
         cir.getReturnValue().removeIf(
             e-> enchantmentIsBlacklisted(e.enchantment)
         );

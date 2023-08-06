@@ -5,12 +5,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import unaverage.strategic_ench.config.GlobalConfig;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -24,9 +22,7 @@ public abstract class LivingEntityMixin extends Entity {
         )
     )
     private void disableShieldNoKnockback(LivingEntity instance, LivingEntity target){
-        if (!configInitialized) return;
-
-        if (!GlobalConfig.Shields.INSTANCE.getNoLongerPreventsKnockBack()){
+        if (!GlobalConfig.Miscellaneous.shields_no_longer_prevent_knockback){
             instance.takeKnockback(0.5, target.getX() - instance.getX(), target.getZ() - instance.getZ());
             return;
         }

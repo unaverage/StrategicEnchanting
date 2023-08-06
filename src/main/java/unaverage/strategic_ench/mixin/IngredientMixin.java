@@ -17,8 +17,6 @@ import unaverage.strategic_ench.config.GlobalConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
-
 @Mixin(Ingredient.class)
 public abstract class IngredientMixin {
     @Inject(
@@ -32,12 +30,10 @@ public abstract class IngredientMixin {
         if (items[1] != Items.POTATO) return;
         if (items[2] != Items.BEETROOT) return;
 
-        if (!configInitialized) throw new RuntimeException("should not happen");
-
-        if (GlobalConfig.Pig.INSTANCE.getExtraFood().isEmpty()) return;
+        if (GlobalConfig.Miscellaneous.pigs_eat.isEmpty()) return;
 
         List<Item> result = new ArrayList<>();
-        for (String id: GlobalConfig.Pig.INSTANCE.getExtraFood()){
+        for (String id: GlobalConfig.Miscellaneous.pigs_eat){
             Item item = HelperKt.getItemFromId(id, Registries.ITEM);
             if (item == null){
                 StrategicEnchanting.logMissingID(id);

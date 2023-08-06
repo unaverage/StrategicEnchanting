@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -52,8 +51,6 @@ public class PlayerEntityMixin {
     private float addExtraMobDamage(ItemStack stack, EntityGroup group){
         //the original result
         var result = EnchantmentHelper.getAttackDamage(stack, group);
-
-        if (!configInitialized) return result;
 
         if (!affectedByBaneOfAnthropod(this.targetParam.getType())) return result;
 

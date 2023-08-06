@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(DamageEnchantment.class)
 public class DamageEnchantmentsMixin {
@@ -30,7 +29,6 @@ public class DamageEnchantmentsMixin {
         if (this.typeIndex != 2) return;
         if (level == 0) return;
 
-        if (!configInitialized) return;
         if (!affectedByBaneOfAnthropod(livingEntity.getType())) return;
 
         int i = 20 + user.getRandom().nextInt(10 * level);

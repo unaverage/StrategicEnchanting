@@ -103,8 +103,8 @@ fun <T> merge(vararg comparator: Comparator<T>): Comparator<T> {
  */
 fun getCapacity(item: Item?): Double? {
     return GlobalConfig
-        .Enchantments
-        .ItemCapacities
+        .EnchantmentCaps
+        .item_capacities
         .cachedGet(
             item.cachedGetID(Registries.ITEM)
         )
@@ -118,8 +118,8 @@ fun getCapacity(item: Item?): Double? {
 fun getWeight(map: Map<Enchantment, Int>): Double {
     fun getWeight(e: Enchantment, level: Int): Double {
         val weightByID = GlobalConfig
-            .Enchantments
-            .Weights
+            .EnchantmentCaps
+            .enchantment_weights
             .cachedGet(
                 e.cachedGetID(Registries.ENCHANTMENT)
             )
@@ -130,8 +130,8 @@ fun getWeight(map: Map<Enchantment, Int>): Double {
         }
 
         val weightByMax = GlobalConfig
-            .Enchantments
-            .Weights
+            .EnchantmentCaps
+            .enchantment_weights
             .cachedGet(e.maxLevel.toString())
 
         val ratio: Double

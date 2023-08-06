@@ -1,8 +1,5 @@
 package unaverage.strategic_ench.config
 
-import com.google.common.math.DoubleMath.roundToInt
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
@@ -10,21 +7,16 @@ import net.minecraft.registry.Registries
 import unaverage.strategic_ench.StrategicEnchanting
 import unaverage.strategic_ench.cachedContain
 import unaverage.strategic_ench.cachedGetID
-import java.io.File
+import unaverage.strategic_ench.config.Config.Companion.overwriteFromFile
+import unaverage.strategic_ench.config.Config.Companion.writeToFile
 import kotlin.math.roundToInt
-import kotlin.reflect.KClass
-import kotlin.reflect.KMutableProperty
-import kotlin.reflect.full.memberProperties
 
 const val FILE_NAME = StrategicEnchanting.MOD_ID + ".json"
 
-@JvmField
-var configInitialized: Boolean = false
-
 fun affectedByBaneOfAnthropod(e: EntityType<*>): Boolean {
     return GlobalConfig
-        .BaneOfArthropod
-        .Affects
+        .Miscellaneous
+        .bane_of_arthropods_also_affects
         .toSet()
         .contains(
             e.cachedGetID(Registries.ENTITY_TYPE)
@@ -33,8 +25,8 @@ fun affectedByBaneOfAnthropod(e: EntityType<*>): Boolean {
 
 fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
     return GlobalConfig
-        .Enchantments
-        .Blacklisted
+        .Miscellaneous
+        .blacklist_enchantments
         .toSet()
         .cachedContain(
             e.cachedGetID(Registries.ENCHANTMENT),
@@ -42,13 +34,13 @@ fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
 }
 
 fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.FireProtection.SecondsOfLavaImmunityPerLevel != 0.0
+    return GlobalConfig.Miscellaneous.fire_protection_seconds_of_lava_immunity_per_level != 0.0
 }
 
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
     return GlobalConfig
-        .FireProtection
-        .SecondsOfLavaImmunityPerLevel
+        .Miscellaneous
+        .fire_protection_seconds_of_lava_immunity_per_level
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
@@ -56,117 +48,30 @@ fun getFireProtectionLavaImmunityDuration(level: Int): Int {
 
 fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
     return GlobalConfig
-        .FireProtection
-        .ProtectsAgainst
+        .Miscellaneous
+        .fire_protection_protects_against
         .toSet()
         .cachedContain(
             e.cachedGetID(Registries.ENTITY_TYPE),
         )
 }
 
-fun thornsWearDownArmor(): Boolean{
-    return !GlobalConfig.Thorns.NoLongerWearsDownArmor;
-}
-
 fun runGlobalConfig() {
-    fun Config.toMap(): Map<String, Any?>{
-        val result = mutableMapOf<String,Any?>()
-
-        this::class.nestedClasses.forEach{
-            it as KClass<out Config>
-
-            result += it.simpleName.toString() to it.objectInstance!!.toMap()
-        }
-
-        this::class.memberProperties.forEach {
-            result += it.name to it.call(this)!!
-        }
-
-        return result
-    }
-    fun Map<String,Any?>.toText(): String {
-        return GsonBuilder()
-            .setPrettyPrinting()
-            .create()
-            .toJson(this)!!
-    }
-    fun String.toFile(file: File){
-        if (!file.exists()){
-            file.createNewFile()
-        }
-
-        file.writeText(this)
-    }
-
-    fun File.toText(): String {
-        return readText()
-    }
-    fun String.toMap(): Map<String,Any?>{
-        return Gson().fromJson(this, Map::class.java) as Map<String,Any?>
-    }
-    fun Map<String, Any?>.writeToObj(obj: Config){
-        forEach { (k, v) ->
-            obj::class
-                .nestedClasses
-                .firstOrNull { it.simpleName == k }
-                ?.let {
-                    (v as Map<String, Any?>).writeToObj(it.objectInstance!! as Config)
-                    return@forEach
-                }
-
-            obj::class
-                .memberProperties
-                .firstOrNull { it.name == k }
-                ?.let {
-                    try {
-                        it as KMutableProperty<*>
-
-                        it.setter.call(obj, v)
-                    }
-                    catch (e: Exception){
-                        throw RuntimeException("$k $v ${if (v==null) "null" else v::class}", e)
-                    }
-
-                    return@forEach
-                }
-
-            throw RuntimeException()
-        }
-    }
-
     val file = FabricLoader.getInstance().configDir.resolve(FILE_NAME).toFile()
 
     if (!file.exists()){
-        GlobalConfig
-        .toMap()
-        .toText()
-        .toFile(file)
+        GlobalConfig.writeToFile(file)
     }
     else {
-        file
-        .toText()
-        .toMap()
-        .writeToObj(GlobalConfig)
-
-        GlobalConfig
-        .toMap()
-        .toText()
-        .toFile(file)
+        GlobalConfig.overwriteFromFile(file){StrategicEnchanting.logInvalidConfig(it)}
+        GlobalConfig.writeToFile(file)
     }
-
-    configInitialized = true
 }
 
-interface Config
 object GlobalConfig: Config{
-    object BaneOfArthropod: Config{
-        var Affects = listOf("minecraft:guardian, minecraft:elder_guardian")
-    }
-
-    object Enchantments: Config{
-        var Blacklisted = listOf("minecraft:protection")
-
-        var Weights = mapOf(
+    object EnchantmentCaps: Config{
+        @JvmField
+        var enchantment_weights = mapOf(
             "1" to listOf(1.0),
             "2" to listOf(.5, 1.0),
             "3" to listOf(.25, .5, 1.0),
@@ -175,7 +80,8 @@ object GlobalConfig: Config{
             "modid:example" to listOf(0.25, .5, .75, 1.0),
         )
 
-        var ItemCapacities = mapOf(
+        @JvmField
+        var item_capacities = mapOf(
             "minecraft:bow" to 2.5,
             "minecraft:chainmail_.+" to 3.0,
             "minecraft:crossbow" to 2.5,
@@ -191,45 +97,48 @@ object GlobalConfig: Config{
             "minecraft:wooden_.+" to null,
         )
     }
-
-    object FireProtection: Config{
-        var SecondsOfLavaImmunityPerLevel = 1.0
-        var ProtectsAgainst = listOf("minecraft:blazed", "minecraft:magma_cube")
-    }
-
-    object Thorns: Config{
-        var NoLongerWearsDownArmor = true
-    }
-
-    object Zombie: Config{
-        var LessKnockBack = true
-
-        var onlyAttacksIronGoblems = true;
-    }
-
-    object Pig: Config{
-        var ExtraFood = listOf(
-            "minecraft:baked_potato",
-            "minecraft:bread",
-            "minecraft:carrot",
+    
+    object Miscellaneous: Config{
+        @JvmField
+        var pigs_eat = listOf(
             "minecraft:apple",
-            "minecraft:potato",
+            "minecraft:beet_root",
+            "minecraft:carrot",
             "minecraft:wheat",
-            "minecraft:egg",
         )
 
-        var SaddledSpeedMultiplier = 5.0
-    }
+        @JvmField
+        var animals_heal_when_eat = true
 
-    object Animals: Config{
-        var healWhenAte = true
-    }
+        @JvmField
+        var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
 
-    object Shields: Config{
-        var NoLongerPreventsKnockBack = true
-    }
+        @JvmField
+        var blacklist_enchantments = listOf("minecraft:protection")
 
-    object FrostWalker: Config{
-        var meltsAtNight = true
+        @JvmField
+        var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
+
+        @JvmField
+        var fire_protection_seconds_of_lava_immunity_per_level = 1.0
+
+        @JvmField
+        var thorn_no_longer_wears_down_armor = true
+
+        @JvmField
+        var zombies_are_more_knockback_resistant = true
+
+        @JvmField
+        var village_golems_and_nonzombies_no_longer_attack_each_other = true
+
+        @JvmField
+        var ridden_pigs_speed_multiplier = 2.0
+        
+        @JvmField
+        var shields_no_longer_prevent_knockback = true
+
+        @JvmField
+        var frostwalker_melts_at_night = true
+        
     }
 }

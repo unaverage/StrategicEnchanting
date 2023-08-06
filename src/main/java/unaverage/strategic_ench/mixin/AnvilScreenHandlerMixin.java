@@ -1,23 +1,22 @@
 package unaverage.strategic_ench.mixin;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.ForgingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.screen.AnvilScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Map;
 
 import static unaverage.strategic_ench.HelperKt.capEnchantmentMap;
 import static unaverage.strategic_ench.HelperKt.getCapacity;
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
@@ -39,11 +38,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         )
     )
     private void redirectDefaultCappingToNewCapping(Map<Enchantment, Integer> enchantments, ItemStack stack){
+        /*
         if (!configInitialized) {
             //equivalent of doing no redirects at all if the global config isn't accessible yet
             EnchantmentHelper.set(enchantments, stack);
             return;
         }
+
+         */
 
         var inputFromSecondSlot = this.input.getStack(1);
 

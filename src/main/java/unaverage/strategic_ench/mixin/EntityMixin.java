@@ -46,7 +46,6 @@ public abstract class EntityMixin {
      */
     @Inject(method = "setOnFireFromLava", at = @At("HEAD"), cancellable = true)
     private void injectFireResBonus(CallbackInfo ci){
-        if (!configInitialized) return;
         if (!fireProtectionHasLavaDuration()) return;
 
         //noinspection ConstantConditions

@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.List;
 
 import static unaverage.strategic_ench.HelperKt.*;
-import static unaverage.strategic_ench.config.GlobalConfigKt.configInitialized;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
@@ -38,8 +37,6 @@ public abstract class ItemStackMixin {
         locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void injectExtraToolTip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
-        if (!configInitialized) return;
-        
         var self = (ItemStack)(Object)this;
 
         var enchantments = EnchantmentHelper.get(self);
@@ -61,8 +58,6 @@ public abstract class ItemStackMixin {
         at = @At(value = "RETURN")
     )
     private void injectCappingOnAddEnch(Enchantment enchantment, int level, CallbackInfo ci){
-        if (!configInitialized) return;
-
         var enchantments = EnchantmentHelper.get((ItemStack)(Object)this);
 
         capEnchantmentMap(
@@ -86,8 +81,6 @@ public abstract class ItemStackMixin {
         at = @At(value = "RETURN")
     )
     private void injectCappingOnSetNBT(NbtCompound nbt, CallbackInfo ci){
-        if (!configInitialized) return;
-        
         var enchantments = EnchantmentHelper.get((ItemStack)(Object)this);
 
         //I'm not sure why this fixes the issue with EnchantedShulker mod
