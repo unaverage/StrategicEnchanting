@@ -149,6 +149,8 @@ object GlobalConfig: Config{
 
         @JvmField
         var frostwalker_melts_at_night = true
-        
+
+        @JvmField
+        var allay_can_plant_crops = true
     }
 }

@@ -100,7 +100,10 @@ interface Config{
         }
 
         private inline fun Config.forEachVar(fn: (String, Any?, setter: (Any?)->Boolean)->Unit){
-            this::class.memberProperties.forEach {property->
+            this::class
+            .memberProperties
+            .sortedBy { it.name }
+            .forEach {property->
                 fn(property.name, property.call()){
                     try{
                         if (property !is KMutableProperty<*>){
@@ -123,7 +126,9 @@ interface Config{
         }
 
         private inline fun Config.forEachNestedConfig(fn: (String, Config)->Unit){
-            this::class.nestedClasses.forEach{
+            this::class
+            .nestedClasses
+            .forEach{
                 if (it.objectInstance == null){
                     throw RuntimeException("nested class ${it.simpleName} not singleton")
                 }

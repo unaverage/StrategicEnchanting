@@ -1,14 +1,21 @@
 package unaverage.strategic_ench
 
+import net.minecraft.block.BlockState
+import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.entity.passive.AllayEntity
+import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
+import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.WorldView
 import unaverage.strategic_ench.config.GlobalConfig
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
-
+import kotlin.math.absoluteValue
 
 
 private val cachedGetID: MutableMap<Any?, Any?> = HashMap()
@@ -23,6 +30,7 @@ fun <T> T.cachedGetID(r: Registry<T>): String {
 
 private val cachedGet: MutableMap<Any?, Any?> = HashMap()
 fun <T> Map<String, T>.cachedGet(itemID: String): T? {
+    @Suppress("UNCHECKED_CAST")
     return cachedGet.getOrPut(itemID){
         //Runs the loop twice
         //First time it checks for exact equality
@@ -54,9 +62,9 @@ fun Set<String>.cachedContain(id: String): Boolean {
                 return@getOrPut true
             }
         }
-        for (id in this) {
+        for (testedID in this) {
             try {
-                if (id.matches(Regex(id))) {
+                if (id.matches(Regex(testedID))) {
                     return@getOrPut true
                 }
             } catch (e: PatternSyntaxException) {
@@ -179,13 +187,14 @@ fun capEnchantmentMap(
         //Gets the max number of candidates possible
         fun maxCandidateIndex(map: Map<Enchantment, Int>): Int {
             return map
-                .values
-                .map { v -> v + 1 }
-                .fold(1) { a , b -> a * b }
+            .values
+            .map { v -> v + 1 }
+            .fold(1) { a , b -> a * b }
         }
 
         //Generates a candidate from an index number
         fun getCandidateFromIndex(map: Map<Enchantment, Int>, index: Int): Map<Enchantment, Int> {
+            @Suppress("NAME_SHADOWING")
             var index = index
             val result: MutableMap<Enchantment, Int> = HashMap()
 
@@ -244,4 +253,54 @@ fun capEnchantmentMap(
 
     map.clear()
     map.putAll(bestCandidate)
+}
+
+
+fun canPlaceCropAt(crop: BlockState, pos: BlockPos, world: WorldView): Boolean {
+    return crop.canPlaceAt(world, pos) && world.getBlockState(pos).isAir
+}
+
+fun heldItemAsCropBlock(allay: AllayEntity): BlockState?{
+    val item = allay.inventory.getStack(0)
+    if (item == null) return null
+    if (item.count < 0) return null
+
+    if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
+    if (item.item !is BlockItem) return null
+
+    val crop = (item.item as BlockItem).block as? CropBlock
+    if (crop == null) return null
+
+    return crop.withAge(0)
+}
+
+fun getNearestFarmPos(pos: BlockPos, cropBlock: BlockState, world: WorldView): BlockPos?{
+    iterateSquare(5){ i,j,k->
+        @Suppress("NAME_SHADOWING")
+        val pos = BlockPos(
+            pos.x + i,
+            pos.y + j,
+            pos.z + k
+        )
+
+        if (canPlaceCropAt(cropBlock, pos, world)){
+            return pos
+        }
+    }
+    return null
+}
+
+@Suppress("SameParameterValue")
+private inline fun iterateSquare(maxRange: Int, fn: (Int, Int, Int)->Unit){
+    for (r in 0..maxRange) {
+        for (i in -r..r) {
+            for (j in -r..r) {
+                for (k in -r..r) {
+                    if (i.absoluteValue == r || j.absoluteValue == r || k.absoluteValue == r) {
+                        fn(i,j,k)
+                    }
+                }
+            }
+        }
+    }
 }
