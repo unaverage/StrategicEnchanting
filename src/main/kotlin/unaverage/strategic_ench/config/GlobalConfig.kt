@@ -63,7 +63,11 @@ fun runGlobalConfig() {
         GlobalConfig.writeToFile(file)
     }
     else {
-        GlobalConfig.overwriteFromFile(file){StrategicEnchanting.logInvalidConfig(it)}
+        GlobalConfig.overwriteFromFile(
+            file,
+            {StrategicEnchanting.logInvalidConfig(it)},
+            {StrategicEnchanting.logNonExistentConfig(it)}
+        )
         GlobalConfig.writeToFile(file)
     }
 }
@@ -99,6 +103,12 @@ object GlobalConfig: Config{
     }
     
     object Miscellaneous: Config{
+        @JvmField
+        var mobs_can_cross_rails = true
+
+        @JvmField
+        var creepers_avoid_cats_further_away = true
+
         @JvmField
         var pigs_eat = listOf(
             "minecraft:apple",
