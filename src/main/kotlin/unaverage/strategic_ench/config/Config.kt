@@ -26,7 +26,11 @@ interface Config{
             return result
         }
 
-        fun Config.override(map: Map<String, Any?>, logWhenInvalid: (String) -> Unit) {
+        fun Config.override(
+            map: Map<String, Any?>,
+            logWhenInvalid: (String) -> Unit,
+            logWhenNotFound: (String)->Unit,
+        ) {
             map.forEach { (k, v) ->
                 this.forEachNestedConfig { name, config ->
                     if (name != k) return@forEachNestedConfig
@@ -35,7 +39,8 @@ interface Config{
                         logWhenInvalid(name)
                     }
 
-                    config.override(v as Map<String, Any?>, logWhenInvalid)
+                    @Suppress("UNCHECKED_CAST")
+                    config.override(v as Map<String, Any?>, logWhenInvalid, logWhenNotFound)
 
                     return@forEach
                 }
@@ -51,7 +56,7 @@ interface Config{
                     return@forEach
                 }
 
-                logWhenInvalid(k)
+                logWhenNotFound(k)
             }
         }
 
@@ -76,8 +81,13 @@ interface Config{
             .toFile(file)
         }
 
-        fun Config.overwriteFromFile(file: File, logWhenInvalid: (String) -> Unit) {
+        fun Config.overwriteFromFile(
+            file: File,
+            logWhenInvalid: (String) -> Unit,
+            logWhenNotFound: (String)->Unit,
+        ) {
             fun String.toMap(): Map<String, Any?> {
+                @Suppress("UNCHECKED_CAST")
                 return Gson().fromJson(this, Map::class.java) as Map<String, Any?>
             }
 
@@ -85,7 +95,7 @@ interface Config{
             .readText()
             .toMap()
             .let {
-                GlobalConfig.override(it, logWhenInvalid)
+                this.override(it, logWhenInvalid, logWhenNotFound)
             }
         }
 
@@ -98,10 +108,10 @@ interface Config{
                         }
 
                         try{
-                            property.setter.call(this, it)
+                            property.setter.call(it)
                         }
                         catch (e: IllegalArgumentException){
-                            throw RuntimeException("field ${property.name} not jvm field")
+                            throw RuntimeException("field ${property.name} not jvm field", e)
                         }
                     }
                     catch (e: IllegalArgumentException){
@@ -131,6 +141,7 @@ interface Config{
             setter(value).ifTrue { return true }
 
             if (value is String){
+                @Suppress("NAME_SHADOWING")
                 val value = value.trim()
 
                 if (value.lowercase() == "true") setter(true).ifTrue { return true }
