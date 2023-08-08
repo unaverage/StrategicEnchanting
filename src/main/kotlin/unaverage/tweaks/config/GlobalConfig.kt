@@ -1,17 +1,17 @@
-package unaverage.strategic_ench.config
+package unaverage.tweaks.config
 
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
-import unaverage.strategic_ench.StrategicEnchanting
-import unaverage.strategic_ench.cachedContain
-import unaverage.strategic_ench.cachedGetID
-import unaverage.strategic_ench.config.Config.Companion.overwriteFromFile
-import unaverage.strategic_ench.config.Config.Companion.writeToFile
+import unaverage.tweaks.UnaverageTweaks
+import unaverage.tweaks.cachedContain
+import unaverage.tweaks.cachedGetID
+import unaverage.tweaks.config.Config.Companion.overwriteFromFile
+import unaverage.tweaks.config.Config.Companion.writeToFile
 import kotlin.math.roundToInt
 
-const val FILE_NAME = StrategicEnchanting.MOD_ID + ".json"
+const val FILE_NAME = UnaverageTweaks.MOD_ID + ".json"
 
 fun affectedByBaneOfAnthropod(e: EntityType<*>): Boolean {
     return GlobalConfig
@@ -65,8 +65,8 @@ fun runGlobalConfig() {
     else {
         GlobalConfig.overwriteFromFile(
             file,
-            {StrategicEnchanting.logInvalidConfig(it)},
-            {StrategicEnchanting.logNonExistentConfig(it)}
+            { UnaverageTweaks.logInvalidConfig(it)},
+            { UnaverageTweaks.logNonExistentConfig(it)}
         )
         GlobalConfig.writeToFile(file)
     }

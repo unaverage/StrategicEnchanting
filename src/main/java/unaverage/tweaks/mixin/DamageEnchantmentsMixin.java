@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.entity.Entity;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
+import static unaverage.tweaks.config.GlobalConfigKt.affectedByBaneOfAnthropod;
 
 @Mixin(DamageEnchantment.class)
 public class DamageEnchantmentsMixin {

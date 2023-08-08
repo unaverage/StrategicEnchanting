@@ -1,4 +1,4 @@
-package unaverage.strategic_ench
+package unaverage.tweaks
 
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
@@ -12,7 +12,7 @@ import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.WorldView
-import unaverage.strategic_ench.config.GlobalConfig
+import unaverage.tweaks.config.GlobalConfig
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
@@ -46,7 +46,7 @@ fun <T> Map<String, T>.cachedGet(itemID: String): T? {
                     return@getOrPut testedValue
                 }
             } catch (e: PatternSyntaxException) {
-                StrategicEnchanting.LOGGER.warn("$testedID is not valid regex")
+                UnaverageTweaks.LOGGER.warn("$testedID is not valid regex")
             }
         }
         null
@@ -68,7 +68,7 @@ fun Set<String>.cachedContain(id: String): Boolean {
                     return@getOrPut true
                 }
             } catch (e: PatternSyntaxException) {
-                StrategicEnchanting.LOGGER.warn("$id is not valid regex")
+                UnaverageTweaks.LOGGER.warn("$id is not valid regex")
             }
         }
         false

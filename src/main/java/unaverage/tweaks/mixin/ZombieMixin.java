@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 /*
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;

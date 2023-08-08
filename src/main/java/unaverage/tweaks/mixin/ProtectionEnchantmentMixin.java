@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.damage.DamageSource;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.fireProtectionProtectsAgainst;
+import static unaverage.tweaks.config.GlobalConfigKt.fireProtectionProtectsAgainst;
 
 @Mixin(ProtectionEnchantment.class)
 public class ProtectionEnchantmentMixin {

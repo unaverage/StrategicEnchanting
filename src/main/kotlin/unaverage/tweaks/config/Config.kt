@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.config
+package unaverage.tweaks.config
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

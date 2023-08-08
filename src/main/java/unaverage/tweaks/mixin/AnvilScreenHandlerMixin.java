@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Map;
 
-import static unaverage.strategic_ench.HelperKt.capEnchantmentMap;
-import static unaverage.strategic_ench.HelperKt.getCapacity;
+import static unaverage.tweaks.HelperKt.capEnchantmentMap;
+import static unaverage.tweaks.HelperKt.getCapacity;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {

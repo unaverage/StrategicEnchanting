@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.affectedByBaneOfAnthropod;
+import static unaverage.tweaks.config.GlobalConfigKt.affectedByBaneOfAnthropod;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {

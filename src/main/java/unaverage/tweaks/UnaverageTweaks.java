@@ -1,13 +1,13 @@
-package unaverage.strategic_ench;
+package unaverage.tweaks;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static unaverage.strategic_ench.config.GlobalConfigKt.runGlobalConfig;
+import static unaverage.tweaks.config.GlobalConfigKt.runGlobalConfig;
 
-public class StrategicEnchanting implements PreLaunchEntrypoint {
-	public static final String MOD_ID = "strategic_ench";
+public class UnaverageTweaks implements PreLaunchEntrypoint {
+	public static final String MOD_ID = "unaverage_tweaks";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static void logMissingID(String id){

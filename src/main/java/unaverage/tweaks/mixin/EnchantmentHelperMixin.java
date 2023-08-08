@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.util.math.random.Random;
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static unaverage.strategic_ench.HelperKt.capEnchantmentMap;
-import static unaverage.strategic_ench.HelperKt.getCapacity;
-import static unaverage.strategic_ench.config.GlobalConfigKt.enchantmentIsBlacklisted;
+import static unaverage.tweaks.HelperKt.capEnchantmentMap;
+import static unaverage.tweaks.HelperKt.getCapacity;
+import static unaverage.tweaks.config.GlobalConfigKt.enchantmentIsBlacklisted;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {

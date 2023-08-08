@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.Enchantment;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
-import static unaverage.strategic_ench.HelperKt.*;
+import static unaverage.tweaks.HelperKt.*;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {

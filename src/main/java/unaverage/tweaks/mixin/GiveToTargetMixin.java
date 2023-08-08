@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.strategic_ench.HelperKt;
-import unaverage.strategic_ench.config.GlobalConfig;
+import unaverage.tweaks.HelperKt;
+import unaverage.tweaks.config.GlobalConfig;
 
 import java.util.Map;
 

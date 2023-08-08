@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "strategic_ench",
-  "version": "2.1",
+  "id": "unaverage_tweaks",
+  "version": "1.0",
 
-  "name": "Strategic Enchanting",
+  "name": "Unaverage Tweaks",
   "description": "",
   "authors": [
     "unaverage"
@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "preLaunch": [
-      "unaverage.strategic_ench.StrategicEnchanting"
+      "unaverage.tweaks.UnaverageTweaks"
     ]
   },
   "mixins": [
-    "strategic_ench.mixins.json"
+    "unaverage_tweaks.mixins.json"
   ],
 
   "depends": {

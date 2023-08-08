@@ -1,10 +1,10 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.enchantment.ThornsEnchantment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import unaverage.strategic_ench.config.GlobalConfig;
+import unaverage.tweaks.config.GlobalConfig;
 
 @Mixin(ThornsEnchantment.class)
 public class ThornEnchantmentMixin {

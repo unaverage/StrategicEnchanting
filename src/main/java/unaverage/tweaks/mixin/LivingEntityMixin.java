@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.strategic_ench.config.GlobalConfig;
+import unaverage.tweaks.config.GlobalConfig;
 
 
 @Mixin(LivingEntity.class)

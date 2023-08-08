@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.block.FrostedIceBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.strategic_ench.config.GlobalConfig;
+import unaverage.tweaks.config.GlobalConfig;
 
 @Mixin(FrostedIceBlock.class)
 public class FrostedIceMixin {

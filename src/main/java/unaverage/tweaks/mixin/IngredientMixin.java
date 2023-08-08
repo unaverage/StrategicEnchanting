@@ -1,4 +1,4 @@
-package unaverage.strategic_ench.mixin;
+package unaverage.tweaks.mixin;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.strategic_ench.HelperKt;
-import unaverage.strategic_ench.StrategicEnchanting;
-import unaverage.strategic_ench.config.GlobalConfig;
+import unaverage.tweaks.HelperKt;
+import unaverage.tweaks.UnaverageTweaks;
+import unaverage.tweaks.config.GlobalConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public abstract class IngredientMixin {
         for (String id: GlobalConfig.Miscellaneous.pigs_eat){
             Item item = HelperKt.getItemFromId(id, Registries.ITEM);
             if (item == null){
-                StrategicEnchanting.logMissingID(id);
+                UnaverageTweaks.logMissingID(id);
             }
             else {
                 result.add(item);
