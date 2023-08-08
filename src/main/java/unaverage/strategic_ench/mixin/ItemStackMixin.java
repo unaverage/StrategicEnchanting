@@ -46,7 +46,7 @@ public abstract class ItemStackMixin {
         var cap = getCapacity(self.getItem());
         if (cap == null || cap < 0) return;
 
-        var text = "Enchantment Capacity: %.1f/%s".formatted(weight, cap);
+        var text = "Enchantment Capacity: %.2f/%s".formatted(weight, cap);
 
         list.add(
             MutableText.of(new LiteralTextContent(text))

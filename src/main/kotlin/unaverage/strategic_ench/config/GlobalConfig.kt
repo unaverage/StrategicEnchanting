@@ -34,13 +34,13 @@ fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
 }
 
 fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.Miscellaneous.fire_protection_seconds_of_lava_immunity_per_level != 0.0
+    return GlobalConfig.Miscellaneous.fire_protection_grants_seconds_of_lava_immunity_per_level != 0.0
 }
 
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
     return GlobalConfig
         .Miscellaneous
-        .fire_protection_seconds_of_lava_immunity_per_level
+        .fire_protection_grants_seconds_of_lava_immunity_per_level
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
@@ -107,7 +107,7 @@ object GlobalConfig: Config{
         var mobs_can_cross_rails = true
 
         @JvmField
-        var creepers_avoid_cats_further_away = true
+        var creepers_avoid_cats_at = 16
 
         @JvmField
         var pigs_eat = listOf(
@@ -130,7 +130,7 @@ object GlobalConfig: Config{
         var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
 
         @JvmField
-        var fire_protection_seconds_of_lava_immunity_per_level = 1.0
+        var fire_protection_grants_seconds_of_lava_immunity_per_level = 1.0
 
         @JvmField
         var thorn_no_longer_wears_down_armor = true
@@ -139,16 +139,16 @@ object GlobalConfig: Config{
         //var zombies_are_more_knockback_resistant = true
 
         @JvmField
-        var village_golems_and_nonzombies_no_longer_attack_each_other = true
+        var village_golems_only_fight_threats = true
 
         @JvmField
-        var ridden_pigs_speed_multiplier = 2.0
+        var ridden_pigs_speed_multiplied_by = 2.0
         
         @JvmField
         var shields_no_longer_prevent_knockback = true
 
         @JvmField
-        var frostwalker_melts_at_night = true
+        var frost_walker_melts_at_night = true
 
         @JvmField
         var allay_can_plant_crops = true

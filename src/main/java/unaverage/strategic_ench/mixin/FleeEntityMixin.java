@@ -27,11 +27,13 @@ public abstract class FleeEntityMixin{
         at = @At("TAIL")
     )
     public void injectCreepersFleeFurther(PathAwareEntity mob, Class<?> fleeFromType, Predicate<?> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<?> inclusionSelector, CallbackInfo ci){
-        if (GlobalConfig.Miscellaneous.creepers_avoid_cats_further_away) return;
+        var dist = GlobalConfig.Miscellaneous.creepers_avoid_cats_at;
+
+        if (dist == 6 || dist <= 0) return;
 
         if (!(mob instanceof CreeperEntity)) return;
         if (fleeFromType != CatEntity.class && fleeFromType != OcelotEntity.class) return;
 
-        this.fleeDistance = 16;
+        this.fleeDistance = dist;
     }
 }
