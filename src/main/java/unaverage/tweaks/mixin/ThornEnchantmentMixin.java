@@ -4,7 +4,7 @@ import net.minecraft.enchantment.ThornsEnchantment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import unaverage.tweaks.config.GlobalConfig;
+import unaverage.tweaks.GlobalConfig;
 
 @Mixin(ThornsEnchantment.class)
 public class ThornEnchantmentMixin {

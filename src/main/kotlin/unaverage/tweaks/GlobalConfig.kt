@@ -1,19 +1,20 @@
-package unaverage.tweaks.config
+package unaverage.tweaks
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
-import unaverage.tweaks.UnaverageTweaks
-import unaverage.tweaks.cachedContain
-import unaverage.tweaks.cachedGetID
-import unaverage.tweaks.config.Config.Companion.overwriteFromFile
-import unaverage.tweaks.config.Config.Companion.writeToFile
+import roland_a.simple_configs.Config
+import roland_a.simple_configs.Config.Companion.override
+import roland_a.simple_configs.Config.Companion.toMap
+import java.io.File
 import kotlin.math.roundToInt
 
 const val FILE_NAME = UnaverageTweaks.MOD_ID + ".json"
 
-fun affectedByBaneOfAnthropod(e: EntityType<*>): Boolean {
+fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
     return GlobalConfig
         .Miscellaneous
         .bane_of_arthropods_also_affects
@@ -57,22 +58,56 @@ fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
 }
 
 fun runGlobalConfig() {
+    fun Config.writeToFile(file: File){
+        fun Map<String,Any?>.toText(): String {
+            return GsonBuilder()
+                .setPrettyPrinting()
+                .create()
+                .toJson(this)!!
+        }
+        fun String.toFile(file: File){
+            if (!file.exists()){
+                file.createNewFile()
+            }
+
+            file.writeText(this)
+        }
+
+        this
+        .toMap()
+        .toText()
+        .toFile(file)
+    }
+    fun Config.overwriteFromFile(file: File) {
+        fun String.toMap(): Map<String, Any?> {
+            @Suppress("UNCHECKED_CAST")
+            return Gson().fromJson(this, Map::class.java) as Map<String, Any?>
+        }
+
+        file
+        .readText()
+        .toMap()
+        .let {
+            this.override(
+                it,
+                UnaverageTweaks::logInvalidConfig,
+                UnaverageTweaks::logNonExistentConfig
+            )
+        }
+    }
+
     val file = FabricLoader.getInstance().configDir.resolve(FILE_NAME).toFile()
 
     if (!file.exists()){
         GlobalConfig.writeToFile(file)
     }
     else {
-        GlobalConfig.overwriteFromFile(
-            file,
-            { UnaverageTweaks.logInvalidConfig(it)},
-            { UnaverageTweaks.logNonExistentConfig(it)}
-        )
+        GlobalConfig.overwriteFromFile(file)
         GlobalConfig.writeToFile(file)
     }
 }
 
-object GlobalConfig: Config{
+object GlobalConfig: Config {
     object EnchantmentCaps: Config{
         @JvmField
         var enchantment_weights = mapOf(
@@ -154,3 +189,4 @@ object GlobalConfig: Config{
         var allay_can_plant_crops = true
     }
 }
+

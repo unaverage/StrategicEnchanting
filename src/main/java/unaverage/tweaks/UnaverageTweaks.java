@@ -4,7 +4,7 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static unaverage.tweaks.config.GlobalConfigKt.runGlobalConfig;
+import static unaverage.tweaks.GlobalConfigKt.runGlobalConfig;
 
 public class UnaverageTweaks implements PreLaunchEntrypoint {
 	public static final String MOD_ID = "unaverage_tweaks";

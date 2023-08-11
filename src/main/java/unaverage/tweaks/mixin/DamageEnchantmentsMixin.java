@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static unaverage.tweaks.config.GlobalConfigKt.affectedByBaneOfAnthropod;
+import static unaverage.tweaks.GlobalConfigKt.affectedByBaneOfArthropod;
 
 @Mixin(DamageEnchantment.class)
 public class DamageEnchantmentsMixin {
@@ -29,7 +29,7 @@ public class DamageEnchantmentsMixin {
         if (this.typeIndex != 2) return;
         if (level == 0) return;
 
-        if (!affectedByBaneOfAnthropod(livingEntity.getType())) return;
+        if (!affectedByBaneOfArthropod(livingEntity.getType())) return;
 
         int i = 20 + user.getRandom().nextInt(10 * level);
         livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, i, 3));

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.config.GlobalConfig;
+import unaverage.tweaks.GlobalConfig;
 
 @Mixin(MobEntity.class)
 public abstract class MobMixin  {
