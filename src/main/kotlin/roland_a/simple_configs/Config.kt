@@ -60,7 +60,7 @@ interface Config{
             .memberProperties
             .sortedBy { it.name }
             .forEach {property->
-                fn(property.name, property.call(this)){
+                fn(property.name, property.call()){
                     trySet(
                         it
                     ){
