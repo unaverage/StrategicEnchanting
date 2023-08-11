@@ -12,7 +12,6 @@ import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.WorldView
-import unaverage.tweaks.config.GlobalConfig
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
