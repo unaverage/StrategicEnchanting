@@ -21,6 +21,8 @@ import unaverage.tweaks.GlobalConfig;
 public abstract class AnimalMixin extends PassiveEntity {
     @Shadow public abstract boolean isBreedingItem(ItemStack stack);
 
+    @Shadow protected abstract void eat(PlayerEntity player, Hand hand, ItemStack stack);
+
     protected AnimalMixin(EntityType<? extends PassiveEntity> entityType, World world) {super(entityType, world);}
 
     @SuppressWarnings("ConstantConditions")
@@ -39,6 +41,9 @@ public abstract class AnimalMixin extends PassiveEntity {
 
         if (this.getHealth() < this.getMaxHealth()) {
             this.heal(1);
+
+            this.eat(player, hand, player.getStackInHand(hand));
+
             cir.setReturnValue(
                 ActionResult.SUCCESS
             );
