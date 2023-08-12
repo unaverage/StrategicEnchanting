@@ -16,6 +16,7 @@ import unaverage.tweaks.GlobalConfig;
 
 @Mixin(GlowSquidEntity.class)
 public class GlowSquidMixin {
+    /*
     @Inject(
         method = "canSpawn",
         at = @At("RETURN"),
@@ -28,4 +29,6 @@ public class GlowSquidMixin {
             cir.getReturnValue() && world.getBlockState(pos.up()).isOf(Blocks.WATER) && world.getBlockState(pos.down()).isOf(Blocks.WATER)
         );
     }
+
+     */
 }
