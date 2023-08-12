@@ -60,7 +60,14 @@ interface Config{
             .memberProperties
             .sortedBy { it.name }
             .forEach {property->
-                fn(property.name, property.call()){
+                val value =
+                    try{
+                        property.call()
+                    } catch (e: IllegalArgumentException){
+                        property.call(this)
+                    }
+
+                fn(property.name, value){
                     trySet(
                         it
                     ){
