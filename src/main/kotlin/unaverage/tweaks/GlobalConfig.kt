@@ -139,6 +139,9 @@ object GlobalConfig: Config {
     
     object Miscellaneous: Config{
         @JvmField
+        var better_glow_squid_spawns = true
+
+        @JvmField
         var mobs_can_cross_rails = true
 
         @JvmField

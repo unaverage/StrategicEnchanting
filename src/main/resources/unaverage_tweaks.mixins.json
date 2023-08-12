@@ -13,6 +13,7 @@
     "FleeEntityMixin",
     "FrostedIceMixin",
     "GiveToTargetMixin",
+    "GlowSquidMixin",
     "IngredientMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
