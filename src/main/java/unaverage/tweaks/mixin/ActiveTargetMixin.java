@@ -30,7 +30,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         at = @At("TAIL")
     )
     public void injectMobsDontAttackVillagerGolems(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
-        if (GlobalConfig.Miscellaneous.village_golems_only_fight_threats) return;
+        if (GlobalConfig.Miscellaneous.villager_golem_better_targeting) return;
 
         if (mob instanceof ZombieEntity) return;
         if (mob instanceof RaiderEntity) return;
@@ -47,7 +47,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         at = @At("TAIL")
     )
     public void injectVillagerGolemsDontAttackMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> targetPredicate, CallbackInfo ci){
-        if (!GlobalConfig.Miscellaneous.village_golems_only_fight_threats) return;
+        if (!GlobalConfig.Miscellaneous.villager_golem_better_targeting) return;
 
         if (!(mob instanceof IronGolemEntity)) return;
 

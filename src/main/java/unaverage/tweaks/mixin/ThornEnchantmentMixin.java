@@ -17,6 +17,6 @@ public class ThornEnchantmentMixin {
         constant = @Constant(intValue = 2)
     )
     private int doNoDamage(int constant){
-        return GlobalConfig.Miscellaneous.thorn_no_longer_wears_down_armor ? 0 : constant;
+        return GlobalConfig.Miscellaneous.thorns_no_longer_wears_down_armor ? 0 : constant;
     }
 }

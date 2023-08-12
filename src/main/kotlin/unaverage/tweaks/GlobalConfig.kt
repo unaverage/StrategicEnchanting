@@ -27,7 +27,7 @@ fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
 fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
     return GlobalConfig
         .Miscellaneous
-        .blacklist_enchantments
+        .enchantment_blacklist
         .toSet()
         .cachedContain(
             e.cachedGetID(Registries.ENCHANTMENT),
@@ -35,13 +35,13 @@ fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
 }
 
 fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.Miscellaneous.fire_protection_grants_seconds_of_lava_immunity_per_level != 0.0
+    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity != 0.0
 }
 
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
     return GlobalConfig
         .Miscellaneous
-        .fire_protection_grants_seconds_of_lava_immunity_per_level
+        .fire_protection_lava_immunity
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
@@ -136,16 +136,38 @@ object GlobalConfig: Config {
             "minecraft:wooden_.+" to null,
         )
     }
-    
+
+    //Config name noun should be placed first
     object Miscellaneous: Config{
         @JvmField
-        var better_glow_squid_spawns = true
+        var allay_can_plant_crops = true
 
         @JvmField
-        var mobs_can_cross_rails = true
+        var animals_heal_when_eat = true
+
+        @JvmField
+        var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
 
         @JvmField
         var creepers_avoid_cats_at = 16
+
+        @JvmField
+        var enchantment_blacklist = listOf("minecraft:protection")
+
+        @JvmField
+        var fire_protection_lava_immunity = 1.0
+
+        @JvmField
+        var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
+
+        @JvmField
+        var frost_walker_melts_at_night = true
+
+        @JvmField
+        var glow_squids_better_spawn = true
+
+        @JvmField
+        var mobs_can_cross_rails = true
 
         @JvmField
         var pigs_eat = listOf(
@@ -156,40 +178,16 @@ object GlobalConfig: Config {
         )
 
         @JvmField
-        var animals_heal_when_eat = true
+        var pigs_ridden_speed_boost = 2.0
 
-        @JvmField
-        var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
-
-        @JvmField
-        var blacklist_enchantments = listOf("minecraft:protection")
-
-        @JvmField
-        var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
-
-        @JvmField
-        var fire_protection_grants_seconds_of_lava_immunity_per_level = 1.0
-
-        @JvmField
-        var thorn_no_longer_wears_down_armor = true
-
-        //@JvmField
-        //var zombies_are_more_knockback_resistant = true
-
-        @JvmField
-        var village_golems_only_fight_threats = true
-
-        @JvmField
-        var ridden_pigs_speed_multiplied_by = 2.0
-        
         @JvmField
         var shields_no_longer_prevent_knockback = true
 
         @JvmField
-        var frost_walker_melts_at_night = true
+        var thorns_no_longer_wears_down_armor = true
 
         @JvmField
-        var allay_can_plant_crops = true
+        var villager_golem_better_targeting = true
     }
 }
 

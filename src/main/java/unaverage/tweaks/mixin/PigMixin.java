@@ -16,7 +16,7 @@ public class PigMixin {
         cancellable = true
     )
     private void injectPigNewSpeed(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir){
-        double multiplier = GlobalConfig.Miscellaneous.ridden_pigs_speed_multiplied_by;
+        double multiplier = GlobalConfig.Miscellaneous.pigs_ridden_speed_boost;
 
         if (multiplier <= 0 || multiplier == 1) return;
 
