@@ -96,7 +96,7 @@ object GlobalConfig: Config {
         var allay_can_plant_crops = true
 
         @JvmField
-        var animals_heal_when_eat = listOf(
+        var animals_heal_when_fed = listOf(
             "minecraft:chicken",
             "minecraft:cow",
             "minecraft:mooshroom",
