@@ -43,8 +43,8 @@ fun runGlobalConfig() {
         .let {
             this.override(
                 it,
-                UnaverageTweaks::logInvalidConfig,
-                UnaverageTweaks::logNonExistentConfig
+                UnaverageTweaks::logInvalidConfigKey,
+                UnaverageTweaks::logNonExistentConfigKey
             )
         }
     }
@@ -96,12 +96,18 @@ object GlobalConfig: Config {
         var allay_can_plant_crops = true
 
         @JvmField
-        var animals_heal_when_eat = true
+        var animals_heal_when_eat = listOf(
+            "minecraft:chicken",
+            "minecraft:cow",
+            "minecraft:mooshroom",
+            "minecraft:parrot",
+            "minecraft:pig",
+        )
 
         var animals_eat = mapOf(
             "minecraft:pig" to listOf(
                 "minecraft:apple",
-                "minecraft:beet_root",
+                "minecraft:beetroot",
                 "minecraft:carrot",
                 "minecraft:wheat",
             )
