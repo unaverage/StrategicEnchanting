@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static unaverage.tweaks.GlobalConfigKt.affectedByBaneOfArthropod;
+import static unaverage.tweaks.HelperKt.affectedByBaneOfArthropod;
 
 @Mixin(DamageEnchantment.class)
 public class DamageEnchantmentsMixin {

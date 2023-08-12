@@ -3,6 +3,7 @@ package unaverage.tweaks
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.entity.EntityType
 import net.minecraft.entity.passive.AllayEntity
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
@@ -15,6 +16,7 @@ import net.minecraft.world.WorldView
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 
 private val cachedGetID: MutableMap<Any?, Any?> = HashMap()
@@ -302,4 +304,49 @@ private inline fun iterateSquare(maxRange: Int, fn: (Int, Int, Int)->Unit){
             }
         }
     }
+}
+
+fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
+    return GlobalConfig.Miscellaneous.bane_of_arthropods_also_affects
+        .toSet()
+        .contains(
+            e.cachedGetID(Registries.ENTITY_TYPE)
+        )
+}
+
+fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
+    return GlobalConfig.Miscellaneous.enchantment_blacklist
+        .toSet()
+        .cachedContain(
+            e.cachedGetID(Registries.ENCHANTMENT),
+        )
+}
+
+fun fireProtectionHasLavaDuration(): Boolean{
+    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity != 0.0
+}
+
+fun getFireProtectionLavaImmunityDuration(level: Int): Int {
+    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity
+        .let { it * level }
+        .let{ it * 20 }
+        .roundToInt()
+}
+
+fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
+    return GlobalConfig.Miscellaneous.fire_protection_protects_against
+        .toSet()
+        .cachedContain(
+            e.cachedGetID(Registries.ENTITY_TYPE),
+        )
+}
+
+fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
+    return GlobalConfig.Miscellaneous.animals_eat
+        .get(
+            e.cachedGetID(Registries.ENTITY_TYPE)
+        )
+        ?.mapNotNull {
+            getItemFromId(it, Registries.ITEM)
+        }
 }

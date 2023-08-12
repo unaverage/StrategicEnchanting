@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.GlobalConfigKt;
+import unaverage.tweaks.HelperKt;
 
 @Mixin(TemptGoal.class)
 public class TemptMixin {
@@ -27,7 +27,7 @@ public class TemptMixin {
     void mobsEatExtraFood(PathAwareEntity entity, double speed, Ingredient food, boolean canBeScared, CallbackInfo ci){
         if (food.test(Items.CARROT_ON_A_STICK.getDefaultStack())) return;
 
-        var list = GlobalConfigKt.getNewAnimalFeedList(entity.getType());
+        var list = HelperKt.getNewAnimalFeedList(entity.getType());
         if (list == null) return;
 
         this.food = Ingredient.ofStacks(list.stream().map(Item::getDefaultStack));

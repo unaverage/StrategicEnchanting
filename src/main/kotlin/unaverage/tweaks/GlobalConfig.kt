@@ -3,72 +3,12 @@ package unaverage.tweaks
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.enchantment.Enchantment
-import net.minecraft.entity.EntityType
-import net.minecraft.item.Item
-import net.minecraft.registry.Registries
 import roland_a.simple_configs.Config
 import roland_a.simple_configs.Config.Companion.override
 import roland_a.simple_configs.Config.Companion.toMap
 import java.io.File
-import kotlin.math.roundToInt
 
 const val FILE_NAME = UnaverageTweaks.MOD_ID + ".json"
-
-fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
-    return GlobalConfig
-        .Miscellaneous
-        .bane_of_arthropods_also_affects
-        .toSet()
-        .contains(
-            e.cachedGetID(Registries.ENTITY_TYPE)
-        )
-}
-
-fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
-    return GlobalConfig
-        .Miscellaneous
-        .enchantment_blacklist
-        .toSet()
-        .cachedContain(
-            e.cachedGetID(Registries.ENCHANTMENT),
-        )
-}
-
-fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity != 0.0
-}
-
-fun getFireProtectionLavaImmunityDuration(level: Int): Int {
-    return GlobalConfig
-        .Miscellaneous
-        .fire_protection_lava_immunity
-        .let { it * level }
-        .let{ it * 20 }
-        .roundToInt()
-}
-
-fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
-    return GlobalConfig
-        .Miscellaneous
-        .fire_protection_protects_against
-        .toSet()
-        .cachedContain(
-            e.cachedGetID(Registries.ENTITY_TYPE),
-        )
-}
-
-fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
-    return GlobalConfig
-        .Miscellaneous
-        .animals_eat
-        .get(
-            e.cachedGetID(Registries.ENTITY_TYPE)
-        )
-        ?.mapNotNull {
-            getItemFromId(it, Registries.ITEM)
-        }
-}
 
 fun runGlobalConfig() {
     fun Config.writeToFile(file: File){

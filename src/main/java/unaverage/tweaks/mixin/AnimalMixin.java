@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
-import unaverage.tweaks.GlobalConfigKt;
+import unaverage.tweaks.HelperKt;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {
@@ -84,7 +84,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     void canBeBredWithNewFeeds(ItemStack stack, CallbackInfoReturnable<Boolean> cir){
-        var list = GlobalConfigKt.getNewAnimalFeedList(this.getType());
+        var list = HelperKt.getNewAnimalFeedList(this.getType());
         if (list == null) return;
 
         cir.setReturnValue(

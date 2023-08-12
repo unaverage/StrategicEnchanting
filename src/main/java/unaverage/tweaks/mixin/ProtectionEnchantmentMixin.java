@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static unaverage.tweaks.GlobalConfigKt.fireProtectionProtectsAgainst;
+import static unaverage.tweaks.HelperKt.fireProtectionProtectsAgainst;
 
 @Mixin(ProtectionEnchantment.class)
 public class ProtectionEnchantmentMixin {

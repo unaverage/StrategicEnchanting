@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static unaverage.tweaks.GlobalConfigKt.fireProtectionHasLavaDuration;
-import static unaverage.tweaks.GlobalConfigKt.getFireProtectionLavaImmunityDuration;
+import static unaverage.tweaks.HelperKt.fireProtectionHasLavaDuration;
+import static unaverage.tweaks.HelperKt.getFireProtectionLavaImmunityDuration;
 
 
 @Mixin(Entity.class)

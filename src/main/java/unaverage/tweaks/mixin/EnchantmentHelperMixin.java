@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static unaverage.tweaks.HelperKt.capEnchantmentMap;
 import static unaverage.tweaks.HelperKt.getCapacity;
-import static unaverage.tweaks.GlobalConfigKt.enchantmentIsBlacklisted;
+import static unaverage.tweaks.HelperKt.enchantmentIsBlacklisted;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
