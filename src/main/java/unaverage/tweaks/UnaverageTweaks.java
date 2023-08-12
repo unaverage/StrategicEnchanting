@@ -12,19 +12,19 @@ public class UnaverageTweaks implements PreLaunchEntrypoint {
 
 	public static void logMissingID(String id){
 		LOGGER.warn(
-			id + "is not a valid id"
+			id + "is an unknown id"
 		);
 	}
 
-	public static void logInvalidConfig(String configName){
+	public static void logInvalidConfigKey(String configKey){
 		LOGGER.warn(
-			configName + " in config does not have valid values"
+			configKey + " in config does not have a valid value"
 		);
 	}
 
-	public static void logNonExistentConfig(String configName){
+	public static void logNonExistentConfigKey(String configKey){
 		LOGGER.warn(
-			configName + " in config does not exist"
+			configKey + " is an unknown key"
 		);
 	}
 
