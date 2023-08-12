@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import unaverage.tweaks.GlobalConfig;
 
 @Mixin(ThornsEnchantment.class)
-public class ThornEnchantmentMixin {
+public class ThornsEnchantmentMixin {
 
     /**
      * Disables the default vanilla behavior of damaging armor if thorn inflict damage in enemies
@@ -16,7 +16,7 @@ public class ThornEnchantmentMixin {
         method = "onUserDamaged",
         constant = @Constant(intValue = 2)
     )
-    private int doNoDamage(int constant){
+    private int cancelArmorWearDown(int constant){
         return GlobalConfig.Miscellaneous.thorns_no_longer_wears_down_armor ? 0 : constant;
     }
 }

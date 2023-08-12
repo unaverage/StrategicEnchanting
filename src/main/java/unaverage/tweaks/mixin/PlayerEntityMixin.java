@@ -48,7 +48,7 @@ public class PlayerEntityMixin {
             target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F"
         )
     )
-    private float addExtraMobDamage(ItemStack stack, EntityGroup group){
+    private float doExtraDamageToExtraMobs(ItemStack stack, EntityGroup group){
         //the original result
         var result = EnchantmentHelper.getAttackDamage(stack, group);
 

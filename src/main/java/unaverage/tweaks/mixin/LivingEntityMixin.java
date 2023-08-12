@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin extends Entity {
             target = "Lnet/minecraft/entity/LivingEntity;knockback(Lnet/minecraft/entity/LivingEntity;)V"
         )
     )
-    private void disableShieldNoKnockback(LivingEntity instance, LivingEntity target){
+    private void shieldsDoKnockback(LivingEntity instance, LivingEntity target){
         if (!GlobalConfig.Miscellaneous.shields_no_longer_prevent_knockback){
             instance.takeKnockback(0.5, target.getX() - instance.getX(), target.getZ() - instance.getZ());
             return;

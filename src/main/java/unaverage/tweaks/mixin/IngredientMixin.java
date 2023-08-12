@@ -24,7 +24,7 @@ public abstract class IngredientMixin {
         at = @At("RETURN"),
         cancellable = true
     )
-    private static void injectPigNewIngredients(ItemConvertible[] items, CallbackInfoReturnable<Ingredient> cir){
+    private static void pigsCanEatMore(ItemConvertible[] items, CallbackInfoReturnable<Ingredient> cir){
         if (items.length != 3) return;
         if (items[0] != Items.CARROT) return;
         if (items[1] != Items.POTATO) return;

@@ -19,7 +19,7 @@ public class ProtectionEnchantmentMixin {
      * Adds protection from a mob's melee attack if that mob is configured to be affected by the fire protection
      */
     @Inject(method = "getProtectionAmount", at = @At(value = "TAIL"), cancellable = true)
-    private void injectFireProtectionExtraProtection(int level, DamageSource source, CallbackInfoReturnable<Integer> cir){
+    private void fireProtectionDoExtraProtection(int level, DamageSource source, CallbackInfoReturnable<Integer> cir){
         if (this.protectionType != ProtectionEnchantment.Type.FIRE) return;
 
         var attacker = source.getAttacker();

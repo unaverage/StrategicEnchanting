@@ -24,7 +24,7 @@ public class DamageEnchantmentsMixin {
      * Adds the slowness effect to the configured mobs being targeted by bane of arthropods are done to normal arthropod mobs
      */
     @Inject(method = "onTargetDamaged", at=@At(value = "HEAD"))
-    private void injectSlownessToExtraMobs(LivingEntity user, Entity target, int level, CallbackInfo ci){
+    private void slowDownExtraMobs(LivingEntity user, Entity target, int level, CallbackInfo ci){
         if (!(target instanceof LivingEntity livingEntity)) return;
         if (this.typeIndex != 2) return;
         if (level == 0) return;

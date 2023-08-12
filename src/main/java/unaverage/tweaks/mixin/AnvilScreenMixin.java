@@ -19,8 +19,8 @@ import static unaverage.tweaks.HelperKt.capEnchantmentMap;
 import static unaverage.tweaks.HelperKt.getCapacity;
 
 @Mixin(AnvilScreenHandler.class)
-public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
-    public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+public abstract class AnvilScreenMixin extends ForgingScreenHandler {
+    public AnvilScreenMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(type, syncId, playerInventory, context);
     }
 
@@ -37,16 +37,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Ljava/util/Map;Lnet/minecraft/item/ItemStack;)V"
         )
     )
-    private void redirectDefaultCappingToNewCapping(Map<Enchantment, Integer> enchantments, ItemStack stack){
-        /*
-        if (!configInitialized) {
-            //equivalent of doing no redirects at all if the global config isn't accessible yet
-            EnchantmentHelper.set(enchantments, stack);
-            return;
-        }
-
-         */
-
+    private void anvilUsesDifferentCappingBehavior(Map<Enchantment, Integer> enchantments, ItemStack stack){
         var inputFromSecondSlot = this.input.getStack(1);
 
         //applies the new capping behavior

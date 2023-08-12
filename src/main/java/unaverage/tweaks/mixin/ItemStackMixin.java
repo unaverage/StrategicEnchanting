@@ -36,7 +36,7 @@ public abstract class ItemStackMixin {
         ),
         locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void injectExtraToolTip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    private void showCapInfo(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         var self = (ItemStack)(Object)this;
 
         var enchantments = EnchantmentHelper.get(self);

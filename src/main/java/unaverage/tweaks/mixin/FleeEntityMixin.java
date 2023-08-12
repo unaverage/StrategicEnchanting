@@ -26,7 +26,7 @@ public abstract class FleeEntityMixin{
         method = "<init>(Lnet/minecraft/entity/mob/PathAwareEntity;Ljava/lang/Class;Ljava/util/function/Predicate;FDDLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void injectCreepersFleeFurther(PathAwareEntity mob, Class<?> fleeFromType, Predicate<?> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<?> inclusionSelector, CallbackInfo ci){
+    public void creepersFleeFurther(PathAwareEntity mob, Class<?> fleeFromType, Predicate<?> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<?> inclusionSelector, CallbackInfo ci){
         var dist = GlobalConfig.Miscellaneous.creepers_avoid_cats_at;
 
         if (dist == 6 || dist <= 0) return;

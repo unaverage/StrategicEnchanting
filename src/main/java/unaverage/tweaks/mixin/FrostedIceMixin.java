@@ -17,7 +17,7 @@ public class FrostedIceMixin {
             target = "Lnet/minecraft/server/world/ServerWorld;getLightLevel(Lnet/minecraft/util/math/BlockPos;)I"
         )
     )
-    public int injectFrostedIceAlwaysMelts(ServerWorld instance, BlockPos pos){
+    public int meltFrostedIceAtNight(ServerWorld instance, BlockPos pos){
         if (!GlobalConfig.Miscellaneous.frost_walker_melts_at_night) return instance.getLightLevel(pos);
 
         return 15;

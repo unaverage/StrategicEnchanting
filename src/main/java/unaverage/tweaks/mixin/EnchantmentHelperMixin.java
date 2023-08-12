@@ -26,7 +26,7 @@ public class EnchantmentHelperMixin {
      * Does this by mutating the enchantment map parameter
      */
     @Inject(method = "set", at = @At("HEAD"))
-    private static void injectCappingAtSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
+    private static void capEnchantmentsOnSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
         capEnchantmentMap(
             enchantments,
             getCapacity(stack.getItem()),
@@ -39,7 +39,7 @@ public class EnchantmentHelperMixin {
      * Does this by mutating the list that's being returned
      */
     @Inject(method = "generateEnchantments", at = @At("RETURN"))
-    private static void injectCappingAtGenerate(Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
+    private static void capEnchantmentsOnGenerate(Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
         var originalList = cir.getReturnValue();
 
         //converts the list of EnchantmentLevelEntries to an enchantment map

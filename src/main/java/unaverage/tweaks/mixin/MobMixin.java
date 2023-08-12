@@ -19,7 +19,7 @@ public abstract class MobMixin  {
         method = "<init>",
         at = @At("TAIL")
     )
-    void fn(EntityType<?> entityType, World world, CallbackInfo ci){
+    void mobsCanCrossRails(EntityType<?> entityType, World world, CallbackInfo ci){
         if (!GlobalConfig.Miscellaneous.mobs_can_cross_rails) return;
 
         this.setPathfindingPenalty(

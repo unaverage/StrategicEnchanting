@@ -42,7 +42,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         at = @At("RETURN"),
         cancellable = true
     )
-    private void injectHealIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
+    private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
         if (!GlobalConfig.Miscellaneous.animals_heal_when_eat) return;
 
         //checks if the mob hasn't been healed already by a different code
@@ -66,7 +66,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         at = @At("RETURN"),
         cancellable = true
     )
-    private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir){
+    private void preventLoveModeIfHurt(CallbackInfoReturnable<Boolean> cir){
         if (!GlobalConfig.Miscellaneous.animals_heal_when_eat) return;
 
         if (this.getHealth() != this.checkedHealth) return;
