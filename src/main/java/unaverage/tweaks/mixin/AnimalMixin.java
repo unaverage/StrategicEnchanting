@@ -8,58 +8,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {
-    @Unique
-    private float checkedHealth = 0;
-
     @Shadow public abstract boolean isBreedingItem(ItemStack stack);
 
     @Shadow protected abstract void eat(PlayerEntity player, Hand hand, ItemStack stack);
 
     protected AnimalMixin(EntityType<? extends PassiveEntity> entityType, World world) {super(entityType, world);}
 
-    @Inject(
+    @Redirect(
         method = "interactMob",
-        at = @At("HEAD")
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/entity/passive/AnimalEntity;isBreedingItem(Lnet/minecraft/item/ItemStack;)Z"
+        )
     )
-    private void checkHealth(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
-        if (!GlobalConfig.Miscellaneous.animals_heal_when_eat) return;
+    private boolean countNewFeedingItems(AnimalEntity instance, ItemStack stack){
+        var newFeedingItems = HelperKt.getNewAnimalFeedList(this.getType());
+        if (newFeedingItems == null) return this.isBreedingItem(stack);
 
-        checkedHealth = this.getHealth();
-    }
-
-    @Inject(
-        method = "interactMob",
-        at = @At("RETURN"),
-        cancellable = true
-    )
-    private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
-        if (!GlobalConfig.Miscellaneous.animals_heal_when_eat) return;
-
-        //checks if the mob hasn't been healed already by a different code
-        if (this.getHealth() != this.checkedHealth) return;
-
-        if (!this.isBreedingItem(player.getStackInHand(hand))) return;
-
-        if (this.getHealth() < this.getMaxHealth()) {
-            this.heal(1);
-
-            this.eat(player, hand, player.getStackInHand(hand));
-
-            cir.setReturnValue(
-                ActionResult.SUCCESS
-            );
-        }
+        return newFeedingItems.contains(stack.getItem());
     }
 
     @Inject(
@@ -67,28 +44,34 @@ public abstract class AnimalMixin extends PassiveEntity {
         at = @At("RETURN"),
         cancellable = true
     )
-    private void preventLoveModeIfHurt(CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.Miscellaneous.animals_heal_when_eat) return;
-
-        if (this.getHealth() != this.checkedHealth) return;
+    private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir) {
+        if (!HelperKt.healedWhenEat(this.getType())) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
             cir.setReturnValue(false);
         }
     }
 
-
     @Inject(
-        method = "isBreedingItem",
+        method = "interactMob",
         at = @At("RETURN"),
         cancellable = true
     )
-    void canBeBredWithNewFeeds(ItemStack stack, CallbackInfoReturnable<Boolean> cir){
-        var list = HelperKt.getNewAnimalFeedList(this.getType());
-        if (list == null) return;
+    private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (!HelperKt.healedWhenEat(this.getType())) return;
 
-        cir.setReturnValue(
-            list.contains(stack.getItem())
-        );
+        var itemInHand = player.getStackInHand(hand);
+
+        var feedingList = HelperKt.getNewAnimalFeedList(this.getType());
+        if (feedingList != null ? !feedingList.contains(itemInHand.getItem()) : !this.isBreedingItem(player.getStackInHand(hand))) return;
+
+        if (this.getHealth() < this.getMaxHealth()) {
+            this.heal(1);
+            this.eat(player, hand, player.getStackInHand(hand));
+
+            cir.setReturnValue(
+                ActionResult.SUCCESS
+            );
+        }
     }
 }
