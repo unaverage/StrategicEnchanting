@@ -368,7 +368,7 @@ fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
 fun healedWhenEat(e: EntityType<*>): Boolean{
     return GlobalConfig
         .Miscellaneous
-        .animals_heal_when_eat
+        .animals_heal_when_fed
         .contains(
             e.cachedGetID(Registries.ENTITY_TYPE)
         )
