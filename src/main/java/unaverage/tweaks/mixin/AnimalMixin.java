@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
+import unaverage.tweaks.GlobalConfigKt;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {
@@ -74,5 +75,20 @@ public abstract class AnimalMixin extends PassiveEntity {
         if (this.getHealth() < this.getMaxHealth()) {
             cir.setReturnValue(false);
         }
+    }
+
+
+    @Inject(
+        method = "isBreedingItem",
+        at = @At("RETURN"),
+        cancellable = true
+    )
+    void canBeBredWithNewFeeds(ItemStack stack, CallbackInfoReturnable<Boolean> cir){
+        var list = GlobalConfigKt.getNewAnimalFeedList(this.getType());
+        if (list == null) return;
+
+        cir.setReturnValue(
+            list.contains(stack.getItem())
+        );
     }
 }

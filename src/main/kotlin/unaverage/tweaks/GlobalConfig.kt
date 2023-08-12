@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
+import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import roland_a.simple_configs.Config
 import roland_a.simple_configs.Config.Companion.override
@@ -55,6 +56,18 @@ fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
         .cachedContain(
             e.cachedGetID(Registries.ENTITY_TYPE),
         )
+}
+
+fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
+    return GlobalConfig
+        .Miscellaneous
+        .animals_eat
+        .get(
+            e.cachedGetID(Registries.ENTITY_TYPE)
+        )
+        ?.mapNotNull {
+            getItemFromId(it, Registries.ITEM)
+        }
 }
 
 fun runGlobalConfig() {
@@ -145,6 +158,15 @@ object GlobalConfig: Config {
         @JvmField
         var animals_heal_when_eat = true
 
+        var animals_eat = mapOf(
+            "minecraft:pig" to listOf(
+                "minecraft:apple",
+                "minecraft:beet_root",
+                "minecraft:carrot",
+                "minecraft:wheat",
+            )
+        )
+
         @JvmField
         var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
 
@@ -168,14 +190,6 @@ object GlobalConfig: Config {
 
         @JvmField
         var mobs_can_cross_rails = true
-
-        @JvmField
-        var pigs_eat = listOf(
-            "minecraft:apple",
-            "minecraft:beet_root",
-            "minecraft:carrot",
-            "minecraft:wheat",
-        )
 
         @JvmField
         var pigs_ridden_speed_boost = 2.0

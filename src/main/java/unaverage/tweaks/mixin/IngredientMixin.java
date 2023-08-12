@@ -1,5 +1,5 @@
 package unaverage.tweaks.mixin;
-
+/*
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -16,6 +16,7 @@ import unaverage.tweaks.GlobalConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Mixin(Ingredient.class)
 public abstract class IngredientMixin {
@@ -48,3 +49,6 @@ public abstract class IngredientMixin {
         );
     }
 }
+
+
+ */

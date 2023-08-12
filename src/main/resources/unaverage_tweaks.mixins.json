@@ -14,13 +14,13 @@
     "FrostedIceMixin",
     "GiveToTargetMixin",
     "GlowSquidMixin",
-    "IngredientMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "MobMixin",
     "PigMixin",
     "PlayerEntityMixin",
     "ProtectionEnchantmentMixin",
+    "TemptMixin",
     "ThornsEnchantmentMixin"
   ],
   "client": [
