@@ -1,3 +1,5 @@
+@file:Suppress("FoldInitializerAndIfToElvis", "LiftReturnOrAssignment")
+
 package unaverage.tweaks
 
 import net.minecraft.block.BlockState
@@ -5,6 +7,7 @@ import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.passive.AllayEntity
+import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.registry.Registries
@@ -19,17 +22,17 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
-private val cachedGetID: MutableMap<Any?, Any?> = HashMap()
+private val cachedGetID: MutableMap<Any?, String> = HashMap()
 fun <T> T.cachedGetID(r: Registry<T>): String {
     return cachedGetID.getOrPut(this){
         r
         .getKey(this)
-        .map { itemRegistryKey -> itemRegistryKey.getValue().toString() }
-        .orElse("null")
-    } as String
+        .map { itemRegistryKey -> itemRegistryKey.value.toString() }
+        .get()
+    }
 }
 
-private val cachedGet: MutableMap<Any?, Any?> = HashMap()
+private val cachedGet: MutableMap<String, Any?> = HashMap()
 fun <T> Map<String, T>.cachedGet(itemID: String): T? {
     @Suppress("UNCHECKED_CAST")
     return cachedGet.getOrPut(itemID){
@@ -55,7 +58,7 @@ fun <T> Map<String, T>.cachedGet(itemID: String): T? {
 }
 
 
-private val cachedContain: MutableMap<Any?, Boolean> = HashMap()
+private val cachedContain: MutableMap<String, Boolean> = HashMap()
 fun Set<String>.cachedContain(id: String): Boolean {
     return cachedContain.getOrPut(id){
         for (testedID in this) {
@@ -77,13 +80,23 @@ fun Set<String>.cachedContain(id: String): Boolean {
 }
 
 
-fun <T> getItemFromId(id: String, registry: Registry<T>): T?{
+fun <T> getFromId(id: String, registry: Registry<T>): T?{
     return registry.get(
         Identifier(
             id.split(':').getOrElse(0){ return null },
             id.split(':').getOrElse(1){ return null }
         )
     )
+    .also {
+        if (it == null) {
+            UnaverageTweaks.logMissingID(id)
+        }
+
+        if (it is AirBlockItem && id != "minecraft:air") {
+            UnaverageTweaks.logMissingID(id)
+            return null
+        }
+    }
 }
 
 /**
@@ -318,7 +331,7 @@ fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
     return GlobalConfig.Miscellaneous.enchantment_blacklist
         .toSet()
         .cachedContain(
-            e.cachedGetID(Registries.ENCHANTMENT),
+            e.cachedGetID(Registries.ENCHANTMENT)
         )
 }
 
@@ -342,11 +355,21 @@ fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
 }
 
 fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
+    @Suppress("ReplaceGetOrSet")
     return GlobalConfig.Miscellaneous.animals_eat
         .get(
             e.cachedGetID(Registries.ENTITY_TYPE)
         )
         ?.mapNotNull {
-            getItemFromId(it, Registries.ITEM)
+            getFromId(it, Registries.ITEM)
         }
+}
+
+fun healedWhenEat(e: EntityType<*>): Boolean{
+    return GlobalConfig
+        .Miscellaneous
+        .animals_heal_when_eat
+        .contains(
+            e.cachedGetID(Registries.ENTITY_TYPE)
+        )
 }
