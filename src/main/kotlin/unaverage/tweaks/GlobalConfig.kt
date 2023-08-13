@@ -138,9 +138,6 @@ object GlobalConfig: Config {
         var glow_squids_better_spawn = true
 
         @JvmField
-        var mobs_can_cross_rails = true
-
-        @JvmField
         var pigs_ridden_speed_boost = 2.0
 
         @JvmField
@@ -150,7 +147,7 @@ object GlobalConfig: Config {
         var thorns_no_longer_wears_down_armor = true
 
         @JvmField
-        var villager_golem_better_targeting = true
+        var village_less_fight = true
     }
 }
 
