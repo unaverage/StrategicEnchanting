@@ -2,7 +2,7 @@ package roland_a.simple_configs
 
 import kotlin.math.ceil
 import kotlin.math.floor
-import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
 
 interface Config{
@@ -10,12 +10,16 @@ interface Config{
         fun Config.toMap(): Map<String, Any?>{
             val result = mutableMapOf<String,Any?>()
 
-            this.forEachNestedConfig{ name, config->
-                result += name to config.toMap()
+            this
+            .variables()
+            .forEach { (k, v) ->
+                result += k to v.tryCall(this)
             }
 
-            this.forEachVar { name, value, _ ->
-                result += name to value
+            this
+            .nestedConfigs()
+            .forEach { (k, v) ->
+                result += k to v.toMap()
             }
 
             return result
@@ -26,85 +30,94 @@ interface Config{
             whenKeyIsInvalid: (String)->Unit,
             whenKeyIsUnknown: (String)->Unit,
         ) {
-            map.forEach { (k, v) ->
-                this.forEachNestedConfig { name, config ->
-                    if (name != k) return@forEachNestedConfig
-
-                    if (v !is Map<*, *>) {
-                        whenKeyIsInvalid(name)
+            map.forEach { (key, v) ->
+                this
+                .nestedConfigs()
+                .toList()
+                .firstOrNull {
+                        (checkedKey,_)-> checkedKey == key
+                }
+                ?.let {(_, config)->
+                    if (v !is Map<*,*>) {
+                        whenKeyIsInvalid(key)
                     }
-
-                    @Suppress("UNCHECKED_CAST")
-                    config.override(v as Map<String, Any?>, whenKeyIsInvalid, whenKeyIsUnknown)
-
+                    else {
+                        config.override(v as Map<String, Any?>, whenKeyIsInvalid, whenKeyIsUnknown)
+                    }
+                }
+                ?.let {
                     return@forEach
                 }
 
-                this.forEachVar { name, _, setter ->
-                    if (name != k) return@forEachVar
+                this
+                .variables()
+                .toList()
+                .firstOrNull{
+                        (checkedKey, _)-> checkedKey==key
+                }
+                ?.let { (_, property)->
+                    val flag = property.trySet(this, v)
 
-                        setter(v)
-                        .ifFalse {
-                            whenKeyIsInvalid(name)
-                        }
-
+                    if (!flag) {
+                        whenKeyIsInvalid(key)
+                    }
+                }
+                ?.let {
                     return@forEach
                 }
 
-                whenKeyIsUnknown(k)
+                whenKeyIsUnknown(key)
             }
         }
 
-        private inline fun Config.forEachVar(fn: (String, Any?, setter: (Any?)->Boolean)->Unit){
-            this::class
-            .memberProperties
-            .sortedBy { it.name }
-            .forEach {property->
-                val value =
-                    try{
-                        property.call()
-                    } catch (e: IllegalArgumentException){
-                        property.call(this)
-                    }
-
-                fn(property.name, value){
-                    trySet(
-                        it
-                    ){
-                        if (property !is KMutableProperty<*>){
-                            throw RuntimeException("${property.name} is not mutable")
-                        }
-
-                        try{
-                            property.setter.call(this, it)
-                        }
-                        catch (e: IllegalArgumentException){
-                            return@trySet false
-                        }
-                        true
+        private fun Config.variables(): Map<String, KMutableProperty1<Config, *>> {
+            return this::class
+                .memberProperties
+                .onEach {
+                    if (it !is KMutableProperty1<*, *>){
+                        throw RuntimeException("${it.name} is not mutable")
                     }
                 }
-            }
+                .sortedBy {
+                    it.name
+                }
+                .associate {
+                    it.name to it as KMutableProperty1<Config, *>
+                }
         }
 
-        private inline fun Config.forEachNestedConfig(fn: (String, Config)->Unit){
-            this::class
-            .nestedClasses
-            .forEach{
-                if (it.objectInstance == null){
-                    throw RuntimeException("Nested class ${it.simpleName} is not a singleton")
+        private fun Config.nestedConfigs(): Map<String, Config> {
+            return this::class
+                .nestedClasses
+                .associate{
+                    if (it.objectInstance == null){
+                        throw RuntimeException("Nested class ${it.simpleName} is not a singleton")
+                    }
+                    if (it.objectInstance !is Config){
+                        throw RuntimeException("Nested class ${it.simpleName} does not implement Config")
+                    }
+                    if (it.simpleName == null){
+                        throw RuntimeException("nested class missing name")
+                    }
+
+                    it.simpleName!! to it.objectInstance as Config
                 }
-                if (it.objectInstance !is Config){
-                    throw RuntimeException("Nested class ${it.simpleName} does not implement Config")
-                }
-                if (it.simpleName == null){
-                    throw RuntimeException("nested class missing name")
-                }
-                fn(it.simpleName!!, it.objectInstance as Config)
-            }
         }
 
-        private fun trySet(value: Any?, setter: (Any?)->Boolean): Boolean{
+        private fun KMutableProperty1<Config, *>.trySet(config: Config, value: Any?): Boolean{
+            val setter = fun(it: Any?): Boolean {
+                try {
+                    this.setter.call(config, it)
+                } catch (e: IllegalArgumentException) {
+                    try {
+                        this.setter.call(it)
+                    } catch (e: IllegalArgumentException) {
+                        return false
+                    }
+                }
+                return true
+            }
+
             setter(value).ifTrue { return true }
 
             if (value is String){
@@ -115,8 +128,8 @@ interface Config{
                 if (value.lowercase() == "false") setter(false).ifTrue { return true }
                 if (value.lowercase() == "null") setter(null).ifTrue { return true }
 
-                value.toDoubleOrNull()?.let{ trySet(it, setter) }?.ifTrue { return true }
-                value.toIntOrNull()?.let{ trySet(it, setter) }?.ifTrue { return true }
+                value.toDoubleOrNull()?.let{ this.trySet(config, it) }?.ifTrue { return true }
+                value.toIntOrNull()?.let{ this.trySet(config, it) }?.ifTrue { return true }
             }
             if (value is Double && floor(value)==ceil(value)){
                 setter(value.toInt()).ifTrue { return true }
@@ -127,12 +140,17 @@ interface Config{
             return false
         }
 
-        private inline fun Boolean.ifTrue(fn: ()->Unit){
-            if (this) fn()
+        private fun KMutableProperty1<Config, *>.tryCall(c: Config): Any? {
+            try {
+                return this.call()
+            }
+            catch (e: IllegalArgumentException){
+                return this.call(c)
+            }
         }
 
-        private inline fun Boolean.ifFalse(fn: ()->Unit){
-            if (!this) fn()
+        private inline fun Boolean.ifTrue(fn: ()->Unit){
+            if (this) fn()
         }
     }
 }
