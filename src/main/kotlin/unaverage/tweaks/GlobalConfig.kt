@@ -65,10 +65,10 @@ object GlobalConfig: Config {
         @JvmField
         var enchantment_weights = mapOf(
             "1" to listOf(1.0),
-            "2" to listOf(.6, 1.0),
-            "3" to listOf(.2, .6, 1.0),
-            "4" to listOf(.2, .6, .8, 1.0),
-            "5" to listOf(.2, .4, .6, .8, 1.0),
+            "2" to listOf(.5, 1.0),
+            "3" to listOf(.25, .5, 1.0),
+            "4" to listOf(.25, .5, .75, 1.0),
+            "5" to listOf(.25, .25, .5, .75, 1.0),
             "modid:example" to listOf(0.25, .5, .75, 1.0),
         )
 
@@ -88,6 +88,9 @@ object GlobalConfig: Config {
             "minecraft:stone_.+" to null,
             "minecraft:wooden_.+" to null,
         )
+
+        @JvmField
+        var tool_tip_decimal_places = 1
     }
 
     //Config name noun should be placed first

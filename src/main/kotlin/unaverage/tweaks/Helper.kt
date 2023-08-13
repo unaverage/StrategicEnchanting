@@ -16,6 +16,8 @@ import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.WorldView
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
@@ -372,4 +374,10 @@ fun healedWhenEat(e: EntityType<*>): Boolean{
         .contains(
             e.cachedGetID(Registries.ENTITY_TYPE)
         )
+}
+
+fun Double.toString(decimalPlace: Int): String {
+    return BigDecimal(this)
+        .setScale(2, RoundingMode.FLOOR)
+        .toString()
 }

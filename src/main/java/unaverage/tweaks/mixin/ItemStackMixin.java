@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import unaverage.tweaks.GlobalConfig;
+import unaverage.tweaks.HelperKt;
 
 import java.util.List;
 
@@ -46,7 +48,10 @@ public abstract class ItemStackMixin {
         var cap = getCapacity(self.getItem());
         if (cap == null || cap < 0) return;
 
-        var text = "Enchantment Capacity: %.2f/%s".formatted(weight, cap);
+        var text = "Enchantment Capacity: %s/%s".formatted(
+            HelperKt.toString(weight, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places),
+            HelperKt.toString(cap, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places)
+        );
 
         list.add(
             MutableText.of(new LiteralTextContent(text))
