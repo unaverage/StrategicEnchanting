@@ -378,6 +378,6 @@ fun healedWhenEat(e: EntityType<*>): Boolean{
 
 fun Double.toString(decimalPlace: Int): String {
     return BigDecimal(this)
-        .setScale(2, RoundingMode.FLOOR)
+        .setScale(decimalPlace, RoundingMode.FLOOR)
         .toString()
 }
