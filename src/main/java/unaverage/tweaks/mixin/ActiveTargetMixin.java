@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -30,7 +29,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         at = @At("TAIL")
     )
     public void cancelMobsTargetingVillagerGolem(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
-        if (GlobalConfig.Miscellaneous.villager_golem_better_targeting) return;
+        if (!GlobalConfig.Miscellaneous.villager_golem_better_targeting) return;
 
         if (mob instanceof ZombieEntity) return;
         if (mob instanceof RaiderEntity) return;
@@ -59,7 +58,6 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
                     return targetPredicate.test(e);
                 }
 
-                if (!(e instanceof Monster)) return false;
                 if (e instanceof ZombieEntity) return true;
                 if (e instanceof RaiderEntity) return true;
 
