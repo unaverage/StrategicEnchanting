@@ -65,10 +65,10 @@ object GlobalConfig: Config {
         @JvmField
         var enchantment_weights = mapOf(
             "1" to listOf(1.0),
-            "2" to listOf(.5, 1.0),
-            "3" to listOf(.25, .5, 1.0),
-            "4" to listOf(.25, .5, .75, 1.0),
-            "5" to listOf(.25, .25, .5, .75, 1.0),
+            "2" to listOf(.6, 1.0),
+            "3" to listOf(.2, .6, 1.0),
+            "4" to listOf(.2, .6, .8, 1.0),
+            "5" to listOf(.2, .4, .6, .8, 1.0),
             "modid:example" to listOf(0.25, .5, .75, 1.0),
         )
 
@@ -93,7 +93,7 @@ object GlobalConfig: Config {
     //Config name noun should be placed first
     object Miscellaneous: Config{
         @JvmField
-        var allay_can_plant_crops = true
+        var allays_can_plant_crops = true
 
         @JvmField
         var animals_heal_when_fed = listOf(

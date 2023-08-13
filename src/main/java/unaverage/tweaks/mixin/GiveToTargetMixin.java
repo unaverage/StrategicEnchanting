@@ -38,7 +38,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectShouldRun(ServerWorld world, E entity, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.Miscellaneous.allay_can_plant_crops) return;
+        if (!GlobalConfig.Miscellaneous.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
 
         var cropBlock = HelperKt.heldItemAsCropBlock(allay);
