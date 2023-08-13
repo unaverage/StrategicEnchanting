@@ -16,7 +16,6 @@
     "GlowSquidMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "MobMixin",
     "PigMixin",
     "PlayerEntityMixin",
     "ProtectionEnchantmentMixin",
