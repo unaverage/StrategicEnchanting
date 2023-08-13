@@ -25,10 +25,13 @@ public class TemptMixin {
         at = @At("TAIL")
     )
     void mobsEatExtraFood(PathAwareEntity entity, double speed, Ingredient food, boolean canBeScared, CallbackInfo ci){
+        //TODO better way to exclude nonbreeding tempt goals
         if (food.test(Items.CARROT_ON_A_STICK.getDefaultStack())) return;
+        if (food.test(Items.WARPED_FUNGUS_ON_A_STICK.getDefaultStack())) return;
 
         var list = HelperKt.getNewAnimalFeedList(entity.getType());
         if (list == null) return;
+
 
         this.food = Ingredient.ofStacks(list.stream().map(Item::getDefaultStack));
     }
