@@ -93,6 +93,16 @@ object GlobalConfig: Config {
         var tool_tip_decimal_places = 1
     }
 
+    object XP: Config{
+        @JvmField
+        var anvil_no_longer_requires_xp = true
+
+        @JvmField
+        var disable_xp = true
+
+
+    }
+
     //Config name noun should be placed first
     object Miscellaneous: Config{
         @JvmField
@@ -107,6 +117,7 @@ object GlobalConfig: Config {
             "minecraft:pig",
         )
 
+        @JvmField
         var animals_eat = mapOf(
             "minecraft:pig" to listOf(
                 "minecraft:apple",
@@ -115,6 +126,8 @@ object GlobalConfig: Config {
                 "minecraft:wheat",
             )
         )
+
+
 
         @JvmField
         var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")

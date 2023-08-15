@@ -1,54 +1,42 @@
 package unaverage.tweaks.mixin;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.AnvilScreenHandler;
-import net.minecraft.screen.ForgingScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.AnvilScreen;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import unaverage.tweaks.GlobalConfig;
 
-import java.util.Map;
+@Mixin(AnvilScreen.class)
+public class AnvilScreenMixin {
 
-import static unaverage.tweaks.HelperKt.capEnchantmentMap;
-import static unaverage.tweaks.HelperKt.getCapacity;
-
-@Mixin(AnvilScreenHandler.class)
-public abstract class AnvilScreenMixin extends ForgingScreenHandler {
-    public AnvilScreenMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(type, syncId, playerInventory, context);
-    }
-
-
-    /**
-     * Redirects the {@link EnchantmentHelper#set(Map, ItemStack)} that would have used the default capping behavior, and instead use a different capping behavior
-     * The default capping behavior would not have prioritized the enchantment in the sacrifice item
-     * The new capping behavior will prioritize the enchantments that are from the sacrificed item in the anvil
-     */
     @Redirect(
-        method = "updateResult",
+        method = "drawForeground",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Ljava/util/Map;Lnet/minecraft/item/ItemStack;)V"
+            target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"
         )
     )
-    private void anvilUsesDifferentCappingBehavior(Map<Enchantment, Integer> enchantments, ItemStack stack){
-        var inputFromSecondSlot = this.input.getStack(1);
+    void removeXPBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color){
+        if (!GlobalConfig.XP.anvil_no_longer_requires_xp){
+            instance.fill(x1, y1, x2, y2, color);
+            return;
+        }
+    }
 
-        //applies the new capping behavior
-        capEnchantmentMap(
-            enchantments,
-            getCapacity(stack.getItem()),
-            //prioritize the enchantment if its from the sacrifice item
-            e -> EnchantmentHelper.get(inputFromSecondSlot).containsKey(e)
-        );
-
-        //EnchantmentHelper#set will still perform the default capping behavior, but it doesnt matter because it is already capped by the previous capping behavior
-        EnchantmentHelper.set(enchantments, stack);
+    @Redirect(
+        method = "drawForeground",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"
+        )
+    )
+    int removeXPNumberOnAnvil(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color){
+        if (!GlobalConfig.XP.anvil_no_longer_requires_xp){
+            return instance.drawTextWithShadow(textRenderer, text, x, y, color);
+        }
+        return 0;
     }
 }
