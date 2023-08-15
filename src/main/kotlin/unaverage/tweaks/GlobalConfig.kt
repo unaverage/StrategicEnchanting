@@ -138,6 +138,9 @@ object GlobalConfig: Config {
         var glow_squids_better_spawn = true
 
         @JvmField
+        var piglins_and_hoglins_are_fire_immune = true
+
+        @JvmField
         var pigs_ridden_speed_boost = 2.0
 
         @JvmField
