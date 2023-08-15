@@ -25,7 +25,7 @@ public class EntityTypeMixin {
 
     @Inject(
         method = "<clinit>",
-        at = @At("HEAD")
+        at = @At("TAIL")
     )
     private static void fn(CallbackInfo ci){
         if (!GlobalConfig.Miscellaneous.piglins_and_hoglins_are_fire_immune) return;
