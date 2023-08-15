@@ -18,7 +18,7 @@ public class FrostedIceMixin {
         )
     )
     public int meltFrostedIceAtNight(ServerWorld instance, BlockPos pos){
-        if (!GlobalConfig.Miscellaneous.frost_walker_melts_at_night) return instance.getLightLevel(pos);
+        if (!GlobalConfig.frost_walker_melts_at_night) return instance.getLightLevel(pos);
 
         return 15;
     }

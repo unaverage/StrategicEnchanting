@@ -76,11 +76,15 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         if (GlobalConfig.XP.tools_decay_rate <= 0) return;
         if (GlobalConfig.XP.tools_max_decay < 0) return;
 
+        var input = this.input.getStack(0);
         var result = this.output.getStack(0);
+
+        var diff = input.getDamage() - result.getDamage();
+        if (diff <= 0) return;
 
         HelperKt.setTimesRepaired(
             result,
-            HelperKt.getTimesRepaired(result) + 1
+            HelperKt.getTimesRepaired(result) + diff
         );
     }
 }

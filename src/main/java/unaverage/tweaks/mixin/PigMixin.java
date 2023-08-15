@@ -16,7 +16,7 @@ public class PigMixin {
         cancellable = true
     )
     private void makeRiddenPigsFaster(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir){
-        double multiplier = GlobalConfig.Miscellaneous.pigs_ridden_speed_boost;
+        double multiplier = GlobalConfig.pigs_ridden_speed_boost;
 
         if (multiplier <= 0 || multiplier == 1) return;
 

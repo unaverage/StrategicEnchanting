@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity {
         )
     )
     private void shieldsDoKnockback(LivingEntity instance, LivingEntity target){
-        if (!GlobalConfig.Miscellaneous.shields_no_longer_prevent_knockback){
+        if (!GlobalConfig.shields_no_longer_prevent_knockback){
             instance.takeKnockback(0.5, target.getX() - instance.getX(), target.getZ() - instance.getZ());
             return;
         }

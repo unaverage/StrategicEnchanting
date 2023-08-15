@@ -28,7 +28,7 @@ public class EntityTypeMixin {
         at = @At("TAIL")
     )
     private static void fn(CallbackInfo ci){
-        if (!GlobalConfig.Miscellaneous.piglins_and_hoglins_are_fire_immune) return;
+        if (!GlobalConfig.piglins_and_hoglins_are_fire_immune) return;
 
         ((EntityTypeMixin)(Object)PIGLIN).fireImmune = true;
         ((EntityTypeMixin)(Object)HOGLIN).fireImmune = true;

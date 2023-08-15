@@ -22,7 +22,7 @@ public class GlowSquidMixin {
         cancellable = true
     )
     private static void requireMoreWaterBlocksToSpawn(EntityType<? extends LivingEntity> type, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.Miscellaneous.glow_squids_better_spawn) return;
+        if (!GlobalConfig.glow_squids_better_spawn) return;
 
         cir.setReturnValue(
             cir.getReturnValue() && world.getBlockState(pos.up()).isOf(Blocks.WATER) && world.getBlockState(pos.down()).isOf(Blocks.WATER)

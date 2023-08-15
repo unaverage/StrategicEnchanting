@@ -323,7 +323,7 @@ private inline fun iterateSquare(maxRange: Int, fn: (Int, Int, Int)->Unit){
 }
 
 fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
-    return GlobalConfig.Miscellaneous.bane_of_arthropods_also_affects
+    return GlobalConfig.bane_of_arthropods_also_affects
         .toSet()
         .contains(
             e.cachedGetID(Registries.ENTITY_TYPE)
@@ -331,7 +331,7 @@ fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
 }
 
 fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
-    return GlobalConfig.Miscellaneous.enchantment_blacklist
+    return GlobalConfig.enchantment_blacklist
         .toSet()
         .cachedContain(
             e.cachedGetID(Registries.ENCHANTMENT)
@@ -339,18 +339,18 @@ fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
 }
 
 fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity != 0.0
+    return GlobalConfig.fire_protection_lava_immunity != 0.0
 }
 
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
-    return GlobalConfig.Miscellaneous.fire_protection_lava_immunity
+    return GlobalConfig.fire_protection_lava_immunity
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
 }
 
 fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
-    return GlobalConfig.Miscellaneous.fire_protection_protects_against
+    return GlobalConfig.fire_protection_protects_against
         .toSet()
         .cachedContain(
             e.cachedGetID(Registries.ENTITY_TYPE),
@@ -359,7 +359,7 @@ fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
 
 fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
     @Suppress("ReplaceGetOrSet")
-    return GlobalConfig.Miscellaneous.animals_eat
+    return GlobalConfig.animals_eat
         .get(
             e.cachedGetID(Registries.ENTITY_TYPE)
         )
@@ -370,7 +370,7 @@ fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
 
 fun healedWhenEat(e: EntityType<*>): Boolean{
     return GlobalConfig
-        .Miscellaneous
+        
         .animals_heal_when_fed
         .contains(
             e.cachedGetID(Registries.ENTITY_TYPE)

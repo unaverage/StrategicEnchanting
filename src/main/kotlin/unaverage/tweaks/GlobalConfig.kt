@@ -108,66 +108,63 @@ object GlobalConfig: Config {
     }
 
     //Config name noun should be placed first
-    object Miscellaneous: Config{
-        @JvmField
-        var allays_can_plant_crops = true
 
-        @JvmField
-        var animals_heal_when_fed = listOf(
-            "minecraft:chicken",
-            "minecraft:cow",
-            "minecraft:mooshroom",
-            "minecraft:parrot",
-            "minecraft:pig",
+    @JvmField
+    var allays_can_plant_crops = true
+
+    @JvmField
+    var animals_heal_when_fed = listOf(
+        "minecraft:chicken",
+        "minecraft:cow",
+        "minecraft:mooshroom",
+        "minecraft:parrot",
+        "minecraft:pig",
+    )
+
+    @JvmField
+    var animals_eat = mapOf(
+        "minecraft:pig" to listOf(
+            "minecraft:apple",
+            "minecraft:beetroot",
+            "minecraft:carrot",
+            "minecraft:wheat",
         )
+    )
 
-        @JvmField
-        var animals_eat = mapOf(
-            "minecraft:pig" to listOf(
-                "minecraft:apple",
-                "minecraft:beetroot",
-                "minecraft:carrot",
-                "minecraft:wheat",
-            )
-        )
+    @JvmField
+    var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
 
+    @JvmField
+    var creepers_avoid_cats_at = 16
 
+    @JvmField
+    var enchantment_blacklist = listOf("minecraft:protection")
 
-        @JvmField
-        var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
+    @JvmField
+    var fire_protection_lava_immunity = 1.0
 
-        @JvmField
-        var creepers_avoid_cats_at = 16
+    @JvmField
+    var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
 
-        @JvmField
-        var enchantment_blacklist = listOf("minecraft:protection")
+    @JvmField
+    var frost_walker_melts_at_night = true
 
-        @JvmField
-        var fire_protection_lava_immunity = 1.0
+    @JvmField
+    var glow_squids_better_spawn = true
 
-        @JvmField
-        var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
+    @JvmField
+    var piglins_and_hoglins_are_fire_immune = true
 
-        @JvmField
-        var frost_walker_melts_at_night = true
+    @JvmField
+    var pigs_ridden_speed_boost = 2.0
 
-        @JvmField
-        var glow_squids_better_spawn = true
+    @JvmField
+    var shields_no_longer_prevent_knockback = true
 
-        @JvmField
-        var piglins_and_hoglins_are_fire_immune = true
+    @JvmField
+    var thorns_no_longer_wears_down_armor = true
 
-        @JvmField
-        var pigs_ridden_speed_boost = 2.0
-
-        @JvmField
-        var shields_no_longer_prevent_knockback = true
-
-        @JvmField
-        var thorns_no_longer_wears_down_armor = true
-
-        @JvmField
-        var village_less_fight = true
-    }
+    @JvmField
+    var village_less_fight = true
 }
 
