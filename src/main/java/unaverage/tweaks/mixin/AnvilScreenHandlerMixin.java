@@ -14,8 +14,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
+import unaverage.tweaks.HelperKt;
 
 import java.util.Map;
 
@@ -37,6 +39,35 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         if (!GlobalConfig.XP.anvil_no_longer_requires_xp) return;
 
         cir.setReturnValue(true);
+    }
+
+
+    @Inject(
+        method = "updateResult",
+        at = @At("TAIL")
+    )
+    void preventDecaySwapCheating(CallbackInfo ci){
+        if (GlobalConfig.XP.tool_decay_rate <= 0) return;
+
+        var input1 = this.input.getStack(0);
+        var input2 = this.input.getStack(1);
+
+        if (input1.getItem() != input2.getItem()) return;
+
+        var result = this.output.getStack(0);
+        var resultDamage  = result.getDamage();
+
+        var decay1 = HelperKt.getDecay(input1);
+        var decay2 = HelperKt.getDecay(input2);
+
+        //reverts the resulting item to the same durability as input 1
+        result.setDamage(input1.getDamage());
+
+        //reverts the decay, but to whichever input has the most decay
+        HelperKt.setDecay(result, Math.max(decay1, decay2));
+
+        //repairs the item all over again, but with the new initial decay value
+        result.setDamage(resultDamage);
     }
 
     /**
