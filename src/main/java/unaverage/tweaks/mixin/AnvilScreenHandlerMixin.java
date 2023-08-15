@@ -5,7 +5,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.ForgingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -81,13 +80,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var input2 = this.input.getStack(1);
         var result = this.output.getStack(0);
 
-        var ingotsToFullyRepair = GlobalConfig
-            .tools_ingots_to_fully_repair
-            .getOrDefault(
-                HelperKt.cachedGetID(input1.getItem(), Registries.ITEM),
-                null
-            );
-
+        var ingotsToFullyRepair = HelperKt.getIngotsToFullyRepair(input1.getItem());
         if (ingotsToFullyRepair == null) return;
 
         if (!input1.getItem().canRepair(input1, input2)) return;

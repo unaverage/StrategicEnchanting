@@ -377,6 +377,15 @@ fun healedWhenEat(e: EntityType<*>): Boolean{
         )
 }
 
+val Item.ingotsToFullyRepair: Int?
+    get() {
+        return GlobalConfig
+            .tools_ingots_to_fully_repair
+            .get(
+                this.cachedGetID(Registries.ITEM)
+            )
+    }
+
 fun Double.toString(decimalPlace: Int): String {
     return BigDecimal(this)
         .setScale(decimalPlace, RoundingMode.FLOOR)
