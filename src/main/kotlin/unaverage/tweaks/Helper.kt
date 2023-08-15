@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.AllayEntity
 import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.tag.ItemTags
@@ -381,3 +382,11 @@ fun Double.toString(decimalPlace: Int): String {
         .setScale(decimalPlace, RoundingMode.FLOOR)
         .toString()
 }
+
+var ItemStack.timesRepaired: Int
+    get(){
+        return this.orCreateNbt.getInt("unaverage_tweaks:times_repaired")
+    }
+    set(value){
+        this.orCreateNbt.putInt("unaverage_tweaks:times_repaired", value)
+    }

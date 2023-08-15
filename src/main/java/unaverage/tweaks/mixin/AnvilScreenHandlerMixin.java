@@ -14,8 +14,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
+import unaverage.tweaks.HelperKt;
 
 import java.util.Map;
 
@@ -64,5 +66,21 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
         //EnchantmentHelper#set will still perform the default capping behavior, but it doesnt matter because it is already capped by the previous capping behavior
         EnchantmentHelper.set(enchantments, stack);
+    }
+
+    @Inject(
+        method = "updateResult",
+        at = @At("TAIL")
+    )
+    void incrementTimesRepaired(CallbackInfo ci){
+        if (GlobalConfig.XP.tools_decay_rate <= 0) return;
+        if (GlobalConfig.XP.tools_max_decay <= 0) return;
+
+        var result = this.output.getStack(0);
+
+        HelperKt.setTimesRepaired(
+            result,
+            HelperKt.getTimesRepaired(result) + 1
+        );
     }
 }

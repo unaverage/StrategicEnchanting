@@ -6,6 +6,7 @@
   "mixins": [
     "ActiveTargetMixin",
     "AnimalMixin",
+    "AnvilScreenHandlerMixin",
     "AnvilScreenMixin",
     "DamageEnchantmentsMixin",
     "EnchantmentHelperMixin",
@@ -22,7 +23,8 @@
     "PlayerEntityMixin",
     "ProtectionEnchantmentMixin",
     "TemptMixin",
-    "ThornsEnchantmentMixin"
+    "ThornsEnchantmentMixin",
+    "XpOrbMixin"
   ],
   "client": [
   ],

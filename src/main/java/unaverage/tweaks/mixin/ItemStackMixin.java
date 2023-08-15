@@ -29,6 +29,10 @@ import static unaverage.tweaks.HelperKt.*;
 public abstract class ItemStackMixin {
     @Shadow public abstract Item getItem();
 
+    @Shadow public abstract int getMaxDamage();
+
+    @Shadow public abstract boolean hasEnchantments();
+
     @Inject(
         method = "getTooltip",
         at = @At(
@@ -100,5 +104,53 @@ public abstract class ItemStackMixin {
 
         //This function is probably the root cause of the problem with EnchantedShulker
         EnchantmentHelper.set(enchantments, (ItemStack)(Object)this);
+    }
+
+
+    @Inject(
+        method = "getMaxDamage",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    void useNewToolDecay(CallbackInfoReturnable<Integer> cir){
+        if (GlobalConfig.XP.tools_decay_rate <= 0) return;
+        if (GlobalConfig.XP.tools_max_decay <= 0) return;
+        if (GlobalConfig.XP.tools_decay_rate == 1) return;
+
+        if (!this.hasEnchantments()) return;
+
+        var totalRepairs = HelperKt.getTimesRepaired((ItemStack)(Object)this);
+        var initDurability = this.getMaxDamage();
+
+        var decayRate = GlobalConfig.XP.tools_decay_rate;
+        var maxDecay = GlobalConfig.XP.tools_max_decay;
+
+        //uses the finite geometric series, excluding the first term
+        //   s=ar^1+ar^2+...+ar^n
+        //or s=a(1-r^(n+1))/(1-r)-a
+        //where
+        //a is the initial durability
+        //r is the decay rate
+        //n is the total full repairs done
+        //s is the total durability repaired
+
+        //the formula for maxDurability is m=ar^n
+
+        //solve for n in the first equation,
+        //then plug it in on the second equation,
+        //then simplify to get this result
+        var result = initDurability - decayRate/(1-decayRate)*totalRepairs;
+
+        if (result < initDurability*maxDecay){
+            result = initDurability*maxDecay;
+        }
+        //durability should never be 0
+        if (result < 1){
+            result = 1;
+        }
+
+        cir.setReturnValue(
+            (int)Math.round(result)
+        );
     }
 }
