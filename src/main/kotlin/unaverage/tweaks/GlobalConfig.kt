@@ -162,6 +162,19 @@ object GlobalConfig: Config {
     var thorns_no_longer_wears_down_armor = true
 
     @JvmField
+    var tools_ingots_to_fully_repair = mapOf(
+        "minecraft:.+_helmet" to 3,
+        "minecraft:.+_chestplate" to 5,
+        "minecraft:.+_leggings" to 4,
+        "minecraft:.+_boots" to 2,
+
+        "minecraft:.+_axe" to 2,
+        "minecraft:.+_shovel" to 1,
+        "minecraft:.+_pickaxe" to 2,
+        "minecraft:.+_hoe" to 1,
+    )
+
+    @JvmField
     var village_less_fight = true
 }
 
