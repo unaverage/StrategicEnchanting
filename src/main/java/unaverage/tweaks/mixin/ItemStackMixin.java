@@ -51,8 +51,8 @@ public abstract class ItemStackMixin {
         if (cap == null || cap < 0) return;
 
         var text = "Enchantment Capacity: %s/%s".formatted(
-            HelperKt.toString(weight, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places),
-            HelperKt.toString(cap, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places)
+            HelperKt.toStringWithDecimalPlaces(weight, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places),
+            HelperKt.toStringWithDecimalPlaces(cap, GlobalConfig.EnchantmentCaps.tool_tip_decimal_places)
         );
 
         list.add(
@@ -67,7 +67,7 @@ public abstract class ItemStackMixin {
     private void injectCappingOnAddEnch(Enchantment enchantment, int level, CallbackInfo ci){
         var enchantments = EnchantmentHelper.get((ItemStack)(Object)this);
 
-        capEnchantmentMap(
+        cap(
             enchantments,
             getCapacity(this.getItem()),
             item->false
@@ -94,7 +94,7 @@ public abstract class ItemStackMixin {
         //I'm also not sure why this doesn't work in the dev environment, only the real environment
         if (enchantments.isEmpty()) return;
 
-        capEnchantmentMap(
+        cap(
             enchantments,
             getCapacity(this.getItem()),
             item->false

@@ -41,7 +41,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
 
-        var cropBlock = HelperKt.heldItemAsCropBlock(allay);
+        var cropBlock = HelperKt.getHeldItemAsCropBlock(allay);
         if (cropBlock == null) return;
 
         var nearestFarmland = HelperKt.getNearestFarmPos(allay.getBlockPos(), cropBlock, allay.getWorld());
@@ -72,7 +72,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
-        var crop = HelperKt.heldItemAsCropBlock(allay);
+        var crop = HelperKt.getHeldItemAsCropBlock(allay);
         if (crop == null){
             cir.setReturnValue(false);
             return;
@@ -96,7 +96,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
-        var crop = HelperKt.heldItemAsCropBlock(allay);
+        var crop = HelperKt.getHeldItemAsCropBlock(allay);
         if (crop == null) return;
 
         var distSq = targetFarmland.getSquaredDistance(allay.getPos());

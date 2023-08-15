@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static unaverage.tweaks.HelperKt.fireProtectionProtectsAgainst;
+import static unaverage.tweaks.HelperKt.isFireProtectionAffected;
 
 @Mixin(ProtectionEnchantment.class)
 public class ProtectionEnchantmentMixin {
@@ -25,7 +25,7 @@ public class ProtectionEnchantmentMixin {
         var attacker = source.getAttacker();
         if (attacker == null) return;
 
-        if (!fireProtectionProtectsAgainst(attacker.getType())) return;
+        if (!isFireProtectionAffected(attacker.getType())) return;
 
         cir.setReturnValue(level*2);
     }

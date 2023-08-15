@@ -31,7 +31,7 @@ public abstract class ParrotMixin extends AnimalEntity {
         cancellable = true
     )
     void injectIsBreedingItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
-        if (!HelperKt.healedWhenEat(this.getType())) return;
+        if (!HelperKt.getHealsWhenFed(this.getType())) return;
 
         var itemInHand = player.getStackInHand(hand);
         if (!TAMING_INGREDIENTS.contains(itemInHand.getItem())) return;
@@ -51,7 +51,7 @@ public abstract class ParrotMixin extends AnimalEntity {
         at = @At("TAIL")
     )
     private static void canBeTamedWithNewFeedingList(CallbackInfo ci){
-        var list = HelperKt.getNewAnimalFeedList(EntityType.PARROT);
+        var list = HelperKt.getNewFeedList(EntityType.PARROT);
         if (list == null) return;
 
         TAMING_INGREDIENTS.clear();

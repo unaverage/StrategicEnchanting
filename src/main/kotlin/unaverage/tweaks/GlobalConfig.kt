@@ -110,7 +110,7 @@ object GlobalConfig: Config {
     var allays_can_plant_crops = true
 
     @JvmField
-    var animals_heal_when_fed = listOf(
+    var animals_heal_when_fed = setOf(
         "minecraft:chicken",
         "minecraft:cow",
         "minecraft:mooshroom",
@@ -120,7 +120,7 @@ object GlobalConfig: Config {
 
     @JvmField
     var animals_eat = mapOf(
-        "minecraft:pig" to listOf(
+        "minecraft:pig" to setOf(
             "minecraft:apple",
             "minecraft:beetroot",
             "minecraft:carrot",
@@ -129,19 +129,19 @@ object GlobalConfig: Config {
     )
 
     @JvmField
-    var bane_of_arthropods_also_affects = listOf("minecraft:guardian, minecraft:elder_guardian")
+    var bane_of_arthropods_also_affects = setOf("minecraft:guardian, minecraft:elder_guardian")
 
     @JvmField
     var creepers_avoid_cats_at = 16
 
     @JvmField
-    var enchantment_blacklist = listOf("minecraft:protection")
+    var enchantment_blacklist = setOf("minecraft:protection")
 
     @JvmField
     var fire_protection_lava_immunity = 1.0
 
     @JvmField
-    var fire_protection_protects_against = listOf("minecraft:blazed", "minecraft:magma_cube")
+    var fire_protection_protects_against = setOf("minecraft:blazed", "minecraft:magma_cube")
 
     @JvmField
     var frost_walker_melts_at_night = true

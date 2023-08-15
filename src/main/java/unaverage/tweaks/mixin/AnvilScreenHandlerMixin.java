@@ -22,7 +22,7 @@ import unaverage.tweaks.HelperKt;
 
 import java.util.Map;
 
-import static unaverage.tweaks.HelperKt.capEnchantmentMap;
+import static unaverage.tweaks.HelperKt.cap;
 import static unaverage.tweaks.HelperKt.getCapacity;
 
 @Mixin(AnvilScreenHandler.class)
@@ -120,7 +120,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var inputFromSecondSlot = this.input.getStack(1);
 
         //applies the new capping behavior
-        capEnchantmentMap(
+        cap(
             enchantments,
             getCapacity(stack.getItem()),
             //prioritize the enchantment if its from the sacrifice item

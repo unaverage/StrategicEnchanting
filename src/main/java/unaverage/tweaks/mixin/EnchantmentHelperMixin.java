@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static unaverage.tweaks.HelperKt.capEnchantmentMap;
+import static unaverage.tweaks.HelperKt.cap;
 import static unaverage.tweaks.HelperKt.getCapacity;
-import static unaverage.tweaks.HelperKt.enchantmentIsBlacklisted;
+import static unaverage.tweaks.HelperKt.isBlackListed;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
@@ -27,7 +27,7 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "set", at = @At("HEAD"))
     private static void capEnchantmentsOnSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
-        capEnchantmentMap(
+        cap(
             enchantments,
             getCapacity(stack.getItem()),
             item->false
@@ -51,7 +51,7 @@ public class EnchantmentHelperMixin {
         );
 
         //caps the enchantment map
-        capEnchantmentMap(
+        cap(
             result,
             getCapacity(stack.getItem()),
             item->false
@@ -70,7 +70,7 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getPossibleEntries", at = @At("RETURN"))
     private static void removeBlacklistedEnchantments(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
         cir.getReturnValue().removeIf(
-            e-> enchantmentIsBlacklisted(e.enchantment)
+            e-> isBlackListed(e.enchantment)
         );
     }
 }

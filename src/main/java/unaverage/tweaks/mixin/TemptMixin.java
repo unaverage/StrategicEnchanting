@@ -29,7 +29,7 @@ public class TemptMixin {
         if (food.test(Items.CARROT_ON_A_STICK.getDefaultStack())) return;
         if (food.test(Items.WARPED_FUNGUS_ON_A_STICK.getDefaultStack())) return;
 
-        var list = HelperKt.getNewAnimalFeedList(entity.getType());
+        var list = HelperKt.getNewFeedList(entity.getType());
         if (list == null) return;
 
 

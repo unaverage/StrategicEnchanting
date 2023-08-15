@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
 
 
 private val cachedGetID: MutableMap<Any?, String> = HashMap()
-fun <T> T.cachedGetID(r: Registry<T>): String {
+fun <T> T.getID(r: Registry<T>): String {
     return cachedGetID.getOrPut(this){
         r
         .getKey(this)
@@ -36,7 +36,7 @@ fun <T> T.cachedGetID(r: Registry<T>): String {
 }
 
 private val cachedGet: MutableMap<String, Any?> = HashMap()
-fun <T> Map<String, T>.cachedGet(itemID: String): T? {
+fun <T> Map<String, T>.getWithRegex(itemID: String): T? {
     @Suppress("UNCHECKED_CAST")
     return cachedGet.getOrPut(itemID){
         //Runs the loop twice
@@ -62,7 +62,7 @@ fun <T> Map<String, T>.cachedGet(itemID: String): T? {
 
 
 private val cachedContain: MutableMap<String, Boolean> = HashMap()
-fun Set<String>.cachedContain(id: String): Boolean {
+fun Set<String>.containsWithRegex(id: String): Boolean {
     return cachedContain.getOrPut(id){
         for (testedID in this) {
             if (id == testedID) {
@@ -82,117 +82,92 @@ fun Set<String>.cachedContain(id: String): Boolean {
     }
 }
 
-
-fun <T> getFromId(id: String, registry: Registry<T>): T?{
+fun <T> String.fromId(registry: Registry<T>): T?{
     return registry.get(
         Identifier(
-            id.split(':').getOrElse(0){ return null },
-            id.split(':').getOrElse(1){ return null }
+            split(':').getOrElse(0){ return null },
+            split(':').getOrElse(1){ return null }
         )
     )
     .also {
         if (it == null) {
-            UnaverageTweaks.logMissingID(id)
+            UnaverageTweaks.logMissingID(this)
         }
 
-        if (it is AirBlockItem && id != "minecraft:air") {
-            UnaverageTweaks.logMissingID(id)
+        if (it is AirBlockItem && this != "minecraft:air") {
+            UnaverageTweaks.logMissingID(this)
             return null
         }
     }
 }
 
 /**
- * Merges multiple comparators into one new comparator
- * If the first comparator returns zero, then it moves on to the second.
- * If the second comparator returns zero, then it moves on to the third. Et-cetera
- *
- * @param comparator The list of all comparators being merged into one
- * @return The combined comparator
- * @param <T> The type that the comparators compare
-</T> */
-@SafeVarargs
-fun <T> merge(vararg comparator: Comparator<T>): Comparator<T> {
-    return Comparator { o1: T, o2: T ->
-        for (c in comparator) {
-            val result = c.compare(o1, o2)
-            if (result != 0) return@Comparator result
-        }
-        0
-    }
-}
-
-/**
  * {@return The total weights of enchantments the item can hold}
- * @param item The item being tested
  */
-fun getCapacity(item: Item?): Double? {
-    return GlobalConfig
-        .EnchantmentCaps
-        .item_capacities
-        .cachedGet(
-            item.cachedGetID(Registries.ITEM)
-        )
-}
+val Item?.capacity: Double?
+    get() {
+        return GlobalConfig
+            .EnchantmentCaps
+            .item_capacities
+            .getWithRegex(
+                this.getID(Registries.ITEM)
+            )
+    }
 
 
 /**
- * @param map The enchantment map being tested
  * {@return The total weight of all the enchantments in an enchantment map}
  */
-fun getWeight(map: Map<Enchantment, Int>): Double {
-    fun getWeight(e: Enchantment, level: Int): Double {
-        val weightByID = GlobalConfig
-            .EnchantmentCaps
-            .enchantment_weights
-            .cachedGet(
-                e.cachedGetID(Registries.ENCHANTMENT)
-            )
+val Map<Enchantment, Int>.weight: Double
+    get() {
+        fun getWeight(e: Enchantment, level: Int): Double {
+            val weightByID = GlobalConfig
+                .EnchantmentCaps
+                .enchantment_weights
+                .getWithRegex(
+                    e.getID(Registries.ENCHANTMENT)
+                )
 
-        if (weightByID != null && weightByID.size > level - 1) {
-            //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-            return weightByID[level - 1]
+            if (weightByID != null && weightByID.size > level - 1) {
+                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
+                return weightByID[level - 1]
+            }
+
+            val weightByMax = GlobalConfig
+                .EnchantmentCaps
+                .enchantment_weights
+                .getWithRegex(e.maxLevel.toString())
+
+            val ratio: Double
+            if (weightByMax != null && weightByMax.size > level - 1) {
+                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
+                ratio = weightByMax[level - 1]
+            } else {
+                ratio = (level / e.maxLevel.toDouble())
+            }
+
+            if (e.isCursed) return -ratio
+
+            return ratio
         }
 
-        val weightByMax = GlobalConfig
-            .EnchantmentCaps
-            .enchantment_weights
-            .cachedGet(e.maxLevel.toString())
-
-        val ratio: Double
-        if (weightByMax != null && weightByMax.size > level - 1) {
-            //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-            ratio = weightByMax[level - 1]
-        }
-        else {
-            ratio = (level / e.maxLevel.toDouble())
-        }
-
-        if (e.isCursed) return -ratio
-
-        return ratio
+        return map { (k, v) -> getWeight(k, v) }
+            .sum()
     }
-
-    return map
-        .map { (k, v)->getWeight(k, v) }
-        .sum()
-}
 
 /**
  * Mutates an enchantment map and adjusts the levels of each enchantments so that the total weight is less than or equal to the capacity
  *
- * @param map The enchantment to level map being mutated
  * @param cap The capacity that the total weight of the enchantment is being adjusted to
  * @param priority Which enchantments are prioritized to be preserved
  */
-fun capEnchantmentMap(
-    map: MutableMap<Enchantment, Int>,
+fun MutableMap<Enchantment, Int>.cap(
     cap: Double?,
     priority: Predicate<Enchantment>
 ) {
     //Returns whether the candidate is above the cap
     fun isOverCap(map: Map<Enchantment, Int>, cap: Double): Boolean {
-        val weight = getWeight(map)
+        val weight = map.weight
         val epsilon = .001
 
         //adds a small epsilon to avoid slight inaccuracies
@@ -243,6 +218,16 @@ fun capEnchantmentMap(
 
     //Returns a comparator that compares candidates
     fun getCandidateComparator(priority: Predicate<Enchantment>): Comparator<Map<Enchantment, Int>> {
+        fun <T> merge(vararg comparator: Comparator<T>): Comparator<T> {
+            return Comparator { o1: T, o2: T ->
+                for (c in comparator) {
+                    val result = c.compare(o1, o2)
+                    if (result != 0) return@Comparator result
+                }
+                0
+            }
+        }
+
         return merge(
             //enchantments that keep more levels from prioritized enchantments should go first
             Comparator.comparing { it.entries.filter { (key, _) -> priority.test(key) }.sumOf { (_, value) -> value } },
@@ -251,16 +236,16 @@ fun capEnchantmentMap(
             //permutations that keeps more kinds of enchantments should be considered first
             Comparator.comparing { it.keys.size },
             //candidates with more weight should be considered first
-            Comparator.comparing { getWeight(it) },
+            Comparator.comparing { it.weight },
             Comparator.comparing { it.values.sum() }
         )
     }
 
     if (cap == null || cap < 0) return
 
-    if (!isOverCap(map, cap)) return
+    if (!isOverCap(this, cap)) return
 
-    val candidates = getAllCandidates(map, cap)
+    val candidates = getAllCandidates(this, cap)
     if (candidates.isEmpty()) return
 
     val candidateComparator = getCandidateComparator(priority)
@@ -268,28 +253,10 @@ fun capEnchantmentMap(
 
     val bestCandidate = candidates.last()
 
-    map.clear()
-    map.putAll(bestCandidate)
+    clear()
+    putAll(bestCandidate)
 }
 
-
-fun canPlaceCropAt(crop: BlockState, pos: BlockPos, world: WorldView): Boolean {
-    return crop.canPlaceAt(world, pos) && world.getBlockState(pos).isAir
-}
-
-fun heldItemAsCropBlock(allay: AllayEntity): BlockState?{
-    val item = allay.inventory.getStack(0)
-    if (item == null) return null
-    if (item.count < 0) return null
-
-    if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
-    if (item.item !is BlockItem) return null
-
-    val crop = (item.item as BlockItem).block as? CropBlock
-    if (crop == null) return null
-
-    return crop.withAge(0)
-}
 
 fun getNearestFarmPos(pos: BlockPos, cropBlock: BlockState, world: WorldView): BlockPos?{
     iterateSquare(5){ i,j,k->
@@ -300,15 +267,30 @@ fun getNearestFarmPos(pos: BlockPos, cropBlock: BlockState, world: WorldView): B
             pos.z + k
         )
 
-        if (canPlaceCropAt(cropBlock, pos, world)){
+        if (cropBlock.canPlaceAt(world, pos) && world.getBlockState(pos).isAir) {
             return pos
         }
     }
     return null
 }
 
+val AllayEntity.heldItemAsCropBlock: BlockState?
+    get() {
+        val item = inventory.getStack(0)
+        if (item == null) return null
+        if (item.count < 0) return null
+
+        if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
+        if (item.item !is BlockItem) return null
+
+        val crop = (item.item as BlockItem).block as? CropBlock
+        if (crop == null) return null
+
+        return crop.withAge(0)
+    }
+
 @Suppress("SameParameterValue")
-private inline fun iterateSquare(maxRange: Int, fn: (Int, Int, Int)->Unit){
+private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit){
     for (r in 0..maxRange) {
         for (i in -r..r) {
             for (j in -r..r) {
@@ -322,71 +304,75 @@ private inline fun iterateSquare(maxRange: Int, fn: (Int, Int, Int)->Unit){
     }
 }
 
-fun affectedByBaneOfArthropod(e: EntityType<*>): Boolean {
-    return GlobalConfig.bane_of_arthropods_also_affects
-        .toSet()
-        .contains(
-            e.cachedGetID(Registries.ENTITY_TYPE)
-        )
-}
+val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
+    get() {
+        return GlobalConfig
+            .bane_of_arthropods_also_affects
+            .containsWithRegex(
+                this.getID(Registries.ENTITY_TYPE)
+            )
+    }
 
-fun enchantmentIsBlacklisted(e: Enchantment): Boolean {
-    return GlobalConfig.enchantment_blacklist
-        .toSet()
-        .cachedContain(
-            e.cachedGetID(Registries.ENCHANTMENT)
-        )
-}
+val Enchantment.isBlackListed: Boolean
+    get() {
+        return GlobalConfig
+            .enchantment_blacklist
+            .containsWithRegex(
+                this.getID(Registries.ENCHANTMENT)
+            )
+    }
 
 fun fireProtectionHasLavaDuration(): Boolean{
     return GlobalConfig.fire_protection_lava_immunity != 0.0
 }
 
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
-    return GlobalConfig.fire_protection_lava_immunity
+    return GlobalConfig
+        .fire_protection_lava_immunity
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
 }
 
-fun fireProtectionProtectsAgainst(e: EntityType<*>): Boolean {
-    return GlobalConfig.fire_protection_protects_against
-        .toSet()
-        .cachedContain(
-            e.cachedGetID(Registries.ENTITY_TYPE),
-        )
-}
+val EntityType<*>.isFireProtectionAffected: Boolean
+    get() {
+        return GlobalConfig
+            .fire_protection_protects_against
+            .containsWithRegex(
+                this.getID(Registries.ENTITY_TYPE),
+            )
+    }
 
-fun getNewAnimalFeedList(e: EntityType<*>): List<Item>?{
-    @Suppress("ReplaceGetOrSet")
-    return GlobalConfig.animals_eat
-        .get(
-            e.cachedGetID(Registries.ENTITY_TYPE)
-        )
-        ?.mapNotNull {
-            getFromId(it, Registries.ITEM)
-        }
-}
+val EntityType<*>.newFeedList: List<Item>?
+    get() {
+        return GlobalConfig.animals_eat
+            .getWithRegex(
+                this.getID(Registries.ENTITY_TYPE)
+            )
+            ?.mapNotNull {
+                it.fromId(Registries.ITEM)
+            }
+    }
 
-fun healedWhenEat(e: EntityType<*>): Boolean{
-    return GlobalConfig
-        
-        .animals_heal_when_fed
-        .contains(
-            e.cachedGetID(Registries.ENTITY_TYPE)
-        )
-}
+val EntityType<*>.healsWhenFed: Boolean
+    get() {
+        return GlobalConfig
+            .animals_heal_when_fed
+            .containsWithRegex(
+                this.getID(Registries.ENTITY_TYPE)
+            )
+    }
 
 val Item.ingotsToFullyRepair: Int?
     get() {
         return GlobalConfig
             .tools_ingots_to_fully_repair
-            .get(
-                this.cachedGetID(Registries.ITEM)
+            .getWithRegex(
+                this.getID(Registries.ITEM)
             )
     }
 
-fun Double.toString(decimalPlace: Int): String {
+fun Double.toStringWithDecimalPlaces(decimalPlace: Int): String {
     return BigDecimal(this)
         .setScale(decimalPlace, RoundingMode.FLOOR)
         .toString()

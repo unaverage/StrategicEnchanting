@@ -37,7 +37,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         //noinspection ConstantConditions
         if ((Object)this instanceof ParrotEntity) return this.isBreedingItem(stack);
 
-        var newFeedingItems = HelperKt.getNewAnimalFeedList(this.getType());
+        var newFeedingItems = HelperKt.getNewFeedList(this.getType());
         if (newFeedingItems == null) return this.isBreedingItem(stack);
 
         return newFeedingItems.contains(stack.getItem());
@@ -49,7 +49,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir) {
-        if (!HelperKt.healedWhenEat(this.getType())) return;
+        if (!HelperKt.getHealsWhenFed(this.getType())) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
             cir.setReturnValue(false);
@@ -62,12 +62,12 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (!HelperKt.healedWhenEat(this.getType())) return;
+        if (!HelperKt.getHealsWhenFed(this.getType())) return;
         if (this.getType() == EntityType.PARROT) return;
 
         var itemInHand = player.getStackInHand(hand);
 
-        var feedingList = HelperKt.getNewAnimalFeedList(this.getType());
+        var feedingList = HelperKt.getNewFeedList(this.getType());
         if (feedingList != null ? !feedingList.contains(itemInHand.getItem()) : !this.isBreedingItem(player.getStackInHand(hand))) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
