@@ -383,10 +383,10 @@ fun Double.toString(decimalPlace: Int): String {
         .toString()
 }
 
-var ItemStack.timesRepaired: Int
+var ItemStack.decay: Double
     get(){
-        return this.orCreateNbt.getInt("unaverage_tweaks:times_repaired")
+        return this.orCreateNbt.getDouble("unaverage_tweaks:total_decay")
     }
     set(value){
-        this.orCreateNbt.putInt("unaverage_tweaks:times_repaired", value)
+        this.orCreateNbt.putDouble("unaverage_tweaks:total_decay", value)
     }

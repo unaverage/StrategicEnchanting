@@ -101,10 +101,7 @@ object GlobalConfig: Config {
         var disable_xp = true
 
         @JvmField
-        var tools_decay_rate = 0.1
-
-        @JvmField
-        var tools_max_decay = 0.0
+        var tool_decay_rate = 1000
     }
 
     //Config name noun should be placed first

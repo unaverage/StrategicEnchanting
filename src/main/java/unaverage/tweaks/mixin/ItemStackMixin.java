@@ -29,9 +29,7 @@ import static unaverage.tweaks.HelperKt.*;
 public abstract class ItemStackMixin {
     @Shadow public abstract Item getItem();
 
-    @Shadow public abstract int getMaxDamage();
-
-    @Shadow public abstract boolean hasEnchantments();
+    @Shadow public abstract int getDamage();
 
     @Inject(
         method = "getTooltip",
@@ -106,51 +104,46 @@ public abstract class ItemStackMixin {
         EnchantmentHelper.set(enchantments, (ItemStack)(Object)this);
     }
 
+    @Inject(
+        method = "setDamage",
+        at = @At("HEAD")
+    )
+    void decayWhenRepaired(int newDamage, CallbackInfo ci){
+        if (GlobalConfig.XP.tool_decay_rate <= 0) return;
+
+        var oldDamage = this.getDamage();
+        if (oldDamage <= newDamage) return;
+
+        var diff = oldDamage - newDamage;
+
+        var totalEnchantments = HelperKt.getWeight(EnchantmentHelper.get((ItemStack) (Object)this));
+        if (totalEnchantments <= 0) return;
+
+        var decay = (diff / (double)GlobalConfig.XP.tool_decay_rate) * totalEnchantments;
+
+        HelperKt.setDecay(
+            (ItemStack)(Object)this,
+            HelperKt.getDecay((ItemStack)(Object)this) + decay
+        );
+    }
 
     @Inject(
         method = "getMaxDamage",
         at = @At("HEAD"),
         cancellable = true
     )
-    void useNewToolDecay(CallbackInfoReturnable<Integer> cir){
-        if (GlobalConfig.XP.tools_decay_rate <= 0) return;
-        if (GlobalConfig.XP.tools_max_decay < 0) return;
-        if (GlobalConfig.XP.tools_decay_rate == 1) return;
+    void getMaxDamageWithDecay(CallbackInfoReturnable<Integer> cir){
+        if (GlobalConfig.XP.tool_decay_rate <= 0) return;
 
-        if (!this.hasEnchantments()) return;
+        var decay = (int)Math.floor(HelperKt.getDecay((ItemStack)(Object)this));
+        if (decay <= 0) return;
 
-        var totalRepairs = HelperKt.getTimesRepaired((ItemStack)(Object)this);
-        var initDurability = this.getMaxDamage();
-
-        var decayRate = GlobalConfig.XP.tools_decay_rate;
-        var maxDecay = GlobalConfig.XP.tools_max_decay;
-
-        //uses the finite geometric series, excluding the first term
-        //   s=ar^1+ar^2+...+ar^n
-        //or s=a(1-r^(n+1))/(1-r)-a
-        //where
-        //a is the initial durability
-        //r is the decay rate
-        //n is the total full repairs done
-        //s is the total durability repaired
-
-        //the formula for maxDurability is m=ar^n
-
-        //solve for n in the first equation,
-        //then plug it in on the second equation,
-        //then simplify to get this result
-        var result = initDurability - decayRate/(1-decayRate)*totalRepairs;
-
-        if (result < initDurability*maxDecay){
-            result = initDurability*maxDecay;
-        }
-        //durability should never be 0
+        var result = this.getItem().getMaxDamage() - decay;
         if (result < 1){
             result = 1;
         }
 
-        cir.setReturnValue(
-            (int)Math.round(result)
-        );
+        cir.setReturnValue(result);
     }
+
 }
