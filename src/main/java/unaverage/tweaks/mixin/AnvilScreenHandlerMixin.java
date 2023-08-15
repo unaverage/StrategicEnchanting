@@ -74,7 +74,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     )
     void incrementTimesRepaired(CallbackInfo ci){
         if (GlobalConfig.XP.tools_decay_rate <= 0) return;
-        if (GlobalConfig.XP.tools_max_decay <= 0) return;
+        if (GlobalConfig.XP.tools_max_decay < 0) return;
 
         var result = this.output.getStack(0);
 

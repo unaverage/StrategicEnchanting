@@ -114,7 +114,7 @@ public abstract class ItemStackMixin {
     )
     void useNewToolDecay(CallbackInfoReturnable<Integer> cir){
         if (GlobalConfig.XP.tools_decay_rate <= 0) return;
-        if (GlobalConfig.XP.tools_max_decay <= 0) return;
+        if (GlobalConfig.XP.tools_max_decay < 0) return;
         if (GlobalConfig.XP.tools_decay_rate == 1) return;
 
         if (!this.hasEnchantments()) return;
