@@ -69,7 +69,7 @@ object GlobalConfig: Config {
     @JvmField
     var allays_can_plant_crops = true
 
-    object animals_custom_feeding {
+    object animals_custom_feeding: Config {
         @JvmField
         var enabled = true
 
@@ -84,7 +84,7 @@ object GlobalConfig: Config {
         )
     }
     
-    object animals_heal_when_fed {
+    object animals_heal_when_fed: Config {
         @JvmField
         var enabled = true
      
@@ -98,7 +98,7 @@ object GlobalConfig: Config {
         )
     }
 
-    object bane_of_arthropods_extra {
+    object bane_of_arthropods_extra: Config {
         @JvmField
         var enable = true
 
@@ -106,7 +106,7 @@ object GlobalConfig: Config {
         var extra_mobs_affected = setOf("minecraft:guardian, minecraft:elder_guardian")
     }
 
-    object creepers_avoid_cats_further{
+    object creepers_avoid_cats_further: Config{
         @JvmField
         var enable = true
 
@@ -151,7 +151,7 @@ object GlobalConfig: Config {
         var tool_tip_decimal_places = 1
     }
 
-    object enchantments_transfer_to_book{
+    object enchantments_transfer_to_book: Config{
 
         @JvmField
         var enable = true
@@ -159,7 +159,7 @@ object GlobalConfig: Config {
         var transfer_percentage = 0.5
     }
 
-    object enchantment_blacklist {
+    object enchantment_blacklist: Config {
         @JvmField
         var enable = true
         
@@ -167,7 +167,7 @@ object GlobalConfig: Config {
         var blacklisted = setOf("minecraft:protection")
     }
 
-    object fire_protection_offers_lava_immunity {
+    object fire_protection_offers_lava_immunity: Config {
         @JvmField
         var enable = true
 
@@ -175,7 +175,7 @@ object GlobalConfig: Config {
         var seconds_of_lava_immunity_per_levels = 1.0
     }
 
-    object fire_protection_offers_melee_protection{
+    object fire_protection_offers_melee_protection: Config{
         @JvmField
         var enable = true
 
@@ -192,7 +192,7 @@ object GlobalConfig: Config {
     @JvmField
     var piglins_and_hoglins_are_fire_immune = true
 
-    object pigs_ridden_are_faster {
+    object pigs_ridden_are_faster: Config {
         @JvmField
         var enable = true
 
@@ -206,7 +206,7 @@ object GlobalConfig: Config {
     @JvmField
     var thorns_no_longer_wears_down_armor = true
     
-    object tools_custom_repair_rate{
+    object tools_custom_repair_rate: Config{
         @JvmField
         var enable = true
         
@@ -226,7 +226,7 @@ object GlobalConfig: Config {
         }
     }
 
-    object tools_max_durability_decay{
+    object tools_max_durability_decay: Config{
         @JvmField
         var enable = true
 
