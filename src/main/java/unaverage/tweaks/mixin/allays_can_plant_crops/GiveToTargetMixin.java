@@ -80,6 +80,11 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
             return;
         }
 
+        if (!crop.canPlaceAt(world, targetFarmland) || !world.getBlockState(targetFarmland).isAir()) {
+            cir.setReturnValue(false);
+            return;
+        }
+
         var distSq = targetFarmland.getSquaredDistance(allay.getPos());
         if (distSq > 10*10){
             cir.setReturnValue(false);
