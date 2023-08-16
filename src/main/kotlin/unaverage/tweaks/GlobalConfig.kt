@@ -138,6 +138,9 @@ object GlobalConfig: Config {
     )
 
     @JvmField
+    var enchantments_transfer_to_book_rate = 0.5
+
+    @JvmField
     var bane_of_arthropods_also_affects = setOf("minecraft:guardian, minecraft:elder_guardian")
 
     @JvmField
