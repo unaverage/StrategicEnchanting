@@ -190,6 +190,9 @@ object GlobalConfig: Config {
     var glow_squids_better_spawn = true
 
     @JvmField
+    var horses_harder_to_tame = true
+
+    @JvmField
     var piglins_and_hoglins_are_fire_immune = true
 
     object pigs_ridden_are_faster: Config {
@@ -236,13 +239,13 @@ object GlobalConfig: Config {
 
     object xp: Config{
         @JvmField
-        var set_unobtainable = true
+        var disable_xp = true
 
         @JvmField
         var disable_bar = true
 
         @JvmField
-        var no_longer_needed_to_repair = true
+        var repair_takes_zero_xp = true
     }
 
 

@@ -21,6 +21,7 @@
     "fire_protection_offers_meele_protection.ProtectionEnchantmentMixin",
     "frost_walker_melts_at_night.FrostedIceMixin",
     "glow_squids_better_spawn.GlowSquidMixin",
+    "horses_harder_to_tame.HorseBondMixin",
     "piglins_and_hoglins_fire_immune.EntityTypeMixin",
     "ridden_pigs_are_faster.PigMixin",
     "shields_no_longer_prevent_knockback.LivingEntityMixin",
@@ -28,6 +29,7 @@
     "tools_custom_repair_rate.AnvilScreenHandlerMixin",
     "tools_max_durability_decay.ItemStackMixin",
     "village_less_fights.ActiveTargetMixin",
+    "xp.AnvilScreenHandlerMixin",
     "xp.AnvilScreenMixin",
     "xp.XpOrbMixin"
   ],
