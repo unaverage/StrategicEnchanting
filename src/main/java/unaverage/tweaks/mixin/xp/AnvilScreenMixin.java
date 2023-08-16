@@ -19,7 +19,7 @@ public class AnvilScreenMixin {
         )
     )
     void removeXPBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color){
-        if (!GlobalConfig.xp.no_longer_needed_to_repair){
+        if (!GlobalConfig.xp.repair_takes_zero_xp){
             instance.fill(x1, y1, x2, y2, color);
         }
     }
@@ -32,7 +32,7 @@ public class AnvilScreenMixin {
         )
     )
     int removeXPNumberOnAnvil(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color){
-        if (!GlobalConfig.xp.no_longer_needed_to_repair){
+        if (!GlobalConfig.xp.repair_takes_zero_xp){
             return instance.drawTextWithShadow(textRenderer, text, x, y, color);
         }
         return 0;
