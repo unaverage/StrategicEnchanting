@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.ridden_pigs_are_faster;
 
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +16,9 @@ public class PigMixin {
         cancellable = true
     )
     private void makeRiddenPigsFaster(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir){
-        double multiplier = GlobalConfig.pigs_ridden_speed_boost;
+        if (!GlobalConfig.pigs_ridden_are_faster.enable) return;
 
-        if (multiplier <= 0 || multiplier == 1) return;
+        var multiplier = GlobalConfig.pigs_ridden_are_faster.speed_multiplier;
 
         cir.setReturnValue(
             (float)(cir.getReturnValue() * multiplier)

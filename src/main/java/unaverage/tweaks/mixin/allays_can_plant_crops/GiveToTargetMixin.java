@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.allays_can_plant_crops;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
@@ -57,6 +57,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectRun(ServerWorld world, E entity, long time, CallbackInfo ci){
+        if (!GlobalConfig.allays_can_plant_crops) return;
         if (targetFarmland == null) return;
 
         LookTargetUtil.walkTowards(entity, targetFarmland, this.speed, 0);
@@ -69,6 +70,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectShouldKeepRunning(ServerWorld world, E entity, long time, CallbackInfoReturnable<Boolean> cir){
+        if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
@@ -93,6 +95,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectKeepRunning(ServerWorld world, E entity, long time, CallbackInfo ci){
+        if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 

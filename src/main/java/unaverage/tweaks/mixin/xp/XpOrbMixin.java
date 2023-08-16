@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.xp;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,8 +21,8 @@ abstract class XpOrbMixin extends Entity {
         at = @At("HEAD"),
         cancellable = true
     )
-    void fn(CallbackInfo ci){
-        if (!GlobalConfig.XP.disable_xp) return;
+    void removeFromExistence(CallbackInfo ci){
+        if (!GlobalConfig.xp.set_unobtainable) return;
 
         this.amount = 0;
         this.discard();

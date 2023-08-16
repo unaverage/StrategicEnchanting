@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.frost_walker_melts_at_night;
 
 import net.minecraft.block.FrostedIceBlock;
 import net.minecraft.server.world.ServerWorld;

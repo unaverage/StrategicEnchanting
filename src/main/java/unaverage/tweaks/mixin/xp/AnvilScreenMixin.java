@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.xp;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -11,7 +11,6 @@ import unaverage.tweaks.GlobalConfig;
 
 @Mixin(AnvilScreen.class)
 public class AnvilScreenMixin {
-
     @Redirect(
         method = "drawForeground",
         at = @At(
@@ -20,9 +19,8 @@ public class AnvilScreenMixin {
         )
     )
     void removeXPBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color){
-        if (!GlobalConfig.XP.anvil_no_longer_requires_xp){
+        if (!GlobalConfig.xp.no_longer_needed_to_repair){
             instance.fill(x1, y1, x2, y2, color);
-            return;
         }
     }
 
@@ -34,7 +32,7 @@ public class AnvilScreenMixin {
         )
     )
     int removeXPNumberOnAnvil(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color){
-        if (!GlobalConfig.XP.anvil_no_longer_requires_xp){
+        if (!GlobalConfig.xp.no_longer_needed_to_repair){
             return instance.drawTextWithShadow(textRenderer, text, x, y, color);
         }
         return 0;

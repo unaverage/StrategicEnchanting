@@ -107,7 +107,7 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 val Item.capacity: Double?
     get() {
         return GlobalConfig
-            .EnchantmentCaps
+            .enchantments_are_capped
             .item_capacities
             .getWithRegex(
                 this.getID(Registries.ITEM)
@@ -122,7 +122,7 @@ val Map<Enchantment, Int>.weight: Double
     get() {
         fun getWeight(e: Enchantment, level: Int): Double {
             val weightByID = GlobalConfig
-                .EnchantmentCaps
+                .enchantments_are_capped
                 .enchantment_weights
                 .getWithRegex(
                     e.getID(Registries.ENCHANTMENT)
@@ -134,7 +134,7 @@ val Map<Enchantment, Int>.weight: Double
             }
 
             val weightByMax = GlobalConfig
-                .EnchantmentCaps
+                .enchantments_are_capped
                 .enchantment_weights
                 .getWithRegex(e.maxLevel.toString())
 
@@ -163,7 +163,7 @@ val Map<Enchantment, Int>.weight: Double
  */
 fun MutableMap<Enchantment, Int>.cap(
     cap: Double?,
-    priority: Predicate<Enchantment>
+    priority: (Enchantment)->Boolean = {false}
 ) {
     //Returns whether the candidate is above the cap
     fun isOverCap(map: Map<Enchantment, Int>, cap: Double): Boolean {
@@ -307,7 +307,8 @@ private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit)
 val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
     get() {
         return GlobalConfig
-            .bane_of_arthropods_also_affects
+            .bane_of_arthropods_extra
+            .extra_mobs_affected
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )
@@ -317,18 +318,16 @@ val Enchantment.isBlackListed: Boolean
     get() {
         return GlobalConfig
             .enchantment_blacklist
+            .blacklisted
             .containsWithRegex(
                 this.getID(Registries.ENCHANTMENT)
             )
     }
 
-fun fireProtectionHasLavaDuration(): Boolean{
-    return GlobalConfig.fire_protection_lava_immunity != 0.0
-}
-
 fun getFireProtectionLavaImmunityDuration(level: Int): Int {
     return GlobalConfig
-        .fire_protection_lava_immunity
+        .fire_protection_offers_lava_immunity
+        .seconds_of_lava_immunity_per_levels
         .let { it * level }
         .let{ it * 20 }
         .roundToInt()
@@ -337,7 +336,8 @@ fun getFireProtectionLavaImmunityDuration(level: Int): Int {
 val EntityType<*>.isFireProtectionAffected: Boolean
     get() {
         return GlobalConfig
-            .fire_protection_protects_against
+            .fire_protection_offers_melee_protection
+            .protects_from
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE),
             )
@@ -345,7 +345,9 @@ val EntityType<*>.isFireProtectionAffected: Boolean
 
 val EntityType<*>.newFeedList: List<Item>?
     get() {
-        return GlobalConfig.animals_eat
+        return GlobalConfig
+            .animals_custom_feeding
+            .affected
             .getWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )
@@ -358,6 +360,7 @@ val EntityType<*>.healsWhenFed: Boolean
     get() {
         return GlobalConfig
             .animals_heal_when_fed
+            .affected
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )
@@ -366,7 +369,8 @@ val EntityType<*>.healsWhenFed: Boolean
 val Item.ingotsToFullyRepair: Int?
     get() {
         return GlobalConfig
-            .tools_ingots_to_fully_repair
+            .tools_custom_repair_rate
+            .ingots_to_fully_repair
             .getWithRegex(
                 this.getID(Registries.ITEM)
             )

@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.bane_of_arthropods_extra;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import unaverage.tweaks.GlobalConfig;
 
 import static unaverage.tweaks.HelperKt.isAffectedByBaneOfArthropods;
 
@@ -49,14 +50,14 @@ public class PlayerEntityMixin {
         )
     )
     private float doExtraDamageToExtraMobs(ItemStack stack, EntityGroup group){
-        //the original result
-        var result = EnchantmentHelper.getAttackDamage(stack, group);
+        var originalResult = EnchantmentHelper.getAttackDamage(stack, group);
 
-        if (!isAffectedByBaneOfArthropods(this.targetParam.getType())) return result;
+        if (!GlobalConfig.bane_of_arthropods_extra.enable) return originalResult;
+        if (!isAffectedByBaneOfArthropods(this.targetParam.getType())) return originalResult;
 
         var level = EnchantmentHelper.getEquipmentLevel(Enchantments.BANE_OF_ARTHROPODS, (PlayerEntity)(Object)this);
-        if (level == 0) return result;
+        if (level == 0) return originalResult;
 
-        return result + level * 2.5f;
+        return originalResult + level * 2.5f;
     }
 }

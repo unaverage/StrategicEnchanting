@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.creepers_avoid_cats_further;
 
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.CreeperEntity;
@@ -27,13 +27,11 @@ public abstract class FleeEntityMixin{
         at = @At("TAIL")
     )
     public void creepersFleeFurther(PathAwareEntity mob, Class<?> fleeFromType, Predicate<?> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<?> inclusionSelector, CallbackInfo ci){
-        var dist = GlobalConfig.creepers_avoid_cats_at;
-
-        if (dist == 6 || dist <= 0) return;
+        if (!GlobalConfig.creepers_avoid_cats_further.enable) return;
 
         if (!(mob instanceof CreeperEntity)) return;
         if (fleeFromType != CatEntity.class && fleeFromType != OcelotEntity.class) return;
 
-        this.fleeDistance = dist;
+        this.fleeDistance = GlobalConfig.creepers_avoid_cats_further.distance;
     }
 }

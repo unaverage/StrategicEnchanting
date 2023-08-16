@@ -1,8 +1,7 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.animals_heal_when_fed;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,8 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 @Mixin(AnimalEntity.class)
@@ -23,25 +22,9 @@ public abstract class AnimalMixin extends PassiveEntity {
 
     @Shadow protected abstract void eat(PlayerEntity player, Hand hand, ItemStack stack);
 
+    @Shadow public abstract ActionResult interactMob(PlayerEntity player, Hand hand);
+
     protected AnimalMixin(EntityType<? extends PassiveEntity> entityType, World world) {super(entityType, world);}
-
-
-    @Redirect(
-        method = "interactMob",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/entity/passive/AnimalEntity;isBreedingItem(Lnet/minecraft/item/ItemStack;)Z"
-        )
-    )
-    private boolean countNewFeedingItems(AnimalEntity instance, ItemStack stack){
-        //noinspection ConstantConditions
-        if ((Object)this instanceof ParrotEntity) return this.isBreedingItem(stack);
-
-        var newFeedingItems = HelperKt.getNewFeedList(this.getType());
-        if (newFeedingItems == null) return this.isBreedingItem(stack);
-
-        return newFeedingItems.contains(stack.getItem());
-    }
 
     @Inject(
         method = "canEat",
@@ -49,6 +32,8 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir) {
+        if (!GlobalConfig.animals_heal_when_fed.enabled) return;
+
         if (!HelperKt.getHealsWhenFed(this.getType())) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
@@ -62,6 +47,8 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (!GlobalConfig.animals_heal_when_fed.enabled) return;
+
         if (!HelperKt.getHealsWhenFed(this.getType())) return;
         if (this.getType() == EntityType.PARROT) return;
 

@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.glow_squids_better_spawn;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;

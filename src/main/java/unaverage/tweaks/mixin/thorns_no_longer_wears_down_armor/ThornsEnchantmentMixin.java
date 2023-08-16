@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.thorns_no_longer_wears_down_armor;
 
 import net.minecraft.enchantment.ThornsEnchantment;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,7 +8,6 @@ import unaverage.tweaks.GlobalConfig;
 
 @Mixin(ThornsEnchantment.class)
 public class ThornsEnchantmentMixin {
-
     /**
      * Disables the default vanilla behavior of damaging armor if thorn inflict damage in enemies
      */

@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.bane_of_arthropods_extra;
 
 import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.entity.Entity;
@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import unaverage.tweaks.GlobalConfig;
 
 import static unaverage.tweaks.HelperKt.isAffectedByBaneOfArthropods;
 
@@ -25,6 +26,8 @@ public class DamageEnchantmentsMixin {
      */
     @Inject(method = "onTargetDamaged", at=@At(value = "HEAD"))
     private void slowDownExtraMobs(LivingEntity user, Entity target, int level, CallbackInfo ci){
+        if (!GlobalConfig.bane_of_arthropods_extra.enable) return;
+
         if (!(target instanceof LivingEntity livingEntity)) return;
         if (this.typeIndex != 2) return;
         if (level == 0) return;

@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.piglins_and_hoglins_fire_immune;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HoglinEntity;

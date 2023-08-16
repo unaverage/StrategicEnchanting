@@ -62,8 +62,63 @@ fun runGlobalConfig() {
     }
 }
 
+@Suppress("ClassName")
 object GlobalConfig: Config {
-    object EnchantmentCaps: Config{
+    //Config name noun should be placed first
+
+    @JvmField
+    var allays_can_plant_crops = true
+
+    object animals_custom_feeding {
+        @JvmField
+        var enabled = true
+
+        @JvmField
+        var affected = mapOf(
+            "minecraft:pig" to setOf(
+                "minecraft:apple",
+                "minecraft:beetroot",
+                "minecraft:carrot",
+                "minecraft:wheat",
+            )
+        )
+    }
+    
+    object animals_heal_when_fed {
+        @JvmField
+        var enabled = true
+     
+        @JvmField
+        var affected = setOf(
+            "minecraft:chicken",
+            "minecraft:cow",
+            "minecraft:mooshroom",
+            "minecraft:parrot",
+            "minecraft:pig",
+        )
+    }
+
+    object bane_of_arthropods_extra {
+        @JvmField
+        var enable = true
+
+        @JvmField
+        var extra_mobs_affected = setOf("minecraft:guardian, minecraft:elder_guardian")
+    }
+
+    object creepers_avoid_cats_further{
+        @JvmField
+        var enable = true
+
+        @JvmField
+        var distance = 16
+    }
+
+    object enchantments_are_capped: Config{
+
+        @JvmField
+        var enable = true
+
         var enchantment_weights = mapOf(
             "1" to listOf(1.0),
             "2" to listOf(.5, 1.0),
@@ -85,75 +140,48 @@ object GlobalConfig: Config {
             "minecraft:crossbow" to 2.5,
             "minecraft:diamond_.+" to 2.0,
             "minecraft:elytra" to 2.0,
-            "minecraft:enchanted_book" to null,
-            "minecraft:golden_.+" to null,
             "minecraft:iron_.+" to 3.0,
-            "minecraft:leather_.+" to null,
             "minecraft:netherite_.+" to 1.5,
             "minecraft:shears" to 2.0,
-            "minecraft:stone_.+" to null,
-            "minecraft:wooden_.+" to null,
         )
         set(value) {
-            field = value.mapValues { (_, it)->(it as Number?)?.toDouble() }
+            field = value.mapValues { (_, it)->(it as Number).toDouble() }
         }
-
         @JvmField
         var tool_tip_decimal_places = 1
     }
 
-    object XP: Config{
-        @JvmField
-        var anvil_no_longer_requires_xp = true
+    object enchantments_transfer_to_book{
 
         @JvmField
-        var disable_xp = true
-
+        var enable = true
         @JvmField
-        var tool_decay_rate = 1000
+        var transfer_percentage = 0.5
     }
 
-    //Config name noun should be placed first
+    object enchantment_blacklist {
+        @JvmField
+        var enable = true
+        
+        @JvmField
+        var blacklisted = setOf("minecraft:protection")
+    }
 
-    @JvmField
-    var allays_can_plant_crops = true
+    object fire_protection_offers_lava_immunity {
+        @JvmField
+        var enable = true
 
-    @JvmField
-    var animals_heal_when_fed = setOf(
-        "minecraft:chicken",
-        "minecraft:cow",
-        "minecraft:mooshroom",
-        "minecraft:parrot",
-        "minecraft:pig",
-    )
+        @JvmField
+        var seconds_of_lava_immunity_per_levels = 1.0
+    }
 
-    @JvmField
-    var animals_eat = mapOf(
-        "minecraft:pig" to setOf(
-            "minecraft:apple",
-            "minecraft:beetroot",
-            "minecraft:carrot",
-            "minecraft:wheat",
-        )
-    )
+    object fire_protection_offers_melee_protection{
+        @JvmField
+        var enable = true
 
-    @JvmField
-    var enchantments_transfer_to_book_rate = 0.5
-
-    @JvmField
-    var bane_of_arthropods_also_affects = setOf("minecraft:guardian, minecraft:elder_guardian")
-
-    @JvmField
-    var creepers_avoid_cats_at = 16
-
-    @JvmField
-    var enchantment_blacklist = setOf("minecraft:protection")
-
-    @JvmField
-    var fire_protection_lava_immunity = 1.0
-
-    @JvmField
-    var fire_protection_protects_against = setOf("minecraft:blazed", "minecraft:magma_cube")
+        @JvmField
+        var protects_from = setOf("minecraft:blazed", "minecraft:magma_cube")
+    }
 
     @JvmField
     var frost_walker_melts_at_night = true
@@ -164,29 +192,60 @@ object GlobalConfig: Config {
     @JvmField
     var piglins_and_hoglins_are_fire_immune = true
 
-    @JvmField
-    var pigs_ridden_speed_boost = 2.0
+    object pigs_ridden_are_faster {
+        @JvmField
+        var enable = true
+
+        @JvmField
+        var speed_multiplier = 2.0
+    }
 
     @JvmField
     var shields_no_longer_prevent_knockback = true
 
     @JvmField
     var thorns_no_longer_wears_down_armor = true
+    
+    object tools_custom_repair_rate{
+        @JvmField
+        var enable = true
+        
+        var ingots_to_fully_repair = mapOf(
+            "minecraft:.+_helmet" to 3,
+            "minecraft:.+_chestplate" to 5,
+            "minecraft:.+_leggings" to 4,
+            "minecraft:.+_boots" to 2,
 
-    var tools_ingots_to_fully_repair = mapOf(
-        "minecraft:.+_helmet" to 3,
-        "minecraft:.+_chestplate" to 5,
-        "minecraft:.+_leggings" to 4,
-        "minecraft:.+_boots" to 2,
-
-        "minecraft:.+_axe" to 2,
-        "minecraft:.+_shovel" to 1,
-        "minecraft:.+_pickaxe" to 2,
-        "minecraft:.+_hoe" to 1,
-    )
-    set(value) {
-        field = value.mapValues { (_, it)->(it as Number).toInt() }
+            "minecraft:.+_axe" to 2,
+            "minecraft:.+_shovel" to 1,
+            "minecraft:.+_pickaxe" to 2,
+            "minecraft:.+_hoe" to 1,
+        )
+        set(value) {
+            field = value.mapValues { (_, it)->(it as Number).toInt() }
+        }
     }
+
+    object tools_max_durability_decay{
+        @JvmField
+        var enable = true
+
+        @JvmField
+        var decay_rate = 1000
+    }
+
+    object xp: Config{
+        @JvmField
+        var set_unobtainable = true
+
+        @JvmField
+        var disable_bar = true
+
+        @JvmField
+        var no_longer_needed_to_repair = true
+    }
+
+
 
     @JvmField
     var village_less_fight = true

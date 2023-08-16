@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin;
+package unaverage.tweaks.mixin.shields_no_longer_prevent_knockback;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
