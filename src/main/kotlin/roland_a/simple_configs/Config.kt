@@ -22,7 +22,7 @@ interface Config{
                 result += k to v.toMap()
             }
 
-            return result
+            return result.toSortedMap()
         }
 
         fun Config.override(
@@ -137,6 +137,11 @@ interface Config{
             if (value is Int){
                 setter(value.toDouble()).ifTrue { return true }
             }
+            if (value is Iterable<*>){
+                setter(value.toList()).ifTrue { return true }
+                setter(value.toSet()).ifTrue { return true }
+            }
+
             return false
         }
 
