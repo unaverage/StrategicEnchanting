@@ -22,7 +22,7 @@ abstract class XpOrbMixin extends Entity {
         cancellable = true
     )
     void removeFromExistence(CallbackInfo ci){
-        if (!GlobalConfig.xp.set_unobtainable) return;
+        if (!GlobalConfig.xp.disable_xp) return;
 
         this.amount = 0;
         this.discard();
