@@ -35,10 +35,10 @@ fun <T> T.getID(r: Registry<T>): String {
     }
 }
 
-private val cachedGet: MutableMap<String, Any?> = HashMap()
+private val cachedGet: MutableMap<Pair<Map<String, *>, String>, Any?> = HashMap()
 fun <T> Map<String, T>.getWithRegex(itemID: String): T? {
     @Suppress("UNCHECKED_CAST")
-    return cachedGet.getOrPut(itemID){
+    return cachedGet.getOrPut(this to itemID){
         //Runs the loop twice
         //First time it checks for exact equality
         //Second time, it tests for regex
@@ -61,9 +61,9 @@ fun <T> Map<String, T>.getWithRegex(itemID: String): T? {
 }
 
 
-private val cachedContain: MutableMap<String, Boolean> = HashMap()
+private val cachedContain: MutableMap<Pair<Set<String>, String>, Boolean> = HashMap()
 fun Set<String>.containsWithRegex(id: String): Boolean {
-    return cachedContain.getOrPut(id){
+    return cachedContain.getOrPut(this to id){
         for (testedID in this) {
             if (id == testedID) {
                 return@getOrPut true
@@ -104,7 +104,7 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 /**
  * {@return The total weights of enchantments the item can hold}
  */
-val Item?.capacity: Double?
+val Item.capacity: Double?
     get() {
         return GlobalConfig
             .EnchantmentCaps

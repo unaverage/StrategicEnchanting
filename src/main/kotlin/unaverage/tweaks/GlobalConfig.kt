@@ -2,6 +2,7 @@ package unaverage.tweaks
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.ToNumberPolicy
 import net.fabricmc.loader.api.FabricLoader
 import roland_a.simple_configs.Config
 import roland_a.simple_configs.Config.Companion.override
@@ -15,6 +16,7 @@ fun runGlobalConfig() {
         fun Map<String,Any?>.toText(): String {
             return GsonBuilder()
                 .setPrettyPrinting()
+                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this)!!
         }
@@ -62,7 +64,6 @@ fun runGlobalConfig() {
 
 object GlobalConfig: Config {
     object EnchantmentCaps: Config{
-        @JvmField
         var enchantment_weights = mapOf(
             "1" to listOf(1.0),
             "2" to listOf(.5, 1.0),
@@ -71,8 +72,13 @@ object GlobalConfig: Config {
             "5" to listOf(.25, .25, .5, .75, 1.0),
             "modid:example" to listOf(0.25, .5, .75, 1.0),
         )
+        set(value) {
+            field = value
+                .mapValues {
+                    (_, it)-> it.map { (it as Number).toDouble() }
+                }
+        }
 
-        @JvmField
         var item_capacities = mapOf(
             "minecraft:bow" to 2.5,
             "minecraft:chainmail_.+" to 3.0,
@@ -88,6 +94,9 @@ object GlobalConfig: Config {
             "minecraft:stone_.+" to null,
             "minecraft:wooden_.+" to null,
         )
+        set(value) {
+            field = value.mapValues { (_, it)->(it as Number?)?.toDouble() }
+        }
 
         @JvmField
         var tool_tip_decimal_places = 1
@@ -161,7 +170,6 @@ object GlobalConfig: Config {
     @JvmField
     var thorns_no_longer_wears_down_armor = true
 
-    @JvmField
     var tools_ingots_to_fully_repair = mapOf(
         "minecraft:.+_helmet" to 3,
         "minecraft:.+_chestplate" to 5,
@@ -173,6 +181,9 @@ object GlobalConfig: Config {
         "minecraft:.+_pickaxe" to 2,
         "minecraft:.+_hoe" to 1,
     )
+    set(value) {
+        field = value.mapValues { (_, it)->(it as Number).toInt() }
+    }
 
     @JvmField
     var village_less_fight = true
