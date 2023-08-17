@@ -152,11 +152,10 @@ object GlobalConfig: Config {
     }
 
     object enchantments_transfer_to_book: Config{
-
         @JvmField
         var enable = true
         @JvmField
-        var transfer_percentage = 0.5
+        var transfer_percentage = 0.75
     }
 
     object enchantment_blacklist: Config {
@@ -231,21 +230,21 @@ object GlobalConfig: Config {
 
     object tools_max_durability_decay: Config{
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmField
         var decay_rate = 1000
     }
 
     @JvmField
-    var tools_repair_takes_zero_xp = true
+    var tools_repair_takes_zero_xp = false
 
     object xp: Config{
         @JvmField
-        var disable_xp = true
+        var disable_xp = false
 
         @JvmField
-        var disable_bar = true
+        var disable_bar = false
     }
 
 
