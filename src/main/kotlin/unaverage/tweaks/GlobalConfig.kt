@@ -219,9 +219,10 @@ object GlobalConfig: Config {
             "minecraft:.+_boots" to 2,
 
             "minecraft:.+_axe" to 2,
-            "minecraft:.+_shovel" to 1,
-            "minecraft:.+_pickaxe" to 2,
             "minecraft:.+_hoe" to 1,
+            "minecraft:.+_pickaxe" to 2,
+            "minecraft:.+_shovel" to 1,
+            "minecraft:.+_sword" to 1,
         )
         set(value) {
             field = value.mapValues { (_, it)->(it as Number).toInt() }
