@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.xp;
+package unaverage.tweaks.mixin.tools_repair_takes_no_xp;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,9 +15,7 @@ import unaverage.tweaks.GlobalConfig;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
-    public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(type, syncId, playerInventory, context);
-    }
+    public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {super(type, syncId, playerInventory, context);}
 
     @Inject(
         method = "canTakeOutput",
@@ -25,7 +23,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         cancellable = true
     )
     void noLongerNeedsXP(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.xp.repair_takes_zero_xp) return;
+        if (!GlobalConfig.tools_repair_takes_zero_xp) return;
 
        cir.setReturnValue(true);
     }

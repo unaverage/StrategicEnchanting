@@ -237,15 +237,15 @@ object GlobalConfig: Config {
         var decay_rate = 1000
     }
 
+    @JvmField
+    var tools_repair_takes_zero_xp = true
+
     object xp: Config{
         @JvmField
         var disable_xp = true
 
         @JvmField
         var disable_bar = true
-
-        @JvmField
-        var repair_takes_zero_xp = true
     }
 
 

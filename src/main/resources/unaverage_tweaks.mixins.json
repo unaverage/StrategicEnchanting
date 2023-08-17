@@ -29,8 +29,8 @@
     "tools_custom_repair_rate.AnvilScreenHandlerMixin",
     "tools_max_durability_decay.ItemStackMixin",
     "village_less_fights.ActiveTargetMixin",
-    "xp.AnvilScreenHandlerMixin",
-    "xp.AnvilScreenMixin",
+    "tools_repair_takes_no_xp.AnvilScreenHandlerMixin",
+    "tools_repair_takes_no_xp.AnvilScreenMixin",
     "xp.XpOrbMixin"
   ],
   "client": [
