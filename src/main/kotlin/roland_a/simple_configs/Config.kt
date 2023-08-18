@@ -7,20 +7,20 @@ import kotlin.reflect.full.memberProperties
 
 interface Config{
     companion object{
-        fun Config.toMap(): Map<String, Any?>{
-            val result = mutableMapOf<String,Any?>()
+        fun Config.toMap(): Map<String, Any>{
+            val result = mutableMapOf<String,Any>()
 
             this
-            .variables()
-            .forEach { (k, v) ->
-                result += k to v.tryCall(this)
-            }
+                .variables()
+                .forEach { (k, v) ->
+                    result += k to v.tryCall(this)
+                }
 
             this
-            .nestedConfigs()
-            .forEach { (k, v) ->
-                result += k to v.toMap()
-            }
+                .nestedConfigs()
+                .forEach { (k, v) ->
+                    result += k to v.toMap()
+                }
 
             return result.toSortedMap()
         }
@@ -30,41 +30,49 @@ interface Config{
             whenKeyIsInvalid: (String)->Unit,
             whenKeyIsUnknown: (String)->Unit,
         ) {
+
             map.forEach { (key, v) ->
                 this
-                .nestedConfigs()
-                .toList()
-                .firstOrNull {
-                        (checkedKey,_)-> checkedKey == key
-                }
-                ?.let {(_, config)->
-                    if (v !is Map<*,*>) {
-                        whenKeyIsInvalid(key)
+                    .nestedConfigs()
+                    .toList()
+                    .firstOrNull {
+                            (checkedKey,_)-> checkedKey == key
                     }
-                    else {
-                        config.override(v as Map<String, Any?>, whenKeyIsInvalid, whenKeyIsUnknown)
+                    ?.let {(_, config)->
+                        if (v !is Map<*,*>) {
+                            whenKeyIsInvalid(key)
+                        }
+                        else {
+                            config.override(v as Map<String, Any>, whenKeyIsInvalid, whenKeyIsUnknown)
+                        }
                     }
-                }
-                ?.let {
-                    return@forEach
-                }
+                    ?.let {
+                        return@forEach
+                    }
 
                 this
-                .variables()
-                .toList()
-                .firstOrNull{
-                        (checkedKey, _)-> checkedKey==key
-                }
-                ?.let { (_, property)->
-                    val flag = property.trySet(this, v)
-
-                    if (!flag) {
-                        whenKeyIsInvalid(key)
+                    .variables()
+                    .toList()
+                    .firstOrNull{
+                            (checkedKey, _)-> checkedKey==key
                     }
-                }
-                ?.let {
-                    return@forEach
-                }
+                    ?.let { (_, property)->
+                        val default = property.tryCall(this)
+
+                        val value = v.convert(default)
+                        if (value == null){
+                            whenKeyIsInvalid(key)
+                            return
+                        }
+
+                        val flag = property.trySet(this, value)
+                        if (!flag) {
+                            whenKeyIsInvalid(key)
+                        }
+                    }
+                    ?.let {
+                        return@forEach
+                    }
 
                 whenKeyIsUnknown(key)
             }
@@ -104,58 +112,139 @@ interface Config{
                 }
         }
 
-        private fun KMutableProperty1<Config, *>.trySet(config: Config, value: Any?): Boolean{
-            val setter = fun(it: Any?): Boolean {
+        private fun KMutableProperty1<Config, *>.trySet(config: Config, value: Any): Boolean{
+            try {
+                this.setter.call(config, value)
+            } catch (e: IllegalArgumentException) {
                 try {
-                    this.setter.call(config, it)
+                    this.setter.call(value)
                 } catch (e: IllegalArgumentException) {
-                    try {
-                        this.setter.call(it)
-                    } catch (e: IllegalArgumentException) {
-                        return false
-                    }
+                    return false
                 }
-                return true
             }
-
-            setter(value).ifTrue { return true }
-
-            if (value is String){
-                @Suppress("NAME_SHADOWING")
-                val value = value.trim()
-
-                if (value.lowercase() == "true") setter(true).ifTrue { return true }
-                if (value.lowercase() == "false") setter(false).ifTrue { return true }
-                if (value.lowercase() == "null") setter(null).ifTrue { return true }
-
-                value.toDoubleOrNull()?.let{ this.trySet(config, it) }?.ifTrue { return true }
-                value.toIntOrNull()?.let{ this.trySet(config, it) }?.ifTrue { return true }
+            catch (e: InvalidValueException){
+                return false
             }
-            if (value is Double && floor(value)==ceil(value)){
-                setter(value.toInt()).ifTrue { return true }
-            }
-            if (value is Int){
-                setter(value.toDouble()).ifTrue { return true }
-            }
-            if (value is Iterable<*>){
-                setter(value.toList()).ifTrue { return true }
-                setter(value.toSet()).ifTrue { return true }
-            }
-
-            return false
+            return true
         }
 
-        private fun KMutableProperty1<Config, *>.tryCall(c: Config): Any? {
+        private fun KMutableProperty1<Config, *>.tryCall(c: Config): Any {
             try {
-                return this.call()
+                return this.call() as Any
             }
             catch (e: IllegalArgumentException){
-                return this.call(c)
+                return this.call(c) as Any
             }
         }
 
-        private inline fun Boolean.ifTrue(fn: ()->Unit){
-            if (this) fn()
+        @Suppress("UNCHECKED_CAST", "FoldInitializerAndIfToElvis", "LiftReturnOrAssignment")
+        private fun Any?.convert(default: Any): Any?{
+            when(default){
+                is Map<*,*>->{
+                    val first = default.values.firstOrNull()
+                    if (first == null) throw RuntimeException("maps in default value must not be empty")
+
+                    if (default.containsValue(null)) throw RuntimeException("nulls are not allowed")
+                    default as Map<*, Any>
+
+                    if (this is Map<*,*>) {
+                        if (this.containsValue(null)) return null
+                        this as Map<*, Any>
+
+                        return this.mapValues { (_, it)->
+                            it.convert(first) ?: return null
+                        }
+                    }
+
+                    return null
+                }
+                is List<*>->{
+                    val first = default.firstOrNull()
+                    if (first == null) throw RuntimeException("maps in default value must not be empty")
+
+                    if (default.contains(null)) throw RuntimeException("nulls are not allowed")
+                    default as List<Any>
+
+                    when (this){
+                        is Iterable<*>->{
+                            if (this.contains(null)) return null
+                            this as Iterable<Any>
+
+                            return this
+                                .map {
+                                    it.convert(first) ?: return null
+                                }
+                                .toList()
+                        }
+                        else ->{
+                            return null
+                        }
+                    }
+                }
+                is Set<*>->{
+                    val first = default.firstOrNull()
+                    if (first == null) throw RuntimeException("maps in default value must not be empty")
+
+                    if (default.contains(null)) throw RuntimeException("nulls are not allowed")
+                    default as Set<Any>
+
+                    when (this){
+                        is Iterable<*>->{
+                            if (this.contains(null)) return null
+                            this as Iterable<Any>
+
+                            return this
+                                .map {
+                                    it.convert(first) ?: return null
+                                }
+                                .toSet()
+                        }
+                        else ->{
+                            return null
+                        }
+                    }
+                }
+                is String->{
+                    when (this){
+                        is String->return this
+                        else->return null
+                    }
+                }
+                is Double->{
+                    if (this is Double) return this
+                    if (this is Int) return this.toDouble()
+
+                    return null
+                }
+                is Int->{
+                    when (this){
+                        is Int->{
+                            return this
+                        }
+                        is Double->{
+                            if (!this.isRounded()) return null
+
+                            return this.toInt()
+                        }
+                        else->{
+                            return null
+                        }
+                    }
+                }
+                is Boolean->{
+                    when (this){
+                        is Boolean->return this
+                        else->return null
+                    }
+                }
+                else->{
+                    throw RuntimeException("type ${default::class} is not supported")
+                }
+            }
+        }
+
+        private fun Double.isRounded(): Boolean{
+            return floor(this) == ceil(this)
         }
     }
 }
