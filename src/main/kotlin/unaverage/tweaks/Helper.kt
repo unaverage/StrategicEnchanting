@@ -317,7 +317,7 @@ val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
 val Enchantment.isBlackListed: Boolean
     get() {
         return GlobalConfig
-            .enchantment_blacklist
+            .enchantments_blacklist
             .blacklisted
             .containsWithRegex(
                 this.getID(Registries.ENCHANTMENT)
@@ -347,7 +347,7 @@ val EntityType<*>.newFeedList: List<Item>?
     get() {
         return GlobalConfig
             .animals_custom_feeding
-            .affected
+            .affects
             .getWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )

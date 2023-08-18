@@ -32,7 +32,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         )
     )
     boolean countNewFeedingItems(AnimalEntity instance, ItemStack stack){
-        if (!GlobalConfig.animals_custom_feeding.enabled) return instance.isBreedingItem(stack);
+        if (!GlobalConfig.animals_custom_feeding.enable) return instance.isBreedingItem(stack);
 
         //noinspection ConstantConditions
         if ((Object)this instanceof ParrotEntity) return this.isBreedingItem(stack);

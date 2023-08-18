@@ -32,6 +32,6 @@ public abstract class FleeEntityMixin{
         if (!(mob instanceof CreeperEntity)) return;
         if (fleeFromType != CatEntity.class && fleeFromType != OcelotEntity.class) return;
 
-        this.fleeDistance = GlobalConfig.creepers_avoid_cats_further.distance;
+        this.fleeDistance = GlobalConfig.creepers_avoid_cats_further.getDistance();
     }
 }

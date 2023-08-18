@@ -53,7 +53,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var enchantments = EnchantmentHelper.get(input2);
         cap(
             enchantments,
-            GlobalConfig.enchantments_transfer_to_book.transfer_percentage * getWeight(enchantments),
+            GlobalConfig.enchantments_transfer_to_book.getTransfer_percentage() * getWeight(enchantments),
             x->false
         );
 

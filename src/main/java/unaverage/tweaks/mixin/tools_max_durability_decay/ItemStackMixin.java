@@ -33,7 +33,7 @@ public abstract class ItemStackMixin {
         var totalEnchantments = HelperKt.getWeight(EnchantmentHelper.get((ItemStack) (Object)this));
         if (totalEnchantments <= 0) return;
 
-        var decay = (double)diff / (double)GlobalConfig.tools_max_durability_decay.decay_rate * totalEnchantments;
+        var decay = (double)diff / (double) GlobalConfig.tools_max_durability_decay.getDecay_rate() * totalEnchantments;
 
         HelperKt.setDecay(
             (ItemStack)(Object)this,

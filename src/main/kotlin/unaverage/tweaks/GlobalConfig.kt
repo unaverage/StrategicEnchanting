@@ -7,11 +7,14 @@ import net.fabricmc.loader.api.FabricLoader
 import roland_a.simple_configs.Config
 import roland_a.simple_configs.Config.Companion.override
 import roland_a.simple_configs.Config.Companion.toMap
+import roland_a.simple_configs.InvalidValueException
 import java.io.File
 
 const val FILE_NAME = UnaverageTweaks.MOD_ID + ".json"
 
 fun runGlobalConfig() {
+    if (isInitialized) return
+
     fun Config.writeToFile(file: File){
         fun Map<String,Any?>.toText(): String {
             return GsonBuilder()
@@ -60,7 +63,11 @@ fun runGlobalConfig() {
         GlobalConfig.overwriteFromFile(file)
         GlobalConfig.writeToFile(file)
     }
+
+    isInitialized = true
 }
+
+var isInitialized = false
 
 @Suppress("ClassName")
 object GlobalConfig: Config {
@@ -71,10 +78,9 @@ object GlobalConfig: Config {
 
     object animals_custom_feeding: Config {
         @JvmField
-        var enabled = true
+        var enable = true
 
-        @JvmField
-        var affected = mapOf(
+        var affects = mapOf(
             "minecraft:pig" to setOf(
                 "minecraft:apple",
                 "minecraft:beetroot",
@@ -87,8 +93,7 @@ object GlobalConfig: Config {
     object animals_heal_when_fed: Config {
         @JvmField
         var enabled = true
-     
-        @JvmField
+
         var affected = setOf(
             "minecraft:chicken",
             "minecraft:cow",
@@ -102,23 +107,31 @@ object GlobalConfig: Config {
         @JvmField
         var enable = true
 
-        @JvmField
-        var extra_mobs_affected = setOf("minecraft:guardian, minecraft:elder_guardian")
+        var extra_mobs_affected = setOf(
+            "minecraft:guardian",
+            "minecraft:elder_guardian"
+        )
+
     }
 
     object creepers_avoid_cats_further: Config{
         @JvmField
         var enable = true
 
-        @JvmField
+        @JvmStatic
         var distance = 16
+            set(value) {
+                if (value <= 0) throw InvalidValueException()
+
+                field = value
+            }
     }
 
     object enchantments_are_capped: Config{
-
         @JvmField
         var enable = true
 
+        @JvmField
         var enchantment_weights = mapOf(
             "1" to listOf(1.0),
             "2" to listOf(.5, 1.0),
@@ -127,13 +140,8 @@ object GlobalConfig: Config {
             "5" to listOf(.25, .25, .5, .75, 1.0),
             "modid:example" to listOf(0.25, .5, .75, 1.0),
         )
-        set(value) {
-            field = value
-                .mapValues {
-                    (_, it)-> it.map { (it as Number).toDouble() }
-                }
-        }
 
+        @JvmField
         var item_capacities = mapOf(
             "minecraft:bow" to 2.5,
             "minecraft:chainmail_.+" to 3.0,
@@ -144,26 +152,38 @@ object GlobalConfig: Config {
             "minecraft:netherite_.+" to 1.5,
             "minecraft:shears" to 2.0,
         )
-        set(value) {
-            field = value.mapValues { (_, it)->(it as Number).toDouble() }
-        }
-        @JvmField
+
+        @JvmStatic
         var tool_tip_decimal_places = 1
+            set(value) {
+                if (value < 0) throw InvalidValueException()
+
+                field = value
+            }
     }
 
     object enchantments_transfer_to_book: Config{
         @JvmField
         var enable = true
-        @JvmField
+
+        @JvmStatic
         var transfer_percentage = 0.75
+            set(value) {
+                if (value<0) throw InvalidValueException()
+                if (value>1) throw InvalidValueException()
+
+                field = value
+            }
     }
 
-    object enchantment_blacklist: Config {
+    object enchantments_blacklist: Config {
         @JvmField
         var enable = true
-        
+
         @JvmField
-        var blacklisted = setOf("minecraft:protection")
+        var blacklisted = setOf(
+            "minecraft:protection"
+        )
     }
 
     object fire_protection_offers_lava_immunity: Config {
@@ -198,8 +218,13 @@ object GlobalConfig: Config {
         @JvmField
         var enable = true
 
-        @JvmField
+        @JvmStatic
         var speed_multiplier = 2.0
+            set(value) {
+                if (value < 1) throw InvalidValueException()
+
+                field = value
+            }
     }
 
     @JvmField
@@ -224,17 +249,19 @@ object GlobalConfig: Config {
             "minecraft:.+_shovel" to 1,
             "minecraft:.+_sword" to 1,
         )
-        set(value) {
-            field = value.mapValues { (_, it)->(it as Number).toInt() }
-        }
     }
 
     object tools_max_durability_decay: Config{
         @JvmField
         var enable = false
 
-        @JvmField
+        @JvmStatic
         var decay_rate = 1000
+            set(value) {
+                if (value <= 0) throw InvalidValueException()
+
+                field = value
+            }
     }
 
     @JvmField

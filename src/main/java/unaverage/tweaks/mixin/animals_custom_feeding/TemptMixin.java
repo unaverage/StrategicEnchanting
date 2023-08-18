@@ -26,7 +26,7 @@ public class TemptMixin {
         at = @At("TAIL")
     )
     void mobsEatExtraFood(PathAwareEntity entity, double speed, Ingredient food, boolean canBeScared, CallbackInfo ci){
-        if (!GlobalConfig.animals_custom_feeding.enabled) return;
+        if (!GlobalConfig.animals_custom_feeding.enable) return;
 
         //TODO better way to exclude nonbreeding tempt goals
         if (food.test(Items.CARROT_ON_A_STICK.getDefaultStack())) return;

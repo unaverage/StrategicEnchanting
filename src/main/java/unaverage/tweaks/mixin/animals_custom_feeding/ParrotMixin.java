@@ -27,7 +27,7 @@ public abstract class ParrotMixin extends AnimalEntity {
         at = @At("TAIL")
     )
     private static void canBeTamedWithNewFeedingList(CallbackInfo ci){
-        if (!GlobalConfig.animals_custom_feeding.enabled) return;
+        if (!GlobalConfig.animals_custom_feeding.enable) return;
         var list = HelperKt.getNewFeedList(EntityType.PARROT);
         if (list == null) return;
 
