@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 @Mixin(AnvilScreenHandler.class)
@@ -27,8 +26,6 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         at = @At("TAIL")
     )
     void useNewRepair(CallbackInfo ci){
-        if (!GlobalConfig.tools_custom_repair_rate.enable) return;
-
         var input1 = this.input.getStack(0);
         var input2 = this.input.getStack(1);
         var result = this.output.getStack(0);

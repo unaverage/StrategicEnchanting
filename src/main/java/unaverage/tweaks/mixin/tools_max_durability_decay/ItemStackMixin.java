@@ -23,8 +23,6 @@ public abstract class ItemStackMixin {
         at = @At("HEAD")
     )
     void decayWhenRepaired(int newDamage, CallbackInfo ci){
-        if (!GlobalConfig.tools_max_durability_decay.enable) return;
-
         var oldDamage = this.getDamage();
         if (oldDamage <= newDamage) return;
 

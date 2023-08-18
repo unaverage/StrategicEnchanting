@@ -32,9 +32,6 @@ public class AnvilScreenMixin {
         )
     )
     int removeXPNumberOnAnvil(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color){
-        if (!GlobalConfig.tools_repair_takes_zero_xp){
-            return instance.drawTextWithShadow(textRenderer, text, x, y, color);
-        }
         return 0;
     }
 }

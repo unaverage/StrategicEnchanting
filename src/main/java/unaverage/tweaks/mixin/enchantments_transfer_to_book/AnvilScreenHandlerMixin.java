@@ -36,8 +36,6 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         at = @At("RETURN")
     )
     void transfer_to_book(CallbackInfo ci){
-        if (!GlobalConfig.enchantments_transfer_to_book.enable) return;
-
         if (!this.output.getStack(0).isEmpty()) return;
 
         var input1 = this.input.getStack(0);

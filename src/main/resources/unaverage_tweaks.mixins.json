@@ -36,6 +36,7 @@
   "client": [
     "xp.InGameHudMixin"
   ],
+  "plugin": "unaverage.tweaks.Plugin",
   "injectors": {
     "defaultRequire": 1
   }

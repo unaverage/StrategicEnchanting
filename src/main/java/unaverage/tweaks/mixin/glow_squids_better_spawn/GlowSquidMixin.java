@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.GlobalConfig;
 
 @Mixin(GlowSquidEntity.class)
 public class GlowSquidMixin {
@@ -22,8 +21,6 @@ public class GlowSquidMixin {
         cancellable = true
     )
     private static void requireMoreWaterBlocksToSpawn(EntityType<? extends LivingEntity> type, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.glow_squids_better_spawn) return;
-
         cir.setReturnValue(
             cir.getReturnValue() && world.getBlockState(pos.up()).isOf(Blocks.WATER) && world.getBlockState(pos.down()).isOf(Blocks.WATER)
         );

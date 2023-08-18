@@ -54,10 +54,6 @@ public class InGameHudMixin {
         )
     )
     void moveHealthBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (!GlobalConfig.xp.disable_bar){
-            instance.drawTexture(texture, x, y, u, v, width, height);
-            return;
-        }
         if (this.client.player.getJumpingMount() != null){
             instance.drawTexture(texture, x, y, u, v, width, height);
             return;
@@ -74,10 +70,6 @@ public class InGameHudMixin {
         )
     )
     void moveRiddenHealthBarDown(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (!GlobalConfig.xp.disable_bar){
-            instance.drawTexture(texture, x, y, u, v, width, height);
-            return;
-        }
         if (this.client.player.getJumpingMount() != null){
             instance.drawTexture(texture, x, y, u, v, width, height);
             return;
@@ -94,10 +86,6 @@ public class InGameHudMixin {
         )
     )
     void moveHungerBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (!GlobalConfig.xp.disable_bar){
-            instance.drawTexture(texture, x, y, u, v, width, height);
-            return;
-        }
         if (this.client.player.getJumpingMount() != null){
             instance.drawTexture(texture, x, y, u, v, width, height);
             return;

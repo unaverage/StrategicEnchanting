@@ -5,7 +5,6 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.GlobalConfig;
 
 @Mixin(HorseBondWithPlayerGoal.class)
 public class HorseBondMixin {
@@ -17,8 +16,6 @@ public class HorseBondMixin {
         )
     )
     int cancelTemperWithoutFeeding(AbstractHorseEntity instance, int difference){
-        if (!GlobalConfig.horses_harder_to_tame) return instance.addTemper(difference);
-
         return 0;
     }
 }

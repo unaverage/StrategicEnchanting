@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.GlobalConfig;
 
 @Mixin(ExperienceOrbEntity.class)
 abstract class XpOrbMixin extends Entity {
@@ -22,8 +21,6 @@ abstract class XpOrbMixin extends Entity {
         cancellable = true
     )
     void removeFromExistence(CallbackInfo ci){
-        if (!GlobalConfig.xp.disable_xp) return;
-
         this.amount = 0;
         this.discard();
 

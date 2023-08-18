@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.HelperKt;
-import unaverage.tweaks.GlobalConfig;
 
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectShouldRun(ServerWorld world, E entity, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
 
         var cropBlock = HelperKt.getHeldItemAsCropBlock(allay);
@@ -57,7 +55,6 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectRun(ServerWorld world, E entity, long time, CallbackInfo ci){
-        if (!GlobalConfig.allays_can_plant_crops) return;
         if (targetFarmland == null) return;
 
         LookTargetUtil.walkTowards(entity, targetFarmland, this.speed, 0);
@@ -70,7 +67,6 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectShouldKeepRunning(ServerWorld world, E entity, long time, CallbackInfoReturnable<Boolean> cir){
-        if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
@@ -100,7 +96,6 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         cancellable = true
     )
     void injectKeepRunning(ServerWorld world, E entity, long time, CallbackInfo ci){
-        if (!GlobalConfig.allays_can_plant_crops) return;
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 

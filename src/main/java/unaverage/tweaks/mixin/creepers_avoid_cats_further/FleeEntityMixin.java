@@ -27,8 +27,6 @@ public abstract class FleeEntityMixin{
         at = @At("TAIL")
     )
     public void creepersFleeFurther(PathAwareEntity mob, Class<?> fleeFromType, Predicate<?> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<?> inclusionSelector, CallbackInfo ci){
-        if (!GlobalConfig.creepers_avoid_cats_further.enable) return;
-
         if (!(mob instanceof CreeperEntity)) return;
         if (fleeFromType != CatEntity.class && fleeFromType != OcelotEntity.class) return;
 

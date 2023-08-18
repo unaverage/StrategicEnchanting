@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 @Mixin(AnimalEntity.class)
@@ -32,8 +31,6 @@ public abstract class AnimalMixin extends PassiveEntity {
         )
     )
     boolean countNewFeedingItems(AnimalEntity instance, ItemStack stack){
-        if (!GlobalConfig.animals_custom_feeding.enable) return instance.isBreedingItem(stack);
-
         //noinspection ConstantConditions
         if ((Object)this instanceof ParrotEntity) return this.isBreedingItem(stack);
 

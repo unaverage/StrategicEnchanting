@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 @Mixin(AnimalEntity.class)
@@ -32,8 +31,6 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir) {
-        if (!GlobalConfig.animals_heal_when_fed.enabled) return;
-
         if (!HelperKt.getHealsWhenFed(this.getType())) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
@@ -47,8 +44,6 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (!GlobalConfig.animals_heal_when_fed.enabled) return;
-
         if (!HelperKt.getHealsWhenFed(this.getType())) return;
         if (this.getType() == EntityType.PARROT) return;
 

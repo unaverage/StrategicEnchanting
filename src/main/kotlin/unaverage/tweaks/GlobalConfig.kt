@@ -69,6 +69,38 @@ fun runGlobalConfig() {
 
 var isInitialized = false
 
+
+fun isEnabled(mixinName: String): Boolean{
+    val mixinName = mixinName.split('.').let{ it[it.lastIndex-1] }
+
+    val map = mapOf(
+        "allays_can_plant_crops" to GlobalConfig.allays_can_plant_crops ,
+        "animals_custom_feeding" to GlobalConfig.animals_custom_feeding.enable ,
+        "animals_heal_when_fed" to GlobalConfig.animals_heal_when_fed.enable ,
+        "bane_of_arthropods_extra" to GlobalConfig.bane_of_arthropods_extra.enable,
+        "creepers_avoid_cats_further" to GlobalConfig.creepers_avoid_cats_further.enable,
+        "enchantments_blacklist" to GlobalConfig.enchantments_blacklist.enable,
+        "enchantments_are_capped" to GlobalConfig.enchantments_are_capped.enable,
+        "enchantments_transfer_to_book" to GlobalConfig.enchantments_transfer_to_book.enable,
+        "fire_protection_offers_lava_immunity" to GlobalConfig.fire_protection_offers_lava_immunity.enable,
+        "fire_protection_offers_meele_protection" to GlobalConfig.fire_protection_offers_melee_protection.enable,
+        "frost_walker_melts_at_night" to GlobalConfig.frost_walker_melts_at_night,
+        "glow_squids_better_spawn" to GlobalConfig.glow_squids_better_spawn,
+        "horses_harder_to_tame" to GlobalConfig.horses_harder_to_tame,
+        "piglins_and_hoglins_fire_immune" to GlobalConfig.piglins_and_hoglins_are_fire_immune,
+        "ridden_pigs_are_faster" to GlobalConfig.pigs_ridden_are_faster.enable,
+        "shields_no_longer_prevent_knockback" to GlobalConfig.shields_no_longer_prevent_knockback,
+        "thorns_no_longer_wears_down_armor" to GlobalConfig.thorns_no_longer_wears_down_armor,
+        "tools_custom_repair_rate" to GlobalConfig.tools_custom_repair_rate.enable,
+        "tools_max_durability_decay" to GlobalConfig.tools_max_durability_decay.enable,
+        "tools_repair_takes_no_xp" to GlobalConfig.tools_repair_takes_zero_xp,
+        "village_less_fights" to GlobalConfig.village_less_fight,
+        "xp" to (GlobalConfig.xp.disable_xp || GlobalConfig.xp.disable_bar)
+    )
+
+    return map[mixinName] ?: throw RuntimeException("$mixinName not registered here")
+}
+
 @Suppress("ClassName")
 object GlobalConfig: Config {
     //Config name noun should be placed first
@@ -92,7 +124,7 @@ object GlobalConfig: Config {
     
     object animals_heal_when_fed: Config {
         @JvmField
-        var enabled = true
+        var enable = true
 
         var affected = setOf(
             "minecraft:chicken",
@@ -104,6 +136,7 @@ object GlobalConfig: Config {
     }
 
     object bane_of_arthropods_extra: Config {
+
         @JvmField
         var enable = true
 
@@ -115,6 +148,7 @@ object GlobalConfig: Config {
     }
 
     object creepers_avoid_cats_further: Config{
+
         @JvmField
         var enable = true
 
@@ -274,8 +308,6 @@ object GlobalConfig: Config {
         @JvmField
         var disable_bar = false
     }
-
-
 
     @JvmField
     var village_less_fight = true

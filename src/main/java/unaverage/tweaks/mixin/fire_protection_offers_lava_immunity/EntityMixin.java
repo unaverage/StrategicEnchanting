@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.GlobalConfig;
 
 import static unaverage.tweaks.HelperKt.getFireProtectionLavaImmunityDuration;
 
@@ -25,8 +24,6 @@ public abstract class EntityMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void countDownCoolDownOnTick(CallbackInfo ci){
-        if (!GlobalConfig.fire_protection_offers_lava_immunity.enable) return;
-
         if (lavaImmunityCountDown > 0){
             lavaImmunityCountDown -= 1;
         }
@@ -42,8 +39,6 @@ public abstract class EntityMixin {
      */
     @Inject(method = "setOnFireFromLava", at = @At("HEAD"), cancellable = true)
     private void fireProtectionCancelsSetOnFire(CallbackInfo ci){
-        if (!GlobalConfig.fire_protection_offers_lava_immunity.enable) return;
-
         //noinspection ConstantConditions
         if (!((Object)this instanceof LivingEntity thisAsLivingEntity)) return;
 

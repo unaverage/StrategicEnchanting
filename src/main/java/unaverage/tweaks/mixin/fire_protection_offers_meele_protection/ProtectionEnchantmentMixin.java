@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.GlobalConfig;
 
 import static unaverage.tweaks.HelperKt.isFireProtectionAffected;
 
@@ -21,7 +20,6 @@ public class ProtectionEnchantmentMixin {
      */
     @Inject(method = "getProtectionAmount", at = @At(value = "TAIL"), cancellable = true)
     private void fireProtectionDoExtraProtection(int level, DamageSource source, CallbackInfoReturnable<Integer> cir){
-        if (!GlobalConfig.fire_protection_offers_melee_protection.enable) return;
         if (this.protectionType != ProtectionEnchantment.Type.FIRE) return;
 
         var attacker = source.getAttacker();

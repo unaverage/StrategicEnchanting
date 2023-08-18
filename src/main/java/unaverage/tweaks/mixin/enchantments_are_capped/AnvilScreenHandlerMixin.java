@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.GlobalConfig;
 
 import java.util.Map;
 
@@ -36,8 +35,6 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         )
     )
     void anvilUsesDifferentCappingBehavior(Map<Enchantment, Integer> enchantments, ItemStack stack){
-        if (!GlobalConfig.enchantments_are_capped.enable) return;
-
         var inputFromSecondSlot = this.input.getStack(1);
 
         //applies the new capping behavior

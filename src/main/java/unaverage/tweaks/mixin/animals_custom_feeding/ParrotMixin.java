@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.GlobalConfig;
 import unaverage.tweaks.HelperKt;
 
 import java.util.Set;
@@ -27,7 +26,6 @@ public abstract class ParrotMixin extends AnimalEntity {
         at = @At("TAIL")
     )
     private static void canBeTamedWithNewFeedingList(CallbackInfo ci){
-        if (!GlobalConfig.animals_custom_feeding.enable) return;
         var list = HelperKt.getNewFeedList(EntityType.PARROT);
         if (list == null) return;
 

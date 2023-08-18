@@ -28,8 +28,6 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "set", at = @At("HEAD"))
     private static void capEnchantmentsOnSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
-        if (!GlobalConfig.enchantments_are_capped.enable) return;
-
         cap(
             enchantments,
             getCapacity(stack.getItem()),

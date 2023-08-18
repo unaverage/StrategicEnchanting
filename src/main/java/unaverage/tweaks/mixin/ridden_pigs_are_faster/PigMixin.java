@@ -16,8 +16,6 @@ public class PigMixin {
         cancellable = true
     )
     private void makeRiddenPigsFaster(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir){
-        if (!GlobalConfig.pigs_ridden_are_faster.enable) return;
-
         var multiplier = GlobalConfig.pigs_ridden_are_faster.getSpeed_multiplier();
 
         cir.setReturnValue(

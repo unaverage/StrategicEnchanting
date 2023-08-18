@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.GlobalConfig;
 
 
 @Mixin(LivingEntity.class)
@@ -22,11 +21,6 @@ public abstract class LivingEntityMixin extends Entity {
         )
     )
     private void shieldsDoKnockback(LivingEntity instance, LivingEntity target){
-        if (!GlobalConfig.shields_no_longer_prevent_knockback){
-            instance.takeKnockback(0.5, target.getX() - instance.getX(), target.getZ() - instance.getZ());
-            return;
-        }
-
         this.velocityModified = true;
     }
 }
