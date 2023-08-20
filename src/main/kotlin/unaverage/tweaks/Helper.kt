@@ -11,11 +11,10 @@ import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.registry.tag.ItemTags
+import net.minecraft.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.registry.Registry
 import net.minecraft.world.WorldView
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -110,7 +109,7 @@ val Item.capacity: Double?
             .enchantments_are_capped
             .item_capacities
             .getWithRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 
@@ -125,7 +124,7 @@ val Map<Enchantment, Int>.weight: Double
                 .enchantments_are_capped
                 .enchantment_weights
                 .getWithRegex(
-                    e.getID(Registries.ENCHANTMENT)
+                    e.getID(Registry.ENCHANTMENT)
                 )
 
             if (weightByID != null && weightByID.size > level - 1) {
@@ -310,7 +309,7 @@ val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
             .bane_of_arthropods_extra
             .extra_mobs_affected
             .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
+                this.getID(Registry.ENTITY_TYPE)
             )
     }
 
@@ -320,7 +319,7 @@ val Enchantment.isBlackListed: Boolean
             .enchantments_blacklist
             .blacklisted
             .containsWithRegex(
-                this.getID(Registries.ENCHANTMENT)
+                this.getID(Registry.ENCHANTMENT)
             )
     }
 
@@ -339,7 +338,7 @@ val EntityType<*>.isFireProtectionAffected: Boolean
             .fire_protection_offers_melee_protection
             .protects_from
             .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE),
+                this.getID(Registry.ENTITY_TYPE),
             )
     }
 
@@ -349,10 +348,10 @@ val EntityType<*>.newFeedList: List<Item>?
             .animals_custom_feeding
             .affects
             .getWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
+                this.getID(Registry.ENTITY_TYPE)
             )
             ?.mapNotNull {
-                it.fromId(Registries.ITEM)
+                it.fromId(Registry.ITEM)
             }
     }
 
@@ -362,7 +361,7 @@ val EntityType<*>.healsWhenFed: Boolean
             .animals_heal_when_fed
             .affected
             .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
+                this.getID(Registry.ENTITY_TYPE)
             )
     }
 
@@ -372,7 +371,7 @@ val Item.ingotsToFullyRepair: Int?
             .tools_custom_repair_rate
             .ingots_to_fully_repair
             .getWithRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 
