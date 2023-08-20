@@ -20,6 +20,8 @@ public class Plugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (!mixinClassName.contains("unaverage.tweaks")) return true;
+
         return GlobalConfigKt.isEnabled(mixinClassName);
     }
 
