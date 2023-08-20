@@ -5,11 +5,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.screen.AnvilScreenHandler;
-import net.minecraft.screen.ForgingScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.*;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +23,8 @@ import static unaverage.tweaks.HelperKt.getWeight;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
-    @Shadow private int repairItemUsage;
+
+    @Shadow @Final private Property levelCost;
 
     public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(type, syncId, playerInventory, context);
@@ -54,6 +53,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             GlobalConfig.enchantments_transfer_to_book.getTransfer_percentage() * getWeight(enchantments),
             x->false
         );
+        if (enchantments.isEmpty()) return;
 
         EnchantmentHelper.set(
             enchantments,
@@ -65,7 +65,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             result
         );
 
-        this.repairItemUsage = 0;
+        this.levelCost.set(1);
     }
 
     @Redirect(
