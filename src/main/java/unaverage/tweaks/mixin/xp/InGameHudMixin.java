@@ -21,7 +21,11 @@ public abstract class InGameHudMixin {
             target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"
         )
     )
-    void cancelDrawingBar(InGameHud instance, MatrixStack matrixStack, int i1, int i2, int i3, int i4, int i5, int i6){
+    void cancelDrawingBar(InGameHud instance, MatrixStack matrixStack, int x, int y, int u, int v, int width, int height){
+        if (this.getRiddenEntity() != null){
+            instance.drawTexture(matrixStack, x, y, u, v, width, height);
+            return;
+        }
     }
 
     @Redirect(
