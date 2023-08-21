@@ -5,7 +5,7 @@ import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.GiveInventoryToLookTargetTask;
 import net.minecraft.entity.ai.brain.task.LookTargetUtil;
-import net.minecraft.entity.ai.brain.task.MultiTickTask;
+import net.minecraft.entity.ai.brain.task.Task;
 import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -22,14 +22,14 @@ import unaverage.tweaks.HelperKt;
 import java.util.Map;
 
 @Mixin(GiveInventoryToLookTargetTask.class)
-public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> {
+public class GiveToTargetMixin<E extends LivingEntity> extends Task<E> {
+    public GiveToTargetMixin(Map<MemoryModuleType<?>, MemoryModuleState> requiredMemoryState) {super(requiredMemoryState);}
+
     @Final @Shadow
     private float speed;
 
     @Unique
     BlockPos targetFarmland = null;
-
-    public GiveToTargetMixin(Map<MemoryModuleType<?>, MemoryModuleState> requiredMemoryState) {super(requiredMemoryState);}
 
     @Inject(
         method = "shouldRun",

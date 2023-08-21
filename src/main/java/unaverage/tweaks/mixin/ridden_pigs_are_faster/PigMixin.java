@@ -1,7 +1,6 @@
 package unaverage.tweaks.mixin.ridden_pigs_are_faster;
 
 import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +14,7 @@ public class PigMixin {
         at = @At("RETURN"),
         cancellable = true
     )
-    private void makeRiddenPigsFaster(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir){
+    private void makeRiddenPigsFaster(CallbackInfoReturnable<Float> cir){
         var multiplier = GlobalConfig.pigs_ridden_are_faster.getSpeed_multiplier();
 
         cir.setReturnValue(

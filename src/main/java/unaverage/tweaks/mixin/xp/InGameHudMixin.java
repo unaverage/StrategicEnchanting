@@ -1,48 +1,37 @@
 package unaverage.tweaks.mixin.xp;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.GlobalConfig;
 
-@SuppressWarnings("ConstantConditions")
 @Mixin(InGameHud.class)
-public class InGameHudMixin {
-    @Final @Shadow
-    private MinecraftClient client;
+public abstract class InGameHudMixin {
+
+    @Shadow protected abstract LivingEntity getRiddenEntity();
 
     @Redirect(
         method = "renderExperienceBar",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"
         )
     )
-    void cancelDrawingBar(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (!GlobalConfig.xp.disable_bar){
-            instance.drawTexture(texture, x, y, u, v, width, height);
-        }
+    void cancelDrawingBar(InGameHud instance, MatrixStack matrixStack, int i1, int i2, int i3, int i4, int i5, int i6){
     }
 
     @Redirect(
         method = "renderExperienceBar",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;IIIZ)I"
+            target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/client/util/math/MatrixStack;Ljava/lang/String;FFI)I"
         )
     )
-    int cancelDrawingLevels(DrawContext instance, TextRenderer textRenderer, String text, int x, int y, int color, boolean shadow){
-        if (!GlobalConfig.xp.disable_bar){
-            return instance.drawText(textRenderer, text, x, y, color, shadow);
-        }
-
+    int cancelDrawingLevels(TextRenderer instance, MatrixStack matrices, String text, float x, float y, int color){
         return 0;
     }
 
@@ -50,47 +39,49 @@ public class InGameHudMixin {
         method = "drawHeart",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"
         )
     )
-    void moveHealthBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+    void moveHealthBarLower(InGameHud instance, MatrixStack matrixStack, int x, int y, int u, int v, int width, int height){
+        if (this.getRiddenEntity() != null){
+            instance.drawTexture(matrixStack, x, y, u, v, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawTexture(matrixStack, x, y+7, u, v, width, height);
     }
 
     @Redirect(
         method = "renderMountHealth",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"
         )
     )
-    void moveRiddenHealthBarDown(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+    void moveRiddenHealthBarDown(InGameHud instance, MatrixStack matrixStack, int x, int y, int u, int v, int width, int height){
+        if (this.getRiddenEntity() != null){
+            instance.drawTexture(matrixStack, x, y, u, v, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawTexture(matrixStack, x, y+7, u, v, width, height);
     }
 
     @Redirect(
         method = "renderStatusBars",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V"
         )
     )
-    void moveHungerBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+    void moveHungerBarLower(InGameHud instance, MatrixStack matrixStack, int x, int y, int u, int v, int width, int height){
+        if (this.getRiddenEntity() != null){
+            instance.drawTexture(matrixStack, x, y, u, v, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawTexture(matrixStack, x, y+7, u, v, width, height);
     }
+
+
 }

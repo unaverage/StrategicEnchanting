@@ -45,8 +45,6 @@ public abstract class ItemStackMixin {
         cancellable = true
     )
     void getMaxDamageWithDecay(CallbackInfoReturnable<Integer> cir){
-        if (!GlobalConfig.tools_max_durability_decay.enable) return;
-
         var decay = (int)Math.floor(HelperKt.getDecay((ItemStack)(Object)this));
         if (decay <= 0) return;
 
