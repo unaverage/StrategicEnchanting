@@ -16,6 +16,7 @@
     "enchantments_are_capped.AnvilScreenHandlerMixin",
     "enchantments_are_capped.EnchantmentHelperMixin",
     "enchantments_are_capped.ItemStackMixin",
+    "enchantments_blacklist.EnchantmentHelperMixin",
     "enchantments_transfer_to_book.AnvilScreenHandlerMixin",
     "fire_protection_offers_lava_immunity.EntityMixin",
     "fire_protection_offers_meele_protection.ProtectionEnchantmentMixin",
@@ -28,9 +29,9 @@
     "thorns_no_longer_wears_down_armor.ThornsEnchantmentMixin",
     "tools_custom_repair_rate.AnvilScreenHandlerMixin",
     "tools_max_durability_decay.ItemStackMixin",
-    "village_less_fights.ActiveTargetMixin",
     "tools_repair_takes_no_xp.AnvilScreenHandlerMixin",
     "tools_repair_takes_no_xp.AnvilScreenMixin",
+    "village_less_fights.ActiveTargetMixin",
     "xp_disable.XpOrbMixin"
   ],
   "client": [
