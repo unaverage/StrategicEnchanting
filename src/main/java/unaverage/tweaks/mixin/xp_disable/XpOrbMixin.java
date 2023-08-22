@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.xp;
+package unaverage.tweaks.mixin.xp_disable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

@@ -31,10 +31,10 @@
     "village_less_fights.ActiveTargetMixin",
     "tools_repair_takes_no_xp.AnvilScreenHandlerMixin",
     "tools_repair_takes_no_xp.AnvilScreenMixin",
-    "xp.XpOrbMixin"
+    "xp_disable.XpOrbMixin"
   ],
   "client": [
-    "xp.InGameHudMixin"
+    "xp_disable_bar.InGameHudMixin"
   ],
   "plugin": "unaverage.tweaks.Plugin",
   "injectors": {
