@@ -2,6 +2,7 @@ package unaverage.tweaks.mixin.piglins_and_hoglins_fire_immune;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HoglinEntity;
+import net.minecraft.entity.mob.PiglinBruteEntity;
 import net.minecraft.entity.mob.PiglinEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,12 +23,16 @@ public class EntityTypeMixin {
     @Shadow @Final
     public static EntityType<HoglinEntity> HOGLIN;
 
+    @Shadow @Final
+    public static EntityType<PiglinBruteEntity> PIGLIN_BRUTE;
+
     @Inject(
         method = "<clinit>",
         at = @At("TAIL")
     )
     private static void fn(CallbackInfo ci){
         ((EntityTypeMixin)(Object)PIGLIN).fireImmune = true;
+        ((EntityTypeMixin)(Object)PIGLIN_BRUTE).fireImmune = true;
         ((EntityTypeMixin)(Object)HOGLIN).fireImmune = true;
     }
 }
