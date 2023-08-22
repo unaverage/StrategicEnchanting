@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.xp;
+package unaverage.tweaks.mixin.xp_disable_bar;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

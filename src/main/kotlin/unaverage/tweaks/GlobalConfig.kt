@@ -95,7 +95,8 @@ fun isEnabled(mixinName: String): Boolean{
         "tools_max_durability_decay" to GlobalConfig.tools_max_durability_decay.enable,
         "tools_repair_takes_no_xp" to GlobalConfig.tools_repair_takes_zero_xp,
         "village_less_fights" to GlobalConfig.village_less_fight,
-        "xp" to (GlobalConfig.xp.disable_xp || GlobalConfig.xp.disable_bar)
+        "xp_disable" to GlobalConfig.xp.disable_xp,
+        "xp_disable_bar" to GlobalConfig.xp.disable_bar
     )
 
     return map[mixinName] ?: throw RuntimeException("$mixinName not registered here")
