@@ -80,7 +80,7 @@ fun isEnabled(mixinName: String): Boolean{
         "bane_of_arthropods_extra" to GlobalConfig.bane_of_arthropods_extra.enable,
         "creepers_avoid_cats_further" to GlobalConfig.creepers_avoid_cats_further.enable,
         "enchantments_blacklist" to GlobalConfig.enchantments_blacklist.enable,
-        "enchantments_are_capped" to GlobalConfig.enchantments_are_capped.enable,
+        "enchantments_are_capped" to GlobalConfig.tools_limited_enchantment_capacity.enable,
         "enchantments_transfer_to_book" to GlobalConfig.enchantments_transfer_to_book.enable,
         "fire_protection_offers_lava_immunity" to GlobalConfig.fire_protection_offers_lava_immunity.enable,
         "fire_protection_offers_meele_protection" to GlobalConfig.fire_protection_offers_melee_protection.enable,
@@ -149,7 +149,6 @@ object GlobalConfig: Config {
     }
 
     object creepers_avoid_cats_further: Config{
-
         @JvmField
         var enable = true
 
@@ -157,41 +156,6 @@ object GlobalConfig: Config {
         var distance = 16
             set(value) {
                 if (value <= 0) throw InvalidValueException()
-
-                field = value
-            }
-    }
-
-    object enchantments_are_capped: Config{
-        @JvmField
-        var enable = true
-
-        @JvmField
-        var enchantment_weights = mapOf(
-            "1" to listOf(1.0),
-            "2" to listOf(.5, 1.0),
-            "3" to listOf(.25, .5, 1.0),
-            "4" to listOf(.25, .5, .75, 1.0),
-            "5" to listOf(.25, .25, .5, .75, 1.0),
-            "modid:example" to listOf(0.25, .5, .75, 1.0),
-        )
-
-        @JvmField
-        var item_capacities = mapOf(
-            "minecraft:bow" to 2.5,
-            "minecraft:chainmail_.+" to 3.0,
-            "minecraft:crossbow" to 2.5,
-            "minecraft:diamond_.+" to 2.0,
-            "minecraft:elytra" to 2.0,
-            "minecraft:iron_.+" to 3.0,
-            "minecraft:netherite_.+" to 1.5,
-            "minecraft:shears" to 2.0,
-        )
-
-        @JvmStatic
-        var tool_tip_decimal_places = 1
-            set(value) {
-                if (value < 0) throw InvalidValueException()
 
                 field = value
             }
@@ -284,6 +248,70 @@ object GlobalConfig: Config {
             "minecraft:.+_shovel" to 1,
             "minecraft:.+_sword" to 1,
         )
+    }
+
+    object tools_limited_enchantment_capacity: Config{
+        @JvmField
+        var enable = true
+
+        @JvmField
+        var enchantment_weights_by_max_levels = mapOf(
+            "1" to mapOf(
+                "1" to 1.0
+            ),
+            "2" to mapOf(
+                "1" to 0.5,
+                "2" to 1.0
+            ),
+            "3" to mapOf(
+                "1" to 0.25,
+                "2" to 0.50,
+                "3" to 1.00
+            ),
+            "4" to mapOf(
+                "1" to 0.25,
+                "2" to 0.50,
+                "3" to 0.75,
+                "4" to 1.00
+            ),
+            "5" to mapOf(
+                "1" to 0.125,
+                "2" to 0.25,
+                "3" to 0.50,
+                "4" to 0.75,
+                "5" to 1.00,
+            ),
+        )
+
+        @JvmField
+        var enchantment_weights_by_id = mapOf(
+            "example_mod:example_enchantment" to mapOf(
+                "1" to 0.25,
+                "2" to 0.50,
+                "3" to 0.75,
+                "4" to 1.00
+            ),
+        )
+
+        @JvmField
+        var item_capacities = mapOf(
+            "minecraft:bow" to 2.5,
+            "minecraft:chainmail_.+" to 3.0,
+            "minecraft:crossbow" to 2.5,
+            "minecraft:diamond_.+" to 2.0,
+            "minecraft:elytra" to 2.0,
+            "minecraft:iron_.+" to 3.0,
+            "minecraft:netherite_.+" to 1.5,
+            "minecraft:shears" to 2.0,
+        )
+
+        @JvmStatic
+        var tool_tip_decimal_places = 1
+            set(value) {
+                if (value < 0) throw InvalidValueException()
+
+                field = value
+            }
     }
 
     object tools_max_durability_decay: Config{

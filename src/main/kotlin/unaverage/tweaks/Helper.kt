@@ -107,7 +107,7 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 val Item.capacity: Double?
     get() {
         return GlobalConfig
-            .enchantments_are_capped
+            .tools_limited_enchantment_capacity
             .item_capacities
             .getWithRegex(
                 this.getID(Registries.ITEM)
@@ -121,34 +121,46 @@ val Item.capacity: Double?
 val Map<Enchantment, Int>.weight: Double
     get() {
         fun getWeight(e: Enchantment, level: Int): Double {
-            val weightByID = GlobalConfig
-                .enchantments_are_capped
-                .enchantment_weights
-                .getWithRegex(
-                    e.getID(Registries.ENCHANTMENT)
-                )
 
-            if (weightByID != null && weightByID.size > level - 1) {
-                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-                return weightByID[level - 1]
+            run{
+                val weightByID = GlobalConfig
+                    .tools_limited_enchantment_capacity
+                    .enchantment_weights_by_id
+                    .getWithRegex(
+                        e.getID(Registries.ENCHANTMENT)
+                    )
+                    ?.get(level.toString())
+
+                if (weightByID == null) return@run
+
+                return weightByID
             }
 
-            val weightByMax = GlobalConfig
-                .enchantments_are_capped
-                .enchantment_weights
-                .getWithRegex(e.maxLevel.toString())
+            run{
+                val weightByMax = GlobalConfig
+                    .tools_limited_enchantment_capacity
+                    .enchantment_weights_by_max_levels
+                    .get(
+                        e.maxLevel.toString()
+                    )
+                    ?.get(
+                        level.toString()
+                    )
 
-            val ratio: Double
-            if (weightByMax != null && weightByMax.size > level - 1) {
-                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-                ratio = weightByMax[level - 1]
-            } else {
-                ratio = (level / e.maxLevel.toDouble())
+                if (weightByMax == null) return@run
+
+                if (e.isCursed) return -weightByMax
+
+                return weightByMax
             }
 
-            if (e.isCursed) return -ratio
+            run{
+                val weightByDefault = (level / e.maxLevel.toDouble())
 
-            return ratio
+                if (e.isCursed) return -weightByDefault
+
+                return weightByDefault
+            }
         }
 
         return map { (k, v) -> getWeight(k, v) }
