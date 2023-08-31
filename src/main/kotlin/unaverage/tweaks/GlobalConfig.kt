@@ -95,8 +95,8 @@ fun isEnabled(mixinName: String): Boolean{
         "tools_max_durability_decay" to GlobalConfig.tools_max_durability_decay.enable,
         "tools_repair_takes_no_xp" to GlobalConfig.tools_repair_takes_zero_xp,
         "village_less_fights" to GlobalConfig.village_less_fight,
-        "xp_disable" to GlobalConfig.xp.disable_xp,
-        "xp_disable_bar" to GlobalConfig.xp.disable_bar
+        "xp_disable" to GlobalConfig.xp_disable.enable,
+        "xp_disable_bar" to (GlobalConfig.xp_disable.enable && !GlobalConfig.xp_disable.allow_xp_bar)
     )
 
     return map[mixinName] ?: throw RuntimeException("$mixinName not registered here")
@@ -302,12 +302,12 @@ object GlobalConfig: Config {
     @JvmField
     var tools_repair_takes_zero_xp = false
 
-    object xp: Config{
+    object xp_disable: Config{
         @JvmField
-        var disable_xp = false
+        var enable = false
 
         @JvmField
-        var disable_bar = false
+        var allow_xp_bar = false
     }
 
     @JvmField

@@ -26,7 +26,7 @@ public class InGameHudMixin {
         )
     )
     void cancelDrawingBar(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        if (!GlobalConfig.xp.disable_bar){
+        if (!GlobalConfig.xp_disable.allow_xp_bar){
             instance.drawTexture(texture, x, y, u, v, width, height);
         }
     }
@@ -39,7 +39,7 @@ public class InGameHudMixin {
         )
     )
     int cancelDrawingLevels(DrawContext instance, TextRenderer textRenderer, String text, int x, int y, int color, boolean shadow){
-        if (!GlobalConfig.xp.disable_bar){
+        if (!GlobalConfig.xp_disable.allow_xp_bar){
             return instance.drawText(textRenderer, text, x, y, color, shadow);
         }
 
