@@ -291,7 +291,7 @@ object GlobalConfig: Config {
         var enable = false
 
         @JvmStatic
-        var decay_rate = 1000
+        var decay_rate = 500
             set(value) {
                 if (value <= 0) throw InvalidValueException()
 
