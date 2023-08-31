@@ -111,7 +111,7 @@ object GlobalConfig: Config {
 
     object animals_have_custom_feeding: Config {
         @JvmField
-        var enable = true
+        var enable = false
 
         var affects = mapOf(
             "minecraft:pig" to setOf(
@@ -125,7 +125,7 @@ object GlobalConfig: Config {
     
     object animals_heal_when_fed: Config {
         @JvmField
-        var enable = true
+        var enable = false
 
         var affected = setOf(
             "minecraft:chicken",
@@ -142,7 +142,7 @@ object GlobalConfig: Config {
     object bane_of_arthropods_affects_more_mobs: Config {
 
         @JvmField
-        var enable = true
+        var enable = false
 
         var extra_mobs_affected = setOf(
             "minecraft:guardian",
@@ -153,7 +153,7 @@ object GlobalConfig: Config {
 
     object creepers_avoid_cats_further: Config{
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmStatic
         var distance = 16
@@ -166,7 +166,7 @@ object GlobalConfig: Config {
 
     object enchantments_can_transfer_to_book: Config{
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmStatic
         var transfer_percentage = 0.75
@@ -180,7 +180,7 @@ object GlobalConfig: Config {
 
     object enchantments_can_be_blacklisted: Config {
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmField
         var blacklisted = setOf(
@@ -190,7 +190,7 @@ object GlobalConfig: Config {
 
     object fire_protection_offers_lava_immunity: Config {
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmField
         var seconds_of_lava_immunity_per_levels = 1.0
@@ -198,7 +198,7 @@ object GlobalConfig: Config {
 
     object fire_protection_offers_melee_protection: Config{
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmField
         var protects_from = setOf("minecraft:blazed", "minecraft:magma_cube")
@@ -218,7 +218,7 @@ object GlobalConfig: Config {
 
     object pigs_ridden_are_faster: Config {
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmStatic
         var speed_multiplier = 2.0
@@ -237,7 +237,7 @@ object GlobalConfig: Config {
     
     object tools_have_custom_repair_rate: Config{
         @JvmField
-        var enable = true
+        var enable = false
         
         var ingots_to_fully_repair = mapOf(
             "minecraft:.+_helmet" to 3,
@@ -255,7 +255,7 @@ object GlobalConfig: Config {
 
     object tools_have_limited_enchantment_capacity: Config{
         @JvmField
-        var enable = true
+        var enable = false
 
         @JvmField
         var enchantment_weights_by_max_levels = mapOf(
