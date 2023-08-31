@@ -19,7 +19,7 @@ public class AnvilScreenMixin {
         )
     )
     void removeXPBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color){
-        if (!GlobalConfig.tools_repair_takes_zero_xp){
+        if (!GlobalConfig.anvils_takes_zero_xp){
             instance.fill(x1, y1, x2, y2, color);
         }
     }

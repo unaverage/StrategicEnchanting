@@ -44,7 +44,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         at = @At("TAIL")
     )
     public void cancelVillagerGolemsTargetingMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> targetPredicate, CallbackInfo ci){
-        if (!GlobalConfig.village_less_fight) return;
+        if (!GlobalConfig.village_has_less_fights) return;
 
         if (!(mob instanceof IronGolemEntity)) return;
 

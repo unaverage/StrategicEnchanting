@@ -48,8 +48,8 @@ public abstract class ItemStackMixin {
         if (cap == null || cap < 0) return;
 
         var text = "Enchantment Capacity: %s/%s".formatted(
-            HelperKt.toStringWithDecimalPlaces(weight, GlobalConfig.tools_limited_enchantment_capacity.getTool_tip_decimal_places()),
-            HelperKt.toStringWithDecimalPlaces(cap, GlobalConfig.tools_limited_enchantment_capacity.getTool_tip_decimal_places())
+            HelperKt.toStringWithDecimalPlaces(weight, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places()),
+            HelperKt.toStringWithDecimalPlaces(cap, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places())
         );
 
         list.add(

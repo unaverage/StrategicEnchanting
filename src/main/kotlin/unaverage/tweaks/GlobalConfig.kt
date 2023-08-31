@@ -75,28 +75,28 @@ fun isEnabled(mixinName: String): Boolean{
 
     val map = mapOf(
         "allays_can_plant_crops" to GlobalConfig.allays_can_plant_crops ,
-        "animals_custom_feeding" to GlobalConfig.animals_custom_feeding.enable ,
+        "animals_custom_feeding" to GlobalConfig.animals_have_custom_feeding.enable ,
         "animals_heal_when_fed" to GlobalConfig.animals_heal_when_fed.enable ,
-        "bane_of_arthropods_extra" to GlobalConfig.bane_of_arthropods_extra.enable,
+        "bane_of_arthropods_extra" to GlobalConfig.bane_of_arthropods_affects_more_mobs.enable,
         "creepers_avoid_cats_further" to GlobalConfig.creepers_avoid_cats_further.enable,
-        "enchantments_blacklist" to GlobalConfig.enchantments_blacklist.enable,
-        "enchantments_are_capped" to GlobalConfig.tools_limited_enchantment_capacity.enable,
-        "enchantments_transfer_to_book" to GlobalConfig.enchantments_transfer_to_book.enable,
+        "enchantments_blacklist" to GlobalConfig.enchantments_can_be_blacklisted.enable,
+        "enchantments_are_capped" to GlobalConfig.tools_have_limited_enchantment_capacity.enable,
+        "enchantments_transfer_to_book" to GlobalConfig.enchantments_can_transfer_to_book.enable,
         "fire_protection_offers_lava_immunity" to GlobalConfig.fire_protection_offers_lava_immunity.enable,
         "fire_protection_offers_meele_protection" to GlobalConfig.fire_protection_offers_melee_protection.enable,
         "frost_walker_melts_at_night" to GlobalConfig.frost_walker_melts_at_night,
-        "glow_squids_better_spawn" to GlobalConfig.glow_squids_better_spawn,
-        "horses_harder_to_tame" to GlobalConfig.horses_harder_to_tame,
+        "glow_squids_better_spawn" to GlobalConfig.glow_squids_have_better_spawning,
+        "horses_harder_to_tame" to GlobalConfig.horses_are_harder_to_tame,
         "piglins_and_hoglins_fire_immune" to GlobalConfig.piglins_and_hoglins_are_fire_immune,
         "ridden_pigs_are_faster" to GlobalConfig.pigs_ridden_are_faster.enable,
         "shields_no_longer_prevent_knockback" to GlobalConfig.shields_no_longer_prevent_knockback,
-        "thorns_no_longer_wears_down_armor" to GlobalConfig.thorns_no_longer_wears_down_armor,
-        "tools_custom_repair_rate" to GlobalConfig.tools_custom_repair_rate.enable,
-        "tools_max_durability_decay" to GlobalConfig.tools_max_durability_decay.enable,
-        "tools_repair_takes_no_xp" to GlobalConfig.tools_repair_takes_zero_xp,
-        "village_less_fights" to GlobalConfig.village_less_fight,
-        "xp_disable" to GlobalConfig.xp_disable.enable,
-        "xp_disable_bar" to (GlobalConfig.xp_disable.enable && !GlobalConfig.xp_disable.allow_xp_bar)
+        "thorns_no_longer_wears_down_armor" to GlobalConfig.thorns_no_longer_wear_down_armor,
+        "tools_custom_repair_rate" to GlobalConfig.tools_have_custom_repair_rate.enable,
+        "tools_max_durability_decay" to GlobalConfig.tools_max_durability_will_decay.enable,
+        "tools_repair_takes_no_xp" to GlobalConfig.anvils_takes_zero_xp,
+        "village_less_fights" to GlobalConfig.village_has_less_fights,
+        "xp_disable" to GlobalConfig.xp_is_disable.enable,
+        "xp_disable_bar" to (GlobalConfig.xp_is_disable.enable && !GlobalConfig.xp_is_disable.allow_xp_bar)
     )
 
     return map[mixinName] ?: throw RuntimeException("$mixinName not registered here")
@@ -109,7 +109,7 @@ object GlobalConfig: Config {
     @JvmField
     var allays_can_plant_crops = true
 
-    object animals_custom_feeding: Config {
+    object animals_have_custom_feeding: Config {
         @JvmField
         var enable = true
 
@@ -136,7 +136,10 @@ object GlobalConfig: Config {
         )
     }
 
-    object bane_of_arthropods_extra: Config {
+    @JvmField
+    var anvils_takes_zero_xp = false
+
+    object bane_of_arthropods_affects_more_mobs: Config {
 
         @JvmField
         var enable = true
@@ -161,7 +164,7 @@ object GlobalConfig: Config {
             }
     }
 
-    object enchantments_transfer_to_book: Config{
+    object enchantments_can_transfer_to_book: Config{
         @JvmField
         var enable = true
 
@@ -175,7 +178,7 @@ object GlobalConfig: Config {
             }
     }
 
-    object enchantments_blacklist: Config {
+    object enchantments_can_be_blacklisted: Config {
         @JvmField
         var enable = true
 
@@ -205,10 +208,10 @@ object GlobalConfig: Config {
     var frost_walker_melts_at_night = true
 
     @JvmField
-    var glow_squids_better_spawn = true
+    var glow_squids_have_better_spawning = true
 
     @JvmField
-    var horses_harder_to_tame = true
+    var horses_are_harder_to_tame = true
 
     @JvmField
     var piglins_and_hoglins_are_fire_immune = true
@@ -230,9 +233,9 @@ object GlobalConfig: Config {
     var shields_no_longer_prevent_knockback = true
 
     @JvmField
-    var thorns_no_longer_wears_down_armor = true
+    var thorns_no_longer_wear_down_armor = true
     
-    object tools_custom_repair_rate: Config{
+    object tools_have_custom_repair_rate: Config{
         @JvmField
         var enable = true
         
@@ -250,7 +253,7 @@ object GlobalConfig: Config {
         )
     }
 
-    object tools_limited_enchantment_capacity: Config{
+    object tools_have_limited_enchantment_capacity: Config{
         @JvmField
         var enable = true
 
@@ -314,7 +317,7 @@ object GlobalConfig: Config {
             }
     }
 
-    object tools_max_durability_decay: Config{
+    object tools_max_durability_will_decay: Config{
         @JvmField
         var enable = false
 
@@ -327,10 +330,7 @@ object GlobalConfig: Config {
             }
     }
 
-    @JvmField
-    var tools_repair_takes_zero_xp = false
-
-    object xp_disable: Config{
+    object xp_is_disable: Config{
         @JvmField
         var enable = false
 
@@ -339,6 +339,6 @@ object GlobalConfig: Config {
     }
 
     @JvmField
-    var village_less_fight = true
+    var village_has_less_fights = true
 }
 

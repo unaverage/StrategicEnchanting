@@ -107,7 +107,7 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 val Item.capacity: Double?
     get() {
         return GlobalConfig
-            .tools_limited_enchantment_capacity
+            .tools_have_limited_enchantment_capacity
             .item_capacities
             .getWithRegex(
                 this.getID(Registries.ITEM)
@@ -124,7 +124,7 @@ val Map<Enchantment, Int>.weight: Double
 
             run{
                 val weightByID = GlobalConfig
-                    .tools_limited_enchantment_capacity
+                    .tools_have_limited_enchantment_capacity
                     .enchantment_weights_by_id
                     .getWithRegex(
                         e.getID(Registries.ENCHANTMENT)
@@ -138,7 +138,7 @@ val Map<Enchantment, Int>.weight: Double
 
             run{
                 val weightByMax = GlobalConfig
-                    .tools_limited_enchantment_capacity
+                    .tools_have_limited_enchantment_capacity
                     .enchantment_weights_by_max_levels
                     .get(
                         e.maxLevel.toString()
@@ -319,7 +319,7 @@ private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit)
 val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
     get() {
         return GlobalConfig
-            .bane_of_arthropods_extra
+            .bane_of_arthropods_affects_more_mobs
             .extra_mobs_affected
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
@@ -329,7 +329,7 @@ val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
 val Enchantment.isBlackListed: Boolean
     get() {
         return GlobalConfig
-            .enchantments_blacklist
+            .enchantments_can_be_blacklisted
             .blacklisted
             .containsWithRegex(
                 this.getID(Registries.ENCHANTMENT)
@@ -358,7 +358,7 @@ val EntityType<*>.isFireProtectionAffected: Boolean
 val EntityType<*>.newFeedList: List<Item>?
     get() {
         return GlobalConfig
-            .animals_custom_feeding
+            .animals_have_custom_feeding
             .affects
             .getWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
@@ -381,7 +381,7 @@ val EntityType<*>.healsWhenFed: Boolean
 val Item.ingotsToFullyRepair: Int?
     get() {
         return GlobalConfig
-            .tools_custom_repair_rate
+            .tools_have_custom_repair_rate
             .ingots_to_fully_repair
             .getWithRegex(
                 this.getID(Registries.ITEM)

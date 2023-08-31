@@ -40,7 +40,7 @@ public class EnchantmentHelperMixin {
      */
     @Inject(method = "generateEnchantments", at = @At("RETURN"))
     private static void capEnchantmentsOnGenerate(Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
-        if (!GlobalConfig.tools_limited_enchantment_capacity.enable) return;
+        if (!GlobalConfig.tools_have_limited_enchantment_capacity.enable) return;
 
         var originalList = cir.getReturnValue();
 

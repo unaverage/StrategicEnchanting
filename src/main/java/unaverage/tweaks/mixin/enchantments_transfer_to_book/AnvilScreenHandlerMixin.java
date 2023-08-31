@@ -50,7 +50,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var enchantments = EnchantmentHelper.get(input2);
         cap(
             enchantments,
-            GlobalConfig.enchantments_transfer_to_book.getTransfer_percentage() * getWeight(enchantments),
+            GlobalConfig.enchantments_can_transfer_to_book.getTransfer_percentage() * getWeight(enchantments),
             x->false
         );
         if (enchantments.isEmpty()) return;
@@ -76,7 +76,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         )
     )
     void toolStays(Inventory instance, int i, ItemStack stack){
-        if (!GlobalConfig.enchantments_transfer_to_book.enable) { instance.setStack(i, stack); return;}
+        if (!GlobalConfig.enchantments_can_transfer_to_book.enable) { instance.setStack(i, stack); return;}
 
         if (stack != ItemStack.EMPTY){ instance.setStack(i, stack); return;}
 

@@ -31,7 +31,7 @@ public abstract class ItemStackMixin {
         var totalEnchantments = HelperKt.getWeight(EnchantmentHelper.get((ItemStack) (Object)this));
         if (totalEnchantments <= 0) return;
 
-        var decay = (double)diff / (double) GlobalConfig.tools_max_durability_decay.getDecay_rate() * totalEnchantments;
+        var decay = (double)diff / (double) GlobalConfig.tools_max_durability_will_decay.getDecay_rate() * totalEnchantments;
 
         HelperKt.setDecay(
             (ItemStack)(Object)this,
@@ -45,7 +45,7 @@ public abstract class ItemStackMixin {
         cancellable = true
     )
     void getMaxDamageWithDecay(CallbackInfoReturnable<Integer> cir){
-        if (!GlobalConfig.tools_max_durability_decay.enable) return;
+        if (!GlobalConfig.tools_max_durability_will_decay.enable) return;
 
         var decay = (int)Math.floor(HelperKt.getDecay((ItemStack)(Object)this));
         if (decay <= 0) return;
