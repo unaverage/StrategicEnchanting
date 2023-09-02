@@ -134,12 +134,34 @@ object GlobalConfig: Config {
         packageToConfig["bane_of_arthropods_affects_more_mobs"] = {bane_of_arthropods_affects_more_mobs.enable}
     }
 
+    object blocks_have_custom_hardness: Config{
+        var enable = false
+
+        var extra_blocks_affected = mapOf(
+            "minecraft:grass_block" to 2.0,
+            "minecraft:mud" to 2.0,
+            "minecraft:mycelium" to 2.0,
+            "minecraft:podzol" to 2.0,
+            "minecraft:(.+_)?dirt(_.+)?" to 2.0,
+            "minecraft:(.+_)?soil(_.+)?" to 2.0,
+            "minecraft:(.+_)?sand(_.+)?" to 2.0,
+        )
+    }
+    init {
+        packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_blast_resistance.enable}
+    }
+
     object blocks_have_custom_blast_resistance: Config{
         var enable = false
 
         var extra_blocks_affected = mapOf(
-            "minecraft:grass_block" to 1.5,
-            "minecraft:dirt.*" to 1.5,
+            "minecraft:grass_block" to 2.0,
+            "minecraft:mud" to 2.0,
+            "minecraft:mycelium" to 2.0,
+            "minecraft:podzol" to 2.0,
+            "minecraft:(.+_)?dirt(_.+)?" to 2.0,
+            "minecraft:(.+_)?soil(_.+)?" to 2.0,
+            "minecraft:(.+_)?sand(_.+)?" to 2.0,
         )
     }
     init {
@@ -188,17 +210,9 @@ object GlobalConfig: Config {
         packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.enable}
     }
 
-    object endermen_teleport_unreachable_players_closer: Config{
-        var enable = false
-
-        @JvmStatic
-        var maximum_distance = 5
-
-        @JvmStatic
-        var cooldown = 3.0
-    }
+    var endermen_teleport_unreachable_players_closer = false
     init {
-        packageToConfig["endermen_teleport_unreachable_players_closer"] = {endermen_teleport_unreachable_players_closer.enable}
+        packageToConfig["endermen_teleport_unreachable_players_closer"] = {endermen_teleport_unreachable_players_closer}
     }
 
     object fire_protection_offers_lava_immunity: Config {

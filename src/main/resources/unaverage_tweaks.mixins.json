@@ -14,7 +14,7 @@
     "anvils_take_zero_xp.AnvilScreenMixin",
     "bane_of_arthropods_affects_more_mobs.DamageEnchantmentsMixin",
     "bane_of_arthropods_affects_more_mobs.PlayerEntityMixin",
-    "blocks_have_custom_blast_resistance.AbstractBlockMixin",
+    "blocks_have_custom_hardness.AbstractBlockMixin",
     "blocks_have_custom_blast_resistance.BlocksMixin",
     "creepers_avoid_cats_further.FleeEntityMixin",
     "enchantments_can_be_blacklisted.EnchantmentHelperMixin",

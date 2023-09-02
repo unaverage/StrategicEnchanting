@@ -2,6 +2,7 @@
 
 package unaverage.tweaks
 
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
@@ -112,6 +113,16 @@ val Item.capacity: Double?
             .getWithRegex(
                 this.getID(Registries.ITEM)
             )
+    }
+
+val Block.customBlastResistance: Double?
+    get(){
+        val id = Registries.BLOCK.getId(this)
+
+        return GlobalConfig
+            .blocks_have_custom_blast_resistance
+            .extra_blocks_affected
+            .getWithRegex(id.namespace + ":" + id.path)
     }
 
 
