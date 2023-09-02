@@ -101,7 +101,7 @@ object GlobalConfig: Config {
     init {
         packageToConfig["animals_have_custom_feeding"] = { animals_have_custom_feeding.enable }
     }
-    
+
     object animals_heal_when_fed: Config {
         var enable = false
 
@@ -210,9 +210,9 @@ object GlobalConfig: Config {
         packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.enable}
     }
 
-    var endermen_teleport_unreachable_players_closer = false
+    var endermen_can_teleport_unreachable_players_closer = false
     init {
-        packageToConfig["endermen_teleport_unreachable_players_closer"] = {endermen_teleport_unreachable_players_closer}
+        packageToConfig["endermen_can_teleport_unreachable_players_closer"] = {endermen_can_teleport_unreachable_players_closer}
     }
 
     object fire_protection_offers_lava_immunity: Config {
@@ -277,10 +277,10 @@ object GlobalConfig: Config {
     init {
         packageToConfig["thorns_no_longer_wear_down_armor"] = { thorns_no_longer_wear_down_armor}
     }
-    
+
     object tools_have_custom_repair_rate: Config{
         var enable = false
-        
+
         var ingots_to_fully_repair = mapOf(
             "minecraft:.+_helmet" to 3,
             "minecraft:.+_chestplate" to 5,
