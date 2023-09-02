@@ -81,7 +81,7 @@ fun isEnabled(mixinName: String): Boolean{
 object GlobalConfig: Config {
     //Config name noun should be placed first
 
-    var allays_can_plant_crops = true
+    var allays_can_plant_crops = false
     init {
         packageToConfig["allays_can_plant_crops"] = { allays_can_plant_crops}
     }
@@ -233,22 +233,22 @@ object GlobalConfig: Config {
         packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.enable}
     }
 
-    var frost_walker_melts_at_night = true
+    var frost_walker_melts_at_night = false
     init {
         packageToConfig["frost_walker_melts_at_night"] = { frost_walker_melts_at_night}
     }
 
-    var glow_squids_have_better_spawning = true
+    var glow_squids_have_better_spawning = false
     init {
         packageToConfig["glow_squids_have_better_spawning"] = { glow_squids_have_better_spawning}
     }
 
-    var horses_are_harder_to_tame = true
+    var horses_are_harder_to_tame = false
     init {
         packageToConfig["horses_are_harder_to_tame"] = { horses_are_harder_to_tame }
     }
 
-    var piglins_and_hoglins_are_fire_immune = true
+    var piglins_and_hoglins_are_fire_immune = false
     init {
         packageToConfig["piglins_and_hoglins_are_fire_immune"] = { piglins_and_hoglins_are_fire_immune}
     }
@@ -268,12 +268,12 @@ object GlobalConfig: Config {
         packageToConfig["pigs_ridden_are_faster"] = {pigs_ridden_are_faster.enable}
     }
 
-    var shields_no_longer_prevent_knockback = true
+    var shields_no_longer_prevent_knockback = false
     init {
         packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback}
     }
 
-    var thorns_no_longer_wear_down_armor = true
+    var thorns_no_longer_wear_down_armor = false
     init {
         packageToConfig["thorns_no_longer_wear_down_armor"] = { thorns_no_longer_wear_down_armor}
     }
@@ -386,7 +386,7 @@ object GlobalConfig: Config {
         packageToConfig["xp_bar_is_disabled"] = {xp_is_disabled.enable && !xp_is_disabled.allow_xp_bar}
     }
 
-    var villages_has_less_fights = true
+    var villages_has_less_fights = false
     init {
         packageToConfig["villages_have_less_fights"] = { villages_has_less_fights}
     }
