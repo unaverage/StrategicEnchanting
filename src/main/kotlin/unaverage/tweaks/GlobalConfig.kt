@@ -138,17 +138,17 @@ object GlobalConfig: Config {
         var enable = false
 
         var extra_blocks_affected = mapOf(
-            "minecraft:grass_block" to 2.0,
-            "minecraft:mud" to 2.0,
-            "minecraft:mycelium" to 2.0,
-            "minecraft:podzol" to 2.0,
-            "minecraft:(.+_)?dirt(_.+)?" to 2.0,
-            "minecraft:(.+_)?soil(_.+)?" to 2.0,
-            "minecraft:(.+_)?sand(_.+)?" to 2.0,
+            "minecraft:grass_block" to 1.0,
+            "minecraft:mud" to 1.0,
+            "minecraft:mycelium" to 1.0,
+            "minecraft:podzol" to 1.0,
+            "minecraft:(.+_)?dirt(_.+)?" to 1.0,
+            "minecraft:(.+_)?soil(_.+)?" to 1.0,
+            "minecraft:(.+_)?sand(_.+)?" to 1.0,
         )
     }
     init {
-        packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_blast_resistance.enable}
+        packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_hardness.enable}
     }
 
     object blocks_have_custom_blast_resistance: Config{

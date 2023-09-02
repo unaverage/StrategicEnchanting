@@ -115,6 +115,16 @@ val Item.capacity: Double?
             )
     }
 
+val Block.customHardness: Double?
+    get(){
+        val id = Registries.BLOCK.getId(this)
+
+        return GlobalConfig
+            .blocks_have_custom_hardness
+            .extra_blocks_affected
+            .getWithRegex(id.namespace + ":" + id.path)
+    }
+
 val Block.customBlastResistance: Double?
     get(){
         val id = Registries.BLOCK.getId(this)
