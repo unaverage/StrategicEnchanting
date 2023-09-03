@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.horses_are_harder_to_tame;
+package unaverage.tweaks.mixin.horses_need_food_to_be_tamed;
 
 import net.minecraft.entity.ai.goal.HorseBondWithPlayerGoal;
 import net.minecraft.entity.passive.AbstractHorseEntity;

@@ -87,9 +87,9 @@ object GlobalConfig: Config {
     }
 
     object animals_have_custom_feeding: Config {
-        var enable = false
+        var is_enabled = false
 
-        var affects = mapOf(
+        var animals_affected = mapOf(
             "minecraft:pig" to setOf(
                 "minecraft:apple",
                 "minecraft:beetroot",
@@ -99,13 +99,13 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["animals_have_custom_feeding"] = { animals_have_custom_feeding.enable }
+        packageToConfig["animals_have_custom_feeding"] = { animals_have_custom_feeding.is_enabled }
     }
 
     object animals_heal_when_fed: Config {
-        var enable = false
+        var is_enabled = false
 
-        var affected = setOf(
+        var animals_affected = setOf(
             "minecraft:chicken",
             "minecraft:cow",
             "minecraft:mooshroom",
@@ -114,7 +114,7 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["animals_heal_when_fed"] = {animals_heal_when_fed.enable}
+        packageToConfig["animals_heal_when_fed"] = {animals_heal_when_fed.is_enabled}
     }
 
     var anvils_take_zero_xp = false
@@ -123,7 +123,7 @@ object GlobalConfig: Config {
     }
 
     object bane_of_arthropods_affects_more_mobs: Config {
-        var enable = false
+        var is_enabled = false
 
         var extra_mobs_affected = setOf(
             "minecraft:guardian",
@@ -131,11 +131,11 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["bane_of_arthropods_affects_more_mobs"] = {bane_of_arthropods_affects_more_mobs.enable}
+        packageToConfig["bane_of_arthropods_affects_more_mobs"] = {bane_of_arthropods_affects_more_mobs.is_enabled}
     }
 
     object blocks_have_custom_hardness: Config{
-        var enable = false
+        var is_enabled = false
 
         var extra_blocks_affected = mapOf(
             "minecraft:grass_block" to 1.0,
@@ -148,11 +148,11 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_hardness.enable}
+        packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_hardness.is_enabled}
     }
 
     object blocks_have_custom_blast_resistance: Config{
-        var enable = false
+        var is_enabled = false
 
         var extra_blocks_affected = mapOf(
             "minecraft:grass_block" to 2.0,
@@ -165,11 +165,11 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["blocks_have_custom_blast_resistance"] = {blocks_have_custom_blast_resistance.enable}
+        packageToConfig["blocks_have_custom_blast_resistance"] = {blocks_have_custom_blast_resistance.is_enabled}
     }
 
     object creepers_avoid_cats_further: Config{
-        var enable = false
+        var is_enabled = false
 
         @JvmStatic
         var distance = 16
@@ -180,11 +180,11 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["creepers_avoid_cats_further"] = {creepers_avoid_cats_further.enable}
+        packageToConfig["creepers_avoid_cats_further"] = {creepers_avoid_cats_further.is_enabled}
     }
 
     object enchantments_can_transfer_to_books: Config{
-        var enable = false
+        var is_enabled = false
 
         @JvmStatic
         var transfer_percentage = 0.75
@@ -196,18 +196,18 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["enchantments_can_transfer_to_books"] = {enchantments_can_transfer_to_books.enable}
+        packageToConfig["enchantments_can_transfer_to_books"] = {enchantments_can_transfer_to_books.is_enabled}
     }
 
     object enchantments_can_be_blacklisted: Config {
-        var enable = false
+        var is_enabled = false
 
-        var blacklisted = setOf(
+        var blacklisted_enchantments = setOf(
             "minecraft:protection"
         )
     }
     init {
-        packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.enable}
+        packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.is_enabled}
     }
 
     var endermen_can_teleport_unreachable_players_closer = false
@@ -216,21 +216,21 @@ object GlobalConfig: Config {
     }
 
     object fire_protection_offers_lava_immunity: Config {
-        var enable = false
+        var is_enabled = false
 
         var seconds_of_lava_immunity_per_levels = 1.0
     }
     init {
-        packageToConfig["fire_protection_offers_lava_immunity"] = {fire_protection_offers_lava_immunity.enable}
+        packageToConfig["fire_protection_offers_lava_immunity"] = {fire_protection_offers_lava_immunity.is_enabled}
     }
 
     object fire_protection_offers_melee_protection: Config{
-        var enable = false
+        var is_enabled = false
 
-        var protects_from = setOf("minecraft:blazed", "minecraft:magma_cube")
+        var mobs_protected_against = setOf("minecraft:blazed", "minecraft:magma_cube")
     }
     init {
-        packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.enable}
+        packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.is_enabled}
     }
 
     var frost_walker_melts_at_night = false
@@ -243,9 +243,9 @@ object GlobalConfig: Config {
         packageToConfig["glow_squids_have_better_spawning"] = { glow_squids_have_better_spawning}
     }
 
-    var horses_are_harder_to_tame = false
+    var horses_need_food_to_be_tamed = false
     init {
-        packageToConfig["horses_are_harder_to_tame"] = { horses_are_harder_to_tame }
+        packageToConfig["horses_need_food_to_be_tamed"] = { horses_need_food_to_be_tamed }
     }
 
     var piglins_and_hoglins_are_fire_immune = false
@@ -254,7 +254,7 @@ object GlobalConfig: Config {
     }
 
     object pigs_ridden_are_faster: Config {
-        var enable = false
+        var is_enabled = false
 
         @JvmStatic
         var speed_multiplier = 2.0
@@ -265,7 +265,7 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["pigs_ridden_are_faster"] = {pigs_ridden_are_faster.enable}
+        packageToConfig["pigs_ridden_are_faster"] = {pigs_ridden_are_faster.is_enabled}
     }
 
     var shields_no_longer_prevent_knockback = false
@@ -279,7 +279,7 @@ object GlobalConfig: Config {
     }
 
     object tools_have_custom_repair_rate: Config{
-        var enable = false
+        var is_enabled = false
 
         var ingots_to_fully_repair = mapOf(
             "minecraft:.+_helmet" to 3,
@@ -295,11 +295,11 @@ object GlobalConfig: Config {
         )
     }
     init {
-        packageToConfig["tools_have_custom_repair_rate"] = {tools_have_custom_repair_rate.enable}
+        packageToConfig["tools_have_custom_repair_rate"] = {tools_have_custom_repair_rate.is_enabled}
     }
 
     object tools_have_limited_enchantment_capacity: Config{
-        var enable = false
+        var is_enabled = false
 
         var enchantment_weights_by_max_levels = mapOf(
             "1" to mapOf(
@@ -358,11 +358,11 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["tools_have_limited_enchantment_capacity"] = {tools_have_limited_enchantment_capacity.enable}
+        packageToConfig["tools_have_limited_enchantment_capacity"] = {tools_have_limited_enchantment_capacity.is_enabled}
     }
 
     object tools_max_durability_will_decay: Config{
-        var enable = false
+        var is_enabled = false
 
         @JvmStatic
         var decay_rate = 500
@@ -373,17 +373,17 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["tools_max_durability_will_decay"] = {tools_max_durability_will_decay.enable}
+        packageToConfig["tools_max_durability_will_decay"] = {tools_max_durability_will_decay.is_enabled}
     }
 
     object xp_is_disabled: Config{
-        var enable = false
+        var is_enabled = false
 
-        var allow_xp_bar = false
+        var xp_bar_allowed = false
     }
     init {
-        packageToConfig["xp_is_disabled"] = {xp_is_disabled.enable}
-        packageToConfig["xp_bar_is_disabled"] = {xp_is_disabled.enable && !xp_is_disabled.allow_xp_bar}
+        packageToConfig["xp_is_disabled"] = {xp_is_disabled.is_enabled}
+        packageToConfig["xp_bar_is_disabled"] = {xp_is_disabled.is_enabled && !xp_is_disabled.xp_bar_allowed}
     }
 
     var villages_has_less_fights = false

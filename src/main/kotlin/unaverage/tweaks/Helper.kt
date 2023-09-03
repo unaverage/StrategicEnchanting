@@ -351,7 +351,7 @@ val Enchantment.isBlackListed: Boolean
     get() {
         return GlobalConfig
             .enchantments_can_be_blacklisted
-            .blacklisted
+            .blacklisted_enchantments
             .containsWithRegex(
                 this.getID(Registries.ENCHANTMENT)
             )
@@ -370,7 +370,7 @@ val EntityType<*>.isFireProtectionAffected: Boolean
     get() {
         return GlobalConfig
             .fire_protection_offers_melee_protection
-            .protects_from
+            .mobs_protected_against
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE),
             )
@@ -380,7 +380,7 @@ val EntityType<*>.newFeedList: List<Item>?
     get() {
         return GlobalConfig
             .animals_have_custom_feeding
-            .affects
+            .animals_affected
             .getWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )
@@ -393,7 +393,7 @@ val EntityType<*>.healsWhenFed: Boolean
     get() {
         return GlobalConfig
             .animals_heal_when_fed
-            .affected
+            .animals_affected
             .containsWithRegex(
                 this.getID(Registries.ENTITY_TYPE)
             )
