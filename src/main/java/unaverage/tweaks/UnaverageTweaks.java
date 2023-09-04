@@ -12,7 +12,7 @@ public class UnaverageTweaks implements PreLaunchEntrypoint {
 
 	public static void logMissingID(String id){
 		LOGGER.warn(
-			id + "is an unknown id"
+			id + "in config is unknown or no longer used"
 		);
 	}
 
