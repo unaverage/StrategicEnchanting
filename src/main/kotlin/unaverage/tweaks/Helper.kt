@@ -121,7 +121,7 @@ val Block.customHardness: Double?
 
         return GlobalConfig
             .blocks_have_custom_hardness
-            .extra_blocks_affected
+            .blocks_affected
             .getWithRegex(id.namespace + ":" + id.path)
     }
 
@@ -131,7 +131,7 @@ val Block.customBlastResistance: Double?
 
         return GlobalConfig
             .blocks_have_custom_blast_resistance
-            .extra_blocks_affected
+            .blocks_affected
             .getWithRegex(id.namespace + ":" + id.path)
     }
 

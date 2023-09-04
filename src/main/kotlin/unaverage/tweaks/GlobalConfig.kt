@@ -81,9 +81,11 @@ fun isEnabled(mixinName: String): Boolean{
 object GlobalConfig: Config {
     //Config name noun should be placed first
 
-    var allays_can_plant_crops = false
+    object allays_can_plant_crops: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["allays_can_plant_crops"] = { allays_can_plant_crops}
+        packageToConfig["allays_can_plant_crops"] = { allays_can_plant_crops.is_enabled }
     }
 
     object animals_have_custom_feeding: Config {
@@ -117,9 +119,11 @@ object GlobalConfig: Config {
         packageToConfig["animals_heal_when_fed"] = {animals_heal_when_fed.is_enabled}
     }
 
-    var anvils_take_zero_xp = false
+    object anvils_take_zero_xp: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["anvils_take_zero_xp"] = {anvils_take_zero_xp}
+        packageToConfig["anvils_take_zero_xp"] = {anvils_take_zero_xp.is_enabled}
     }
 
     object bane_of_arthropods_affects_more_mobs: Config {
@@ -137,7 +141,7 @@ object GlobalConfig: Config {
     object blocks_have_custom_hardness: Config{
         var is_enabled = false
 
-        var extra_blocks_affected = mapOf(
+        var blocks_affected = mapOf(
             "minecraft:grass_block" to 1.0,
             "minecraft:mud" to 1.0,
             "minecraft:mycelium" to 1.0,
@@ -154,7 +158,7 @@ object GlobalConfig: Config {
     object blocks_have_custom_blast_resistance: Config{
         var is_enabled = false
 
-        var extra_blocks_affected = mapOf(
+        var blocks_affected = mapOf(
             "minecraft:grass_block" to 2.0,
             "minecraft:mud" to 2.0,
             "minecraft:mycelium" to 2.0,
@@ -210,9 +214,11 @@ object GlobalConfig: Config {
         packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.is_enabled}
     }
 
-    var endermen_can_teleport_unreachable_players_closer = false
+    object endermen_can_teleport_unreachable_players_closer: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["endermen_can_teleport_unreachable_players_closer"] = {endermen_can_teleport_unreachable_players_closer}
+        packageToConfig["endermen_can_teleport_unreachable_players_closer"] = {endermen_can_teleport_unreachable_players_closer.is_enabled }
     }
 
     object fire_protection_offers_lava_immunity: Config {
@@ -233,24 +239,39 @@ object GlobalConfig: Config {
         packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.is_enabled}
     }
 
-    var frost_walker_melts_at_night = false
+    object frost_walker_melts_at_night: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["frost_walker_melts_at_night"] = { frost_walker_melts_at_night}
+        packageToConfig["frost_walker_melts_at_night"] = { frost_walker_melts_at_night.is_enabled }
     }
 
-    var glow_squids_have_better_spawning = false
+    object glow_squids_have_better_spawning: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["glow_squids_have_better_spawning"] = { glow_squids_have_better_spawning}
+        packageToConfig["glow_squids_have_better_spawning"] = { glow_squids_have_better_spawning.is_enabled }
     }
 
-    var horses_need_food_to_be_tamed = false
+    object glowstone_dust_can_make_signs_glow: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["horses_need_food_to_be_tamed"] = { horses_need_food_to_be_tamed }
+        packageToConfig["glowstone_dust_can_make_signs_glow"] = { glowstone_dust_can_make_signs_glow.is_enabled }
     }
 
-    var piglins_and_hoglins_are_fire_immune = false
+    object horses_need_food_to_be_tamed: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["piglins_and_hoglins_are_fire_immune"] = { piglins_and_hoglins_are_fire_immune}
+        packageToConfig["horses_need_food_to_be_tamed"] = { horses_need_food_to_be_tamed.is_enabled }
+    }
+
+    object piglins_and_hoglins_are_fire_immune: Config{
+        var is_enabled = false
+    }
+    init {
+        packageToConfig["piglins_and_hoglins_are_fire_immune"] = { piglins_and_hoglins_are_fire_immune.is_enabled }
     }
 
     object pigs_ridden_are_faster: Config {
@@ -268,14 +289,18 @@ object GlobalConfig: Config {
         packageToConfig["pigs_ridden_are_faster"] = {pigs_ridden_are_faster.is_enabled}
     }
 
-    var shields_no_longer_prevent_knockback = false
+    object shields_no_longer_prevent_knockback: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback}
+        packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback.is_enabled }
     }
 
-    var thorns_no_longer_wear_down_armor = false
+    object thorns_no_longer_wear_down_armor: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["thorns_no_longer_wear_down_armor"] = { thorns_no_longer_wear_down_armor}
+        packageToConfig["thorns_no_longer_wear_down_armor"] = { thorns_no_longer_wear_down_armor.is_enabled }
     }
 
     object tools_have_custom_repair_rate: Config{
@@ -386,9 +411,11 @@ object GlobalConfig: Config {
         packageToConfig["xp_bar_is_disabled"] = {xp_is_disabled.is_enabled && !xp_is_disabled.xp_bar_allowed}
     }
 
-    var villages_has_less_fights = false
+    object villages_has_less_fights: Config{
+        var is_enabled = false
+    }
     init {
-        packageToConfig["villages_have_less_fights"] = { villages_has_less_fights}
+        packageToConfig["villages_have_less_fights"] = { villages_has_less_fights.is_enabled }
     }
 }
 
