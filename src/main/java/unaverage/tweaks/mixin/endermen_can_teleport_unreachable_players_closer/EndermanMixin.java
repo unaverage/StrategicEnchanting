@@ -4,7 +4,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -51,6 +53,8 @@ public abstract class EndermanMixin extends HostileEntity {
         if (!blockOverHead.isSolid()) return;
 
         player.teleport(this.getPos().x, this.getPos().y, this.getPos().z);
+        this.getWorld().emitGameEvent(GameEvent.TELEPORT, this.getPos(), GameEvent.Emitter.of(this));
+        this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
 
         this.coolDown = 3*20;
     }
