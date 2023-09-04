@@ -25,7 +25,6 @@ public class InGameHudMixin {
         )
     )
     void cancelDrawingBar(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
-        instance.drawTexture(texture, x, y, u, v, width, height);
     }
 
     @Redirect(
@@ -36,7 +35,7 @@ public class InGameHudMixin {
         )
     )
     int cancelDrawingLevels(DrawContext instance, TextRenderer textRenderer, String text, int x, int y, int color, boolean shadow){
-        return instance.drawText(textRenderer, text, x, y, color, shadow);
+        return 0;
     }
 
     @Redirect(
