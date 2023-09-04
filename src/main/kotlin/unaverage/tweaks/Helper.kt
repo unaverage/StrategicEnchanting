@@ -3,6 +3,7 @@
 package unaverage.tweaks
 
 import net.fabricmc.fabric.api.registry.VillagerPlantableRegistry
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
@@ -106,11 +107,31 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 val Item.capacity: Double?
     get() {
         return GlobalConfig
-            .enchantments_are_capped
+            .tools_have_limited_enchantment_capacity
             .item_capacities
             .getWithRegex(
                 this.getID(Registry.ITEM)
             )
+    }
+
+val Block.customHardness: Double?
+    get(){
+        val id = Registry.BLOCK.getId(this)
+
+        return GlobalConfig
+            .blocks_have_custom_hardness
+            .blocks_affected
+            .getWithRegex(id.namespace + ":" + id.path)
+    }
+
+val Block.customBlastResistance: Double?
+    get(){
+        val id = Registry.BLOCK.getId(this)
+
+        return GlobalConfig
+            .blocks_have_custom_blast_resistance
+            .blocks_affected
+            .getWithRegex(id.namespace + ":" + id.path)
     }
 
 
@@ -120,34 +141,46 @@ val Item.capacity: Double?
 val Map<Enchantment, Int>.weight: Double
     get() {
         fun getWeight(e: Enchantment, level: Int): Double {
-            val weightByID = GlobalConfig
-                .enchantments_are_capped
-                .enchantment_weights
-                .getWithRegex(
-                    e.getID(Registry.ENCHANTMENT)
-                )
 
-            if (weightByID != null && weightByID.size > level - 1) {
-                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-                return weightByID[level - 1]
+            run{
+                val weightByID = GlobalConfig
+                    .tools_have_limited_enchantment_capacity
+                    .enchantment_weights_by_id
+                    .getWithRegex(
+                        e.getID(Registry.ENCHANTMENT)
+                    )
+                    ?.get(level.toString())
+
+                if (weightByID == null) return@run
+
+                return weightByID
             }
 
-            val weightByMax = GlobalConfig
-                .enchantments_are_capped
-                .enchantment_weights
-                .getWithRegex(e.maxLevel.toString())
+            run{
+                val weightByMax = GlobalConfig
+                    .tools_have_limited_enchantment_capacity
+                    .enchantment_weights_by_max_levels
+                    .get(
+                        e.maxLevel.toString()
+                    )
+                    ?.get(
+                        level.toString()
+                    )
 
-            val ratio: Double
-            if (weightByMax != null && weightByMax.size > level - 1) {
-                //subtracts by 1 so that level 1 maps to index 0 and et-cetera
-                ratio = weightByMax[level - 1]
-            } else {
-                ratio = (level / e.maxLevel.toDouble())
+                if (weightByMax == null) return@run
+
+                if (e.isCursed) return -weightByMax
+
+                return weightByMax
             }
 
-            if (e.isCursed) return -ratio
+            run{
+                val weightByDefault = (level / e.maxLevel.toDouble())
 
-            return ratio
+                if (e.isCursed) return -weightByDefault
+
+                return weightByDefault
+            }
         }
 
         return map { (k, v) -> getWeight(k, v) }
@@ -306,7 +339,7 @@ private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit)
 val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
     get() {
         return GlobalConfig
-            .bane_of_arthropods_extra
+            .bane_of_arthropods_affects_more_mobs
             .extra_mobs_affected
             .containsWithRegex(
                 this.getID(Registry.ENTITY_TYPE)
@@ -316,8 +349,8 @@ val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
 val Enchantment.isBlackListed: Boolean
     get() {
         return GlobalConfig
-            .enchantments_blacklist
-            .blacklisted
+            .enchantments_can_be_blacklisted
+            .blacklisted_enchantments
             .containsWithRegex(
                 this.getID(Registry.ENCHANTMENT)
             )
@@ -336,7 +369,7 @@ val EntityType<*>.isFireProtectionAffected: Boolean
     get() {
         return GlobalConfig
             .fire_protection_offers_melee_protection
-            .protects_from
+            .mobs_protected_against
             .containsWithRegex(
                 this.getID(Registry.ENTITY_TYPE),
             )
@@ -345,8 +378,8 @@ val EntityType<*>.isFireProtectionAffected: Boolean
 val EntityType<*>.newFeedList: List<Item>?
     get() {
         return GlobalConfig
-            .animals_custom_feeding
-            .affects
+            .animals_have_custom_feeding
+            .animals_affected
             .getWithRegex(
                 this.getID(Registry.ENTITY_TYPE)
             )
@@ -359,7 +392,7 @@ val EntityType<*>.healsWhenFed: Boolean
     get() {
         return GlobalConfig
             .animals_heal_when_fed
-            .affected
+            .animals_affected
             .containsWithRegex(
                 this.getID(Registry.ENTITY_TYPE)
             )
@@ -368,7 +401,7 @@ val EntityType<*>.healsWhenFed: Boolean
 val Item.ingotsToFullyRepair: Int?
     get() {
         return GlobalConfig
-            .tools_custom_repair_rate
+            .tools_have_custom_repair_rate
             .ingots_to_fully_repair
             .getWithRegex(
                 this.getID(Registry.ITEM)
