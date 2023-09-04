@@ -5,10 +5,11 @@ import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.GiveInventoryToLookTargetTask;
 import net.minecraft.entity.ai.brain.task.LookTargetUtil;
-import net.minecraft.entity.ai.brain.task.Task;
+import net.minecraft.entity.ai.brain.task.MultiTickTask;
 import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,14 +23,14 @@ import unaverage.tweaks.HelperKt;
 import java.util.Map;
 
 @Mixin(GiveInventoryToLookTargetTask.class)
-public class GiveToTargetMixin<E extends LivingEntity> extends Task<E> {
-    public GiveToTargetMixin(Map<MemoryModuleType<?>, MemoryModuleState> requiredMemoryState) {super(requiredMemoryState);}
-
+public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> {
     @Final @Shadow
     private float speed;
 
     @Unique
     BlockPos targetFarmland = null;
+
+    public GiveToTargetMixin(Map<MemoryModuleType<?>, MemoryModuleState> requiredMemoryState) {super(requiredMemoryState);}
 
     @Inject(
         method = "shouldRun",
@@ -105,6 +106,9 @@ public class GiveToTargetMixin<E extends LivingEntity> extends Task<E> {
         var distSq = targetFarmland.getSquaredDistance(allay.getPos());
         if (distSq < .5*.5){
             world.setBlockState(targetFarmland, crop, 3);
+            allay.playSound(crop.getSoundGroup().getPlaceSound(), 1.0f, 1.0f);
+            world.emitGameEvent(GameEvent.BLOCK_PLACE, targetFarmland, GameEvent.Emitter.of(allay, crop));
+
             allay.getInventory().removeStack(0, 1);
             allay.getBrain().remember(MemoryModuleType.ITEM_PICKUP_COOLDOWN_TICKS, 60);
         }
