@@ -16,6 +16,8 @@
     "bane_of_arthropods_affects_more_mobs.PlayerEntityMixin",
     "blocks_have_custom_blast_resistance.BlocksMixin",
     "blocks_have_custom_hardness.AbstractBlockMixin",
+    "cactus_and_sugarcane_always_spawn_fully_grown.BlockColumnMixin",
+    "cactus_and_sugarcane_always_spawn_fully_grown.SimpleBlockStateProviderAccessor",
     "creepers_avoid_cats_further.FleeEntityMixin",
     "enchantments_can_be_blacklisted.EnchantmentHelperMixin",
     "enchantments_can_transfer_to_books.AnvilScreenHandlerMixin",
