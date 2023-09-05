@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.xp_bar_is_disabled;
+package unaverage.tweaks.mixin.xp_is_disabled.xp_bar_is_disabled;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
