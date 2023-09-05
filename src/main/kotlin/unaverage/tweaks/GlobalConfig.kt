@@ -296,6 +296,19 @@ object GlobalConfig: Config {
         packageToConfig["pigs_ridden_are_faster"] = {pigs_ridden_are_faster.is_enabled}
     }
 
+    object pillaring_is_disabled: Config{
+        var is_enabled = false
+
+        @JvmStatic
+        var exempt_blocks = setOf(
+            "minecraft:water_bucket"
+        )
+    }
+    init {
+        packageToConfig["pillaring_is_disabled"] = {pillaring_is_disabled.is_enabled}
+        packageToConfig["scaffolding_pillaring_is_disabled"] = {pillaring_is_disabled.is_enabled && !pillaring_is_disabled.exempt_blocks.containsWithRegex("minecraft:scaffolding")}
+    }
+
     object shields_no_longer_prevent_knockback: Config{
         var is_enabled = false
     }

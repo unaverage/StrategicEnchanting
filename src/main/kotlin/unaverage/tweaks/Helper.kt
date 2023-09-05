@@ -115,6 +115,16 @@ val Item.capacity: Double?
             )
     }
 
+val Item.isExemptFromNoPillaringConfig: Boolean
+    get(){
+        return GlobalConfig
+            .pillaring_is_disabled
+            .exempt_blocks
+            .containsWithRegex(
+                this.getID(Registries.ITEM)
+            )
+    }
+
 val Block.customHardness: Double?
     get(){
         val id = Registries.BLOCK.getId(this)
