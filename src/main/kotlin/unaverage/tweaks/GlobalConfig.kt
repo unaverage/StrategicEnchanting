@@ -252,7 +252,7 @@ object GlobalConfig: Config {
     object fire_protection_offers_melee_protection: Config{
         var is_enabled = false
 
-        var mobs_protected_against = setOf("minecraft:blazed", "minecraft:magma_cube")
+        var mobs_protected_against = setOf("minecraft:blaze", "minecraft:magma_cube")
     }
     init {
         packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.is_enabled}
