@@ -265,11 +265,11 @@ object GlobalConfig: Config {
         packageToConfig["frost_walker_melts_at_night"] = { frost_walker_melts_at_night.is_enabled }
     }
 
-    object glow_squids_have_better_spawning: Config{
+    object glow_squids_no_longer_spawn_in_waterfalls: Config{
         var is_enabled = false
     }
     init {
-        packageToConfig["glow_squids_have_better_spawning"] = { glow_squids_have_better_spawning.is_enabled }
+        packageToConfig["glow_squids_no_longer_spawns_in_waterfalls"] = { glow_squids_no_longer_spawn_in_waterfalls.is_enabled }
     }
 
     object glowstone_dust_can_make_signs_glow: Config{
