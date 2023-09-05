@@ -172,6 +172,18 @@ object GlobalConfig: Config {
         packageToConfig["blocks_have_custom_blast_resistance"] = {blocks_have_custom_blast_resistance.is_enabled}
     }
 
+    object bridging_is_disabled: Config{
+        var is_enabled = false
+
+        var exempt_blocks = setOf(
+            "minecraft:scaffolding"
+        )
+    }
+    init {
+        packageToConfig["bridging_is_disabled"] = { bridging_is_disabled.is_enabled }
+        packageToConfig["scaffolding_bridging_is_disabled"] = { bridging_is_disabled.is_enabled && !bridging_is_disabled.exempt_blocks.containsWithRegex("minecraft:scaffolding") }
+    }
+
     object cactus_and_sugarcane_always_spawn_fully_grown: Config{
         var is_enabled = false;
     }
