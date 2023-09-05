@@ -31,6 +31,8 @@
     "piglins_and_hoglins_are_fire_immune.EntityTypeMixin",
     "pigs_ridden_are_faster.PigMixin",
     "shields_no_longer_prevent_knockback.LivingEntityMixin",
+    "sugarcane_no_longer_spawns_on_ice.BlockColumnMixin",
+    "sugarcane_no_longer_spawns_on_ice.SimpleBlockStateProviderAccessor",
     "thorns_no_longer_wear_down_armor.ThornsEnchantmentMixin",
     "tools_have_custom_repair_rate.AnvilScreenHandlerMixin",
     "tools_have_limited_enchantment_capacity.AnvilScreenHandlerMixin",

@@ -303,6 +303,13 @@ object GlobalConfig: Config {
         packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback.is_enabled }
     }
 
+    object sugarcane_no_longer_spawns_on_ice: Config{
+        var is_enabled = false
+    }
+    init {
+        packageToConfig["sugarcane_no_longer_spawns_on_ice"] = { sugarcane_no_longer_spawns_on_ice.is_enabled }
+    }
+
     object thorns_no_longer_wear_down_armor: Config{
         var is_enabled = false
     }
