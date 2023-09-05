@@ -28,7 +28,7 @@
     "fire_protection_offers_lava_immunity.EntityMixin",
     "fire_protection_offers_melee_protection.ProtectionEnchantmentMixin",
     "frost_walker_melts_at_night.FrostedIceMixin",
-    "glow_squids_have_better_spawning.GlowSquidMixin",
+    "glow_squids_no_longer_spawns_in_waterfalls.GlowSquidMixin",
     "glowstone_dust_can_make_signs_glow.SignMixin",
     "horses_need_food_to_be_tamed.HorseBondMixin",
     "piglins_and_hoglins_are_fire_immune.EntityTypeMixin",

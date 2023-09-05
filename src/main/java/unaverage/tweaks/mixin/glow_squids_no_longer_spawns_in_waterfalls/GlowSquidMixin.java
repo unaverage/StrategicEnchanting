@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.glow_squids_have_better_spawning;
+package unaverage.tweaks.mixin.glow_squids_no_longer_spawns_in_waterfalls;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
