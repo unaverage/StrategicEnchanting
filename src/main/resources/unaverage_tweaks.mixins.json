@@ -48,7 +48,7 @@
     "xp_is_disabled.XpOrbMixin"
   ],
   "client": [
-    "xp_bar_is_disabled.InGameHudMixin"
+    "xp_is_disabled.xp_bar_is_disabled.InGameHudMixin"
   ],
   "plugin": "unaverage.tweaks.Plugin",
   "injectors": {
