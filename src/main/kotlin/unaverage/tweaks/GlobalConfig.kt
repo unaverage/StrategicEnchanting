@@ -172,6 +172,13 @@ object GlobalConfig: Config {
         packageToConfig["blocks_have_custom_blast_resistance"] = {blocks_have_custom_blast_resistance.is_enabled}
     }
 
+    object cactus_and_sugarcane_always_spawn_fully_grown: Config{
+        var is_enabled = false;
+    }
+    init {
+        packageToConfig["cactus_and_sugarcane_always_spawn_fully_grown"] = {cactus_and_sugarcane_always_spawn_fully_grown.is_enabled}
+    }
+
     object creepers_avoid_cats_further: Config{
         var is_enabled = false
 
