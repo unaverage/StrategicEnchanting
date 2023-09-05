@@ -9,6 +9,7 @@ import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.passive.AllayEntity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
@@ -19,11 +20,11 @@ import net.minecraft.util.registry.Registry
 import net.minecraft.world.WorldView
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.WeakHashMap
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
-
 
 private val cachedGetID: MutableMap<Any?, String> = HashMap()
 fun <T> T.getID(r: Registry<T>): String {
@@ -118,6 +119,27 @@ val Item.isExemptFromNoPillaringConfig: Boolean
     get(){
         return GlobalConfig
             .pillaring_is_disabled
+            .exempt_blocks
+            .containsWithRegex(
+                this.getID(Registries.ITEM)
+            )
+    }
+
+
+private val lastSupportingBlockMap = WeakHashMap<PlayerEntity, BlockPos>()
+var PlayerEntity.lastSupportingBlock: BlockPos
+    get() {
+        return lastSupportingBlockMap[this] ?: this.blockPos
+    }
+    set(value) {
+        lastSupportingBlockMap[this] = value
+    }
+
+
+val Item.isExemptFromNoBridgingConfig: Boolean
+    get(){
+        return GlobalConfig
+            .bridging_is_disabled
             .exempt_blocks
             .containsWithRegex(
                 this.getID(Registries.ITEM)
