@@ -40,7 +40,7 @@ public class ItemStackMixin {
         {
             var pointedBlock = context.getBlockPos();
 
-            var playerStandingPos = HelperKt.getLastSupportingBlock(context.getPlayer());
+            var playerStandingPos = HelperKt.getLastSupportingBlock(context.getPlayer(), context.getWorld());
 
             //if the player's distance to the pointed block is greater than the player's distance to the next placed pos,
             //then the player is placing across the room and should not be counted as bridging
