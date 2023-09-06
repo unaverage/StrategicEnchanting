@@ -313,7 +313,8 @@ object GlobalConfig: Config {
 
         @JvmStatic
         var exempt_blocks = setOf(
-            "minecraft:water_bucket"
+            "minecraft:water_bucket",
+            "minecraft:scaffolding"
         )
     }
     init {
