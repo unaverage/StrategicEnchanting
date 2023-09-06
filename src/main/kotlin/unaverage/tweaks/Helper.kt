@@ -126,15 +126,33 @@ val Item.isExemptFromNoPillaringConfig: Boolean
             )
     }
 
+fun PlayerEntity.getLastSupportingBlock(world: WorldView): BlockPos {
+    fun isSolid(p: BlockPos): Boolean {
+        return world.getBlockState(p).isOpaque
+    }
 
-private val lastSupportingBlockMap = WeakHashMap<PlayerEntity, BlockPos>()
-var PlayerEntity.lastSupportingBlock: BlockPos
-    get() {
-        return lastSupportingBlockMap[this] ?: this.blockPos
+    this.blockPos.takeIf(::isSolid)?.let { return it }
+
+    for (y in listOf(-1, -2)){
+
+        //checks orthogonal first
+        for (x in listOf(-1, 1)) {
+            this.blockPos.add(x,y,0).takeIf(::isSolid)?.let { return it }
+        }
+        for (z in listOf(-1, 1)) {
+            this.blockPos.add(0,y,z).takeIf(::isSolid)?.let { return it }
+        }
+
+        //checks corners last
+        for (x in listOf(-1, 1)){
+            for (z in listOf(-1, 1)) {
+                this.blockPos.add(x,y,z).takeIf(::isSolid)?.let { return it }
+            }
+        }
     }
-    set(value) {
-        lastSupportingBlockMap[this] = value
-    }
+    return this.blockPos
+}
+
 
 
 val Item.isExemptFromNoBridgingConfig: Boolean
