@@ -121,7 +121,7 @@ val Item.isExemptFromNoPillaringConfig: Boolean
             .pillaring_is_disabled
             .exempt_blocks
             .containsWithRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 
@@ -142,7 +142,7 @@ val Item.isExemptFromNoBridgingConfig: Boolean
             .bridging_is_disabled
             .exempt_blocks
             .containsWithRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 
