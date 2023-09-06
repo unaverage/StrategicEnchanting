@@ -17,6 +17,9 @@ public class ItemContextMixin {
         cancellable = true
     )
     private static void disabledScaffoldingPillaring(ItemPlacementContext context, BlockPos pos, Direction side, CallbackInfoReturnable<ItemPlacementContext> cir){
+        if (context.getPlayer() == null) return;
+        if (context.getPlayer().isCreative()) return;
+
         if (!context.getStack().isOf(Items.SCAFFOLDING)) return;
         if (side != Direction.UP) return;
 
