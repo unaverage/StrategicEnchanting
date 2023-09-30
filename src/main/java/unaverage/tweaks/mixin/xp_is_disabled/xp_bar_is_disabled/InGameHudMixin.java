@@ -21,10 +21,10 @@ public class InGameHudMixin {
         method = "renderExperienceBar",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"
         )
     )
-    void cancelDrawingBar(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
+    void cancelDrawingBar(DrawContext instance, Identifier texture, int x, int y, int width, int height){
     }
 
     @Redirect(
@@ -42,47 +42,47 @@ public class InGameHudMixin {
         method = "drawHeart",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"
         )
     )
-    void moveHealthBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
+    void moveHealthBarLower(DrawContext instance, Identifier texture, int x, int y, int width, int height){
         if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+            instance.drawGuiTexture(texture, x, y, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawGuiTexture(texture, x, y+7, width, height);
     }
 
     @Redirect(
         method = "renderMountHealth",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"
         )
     )
-    void moveRiddenHealthBarDown(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
+    void moveRiddenHealthBarDown(DrawContext instance, Identifier texture, int x, int y, int width, int height){
         if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+            instance.drawGuiTexture(texture, x, y, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawGuiTexture(texture, x, y+7, width, height);
     }
 
     @Redirect(
         method = "renderStatusBars",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"
         )
     )
-    void moveHungerBarLower(DrawContext instance, Identifier texture, int x, int y, int u, int v, int width, int height){
+    void moveHungerBarLower(DrawContext instance, Identifier texture, int x, int y, int width, int height){
         if (this.client.player.getJumpingMount() != null){
-            instance.drawTexture(texture, x, y, u, v, width, height);
+            instance.drawGuiTexture(texture, x, y, width, height);
             return;
         }
 
-        instance.drawTexture(texture, x, y+7, u, v, width, height);
+        instance.drawGuiTexture(texture, x, y+7, width, height);
     }
 }
