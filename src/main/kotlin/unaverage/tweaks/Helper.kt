@@ -18,6 +18,7 @@ import net.minecraft.registry.Registry
 import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldView
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -128,7 +129,7 @@ val Item.isExemptFromNoPillaringConfig: Boolean
 
 fun PlayerEntity.getLastSupportingBlock(world: WorldView): BlockPos {
     fun isSolid(p: BlockPos): Boolean {
-        return world.getBlockState(p).isOpaque
+        return world.getBlockState(p).isSolidSurface(world, p, this, Direction.DOWN)
     }
 
     this.blockPos.takeIf(::isSolid)?.let { return it }
