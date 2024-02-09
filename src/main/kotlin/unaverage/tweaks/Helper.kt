@@ -2,7 +2,6 @@
 
 package unaverage.tweaks
 
-import net.fabricmc.fabric.api.registry.VillagerPlantableRegistry
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
@@ -14,9 +13,12 @@ import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.registry.Registry
+import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldView
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -111,7 +113,7 @@ val Item.capacity: Double?
             .tools_have_limited_enchantment_capacity
             .item_capacities
             .getWithRegex(
-                this.getID(Registry.ITEM)
+                this.getID(Registries.ITEM)
             )
     }
 
@@ -121,13 +123,13 @@ val Item.isExemptFromNoPillaringConfig: Boolean
             .pillaring_is_disabled
             .exempt_blocks
             .containsWithRegex(
-                this.getID(Registry.ITEM)
+                this.getID(Registries.ITEM)
             )
     }
 
 fun PlayerEntity.getLastSupportingBlock(world: WorldView): BlockPos {
     fun isSolid(p: BlockPos): Boolean {
-        return world.getBlockState(p).isOpaque
+        return world.getBlockState(p).isSolidSurface(world, p, this, Direction.DOWN)
     }
 
     this.blockPos.takeIf(::isSolid)?.let { return it }
@@ -160,13 +162,13 @@ val Item.isExemptFromNoBridgingConfig: Boolean
             .bridging_is_disabled
             .exempt_blocks
             .containsWithRegex(
-                this.getID(Registry.ITEM)
+                this.getID(Registries.ITEM)
             )
     }
 
 val Block.customHardness: Double?
     get(){
-        val id = Registry.BLOCK.getId(this)
+        val id = Registries.BLOCK.getId(this)
 
         return GlobalConfig
             .blocks_have_custom_hardness
@@ -176,7 +178,7 @@ val Block.customHardness: Double?
 
 val Block.customBlastResistance: Double?
     get(){
-        val id = Registry.BLOCK.getId(this)
+        val id = Registries.BLOCK.getId(this)
 
         return GlobalConfig
             .blocks_have_custom_blast_resistance
@@ -197,7 +199,7 @@ val Map<Enchantment, Int>.weight: Double
                     .tools_have_limited_enchantment_capacity
                     .enchantment_weights_by_id
                     .getWithRegex(
-                        e.getID(Registry.ENCHANTMENT)
+                        e.getID(Registries.ENCHANTMENT)
                     )
                     ?.get(level.toString())
 
@@ -362,7 +364,7 @@ val AllayEntity.heldItemAsCropBlock: BlockState?
         if (item == null) return null
         if (item.count < 0) return null
 
-        if (!VillagerPlantableRegistry.getItems().contains(item.item)) return null
+        if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
         if (item.item !is BlockItem) return null
 
         val crop = (item.item as BlockItem).block as? CropBlock
@@ -392,7 +394,7 @@ val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
             .bane_of_arthropods_affects_more_mobs
             .extra_mobs_affected
             .containsWithRegex(
-                this.getID(Registry.ENTITY_TYPE)
+                this.getID(Registries.ENTITY_TYPE)
             )
     }
 
@@ -402,7 +404,7 @@ val Enchantment.isBlackListed: Boolean
             .enchantments_can_be_blacklisted
             .blacklisted_enchantments
             .containsWithRegex(
-                this.getID(Registry.ENCHANTMENT)
+                this.getID(Registries.ENCHANTMENT)
             )
     }
 
@@ -421,7 +423,7 @@ val EntityType<*>.isFireProtectionAffected: Boolean
             .fire_protection_offers_melee_protection
             .mobs_protected_against
             .containsWithRegex(
-                this.getID(Registry.ENTITY_TYPE),
+                this.getID(Registries.ENTITY_TYPE),
             )
     }
 
@@ -431,10 +433,10 @@ val EntityType<*>.newFeedList: List<Item>?
             .animals_have_custom_feeding
             .animals_affected
             .getWithRegex(
-                this.getID(Registry.ENTITY_TYPE)
+                this.getID(Registries.ENTITY_TYPE)
             )
             ?.mapNotNull {
-                it.fromId(Registry.ITEM)
+                it.fromId(Registries.ITEM)
             }
     }
 
@@ -444,7 +446,7 @@ val EntityType<*>.healsWhenFed: Boolean
             .animals_heal_when_fed
             .animals_affected
             .containsWithRegex(
-                this.getID(Registry.ENTITY_TYPE)
+                this.getID(Registries.ENTITY_TYPE)
             )
     }
 
@@ -454,7 +456,7 @@ val Item.ingotsToFullyRepair: Int?
             .tools_have_custom_repair_rate
             .ingots_to_fully_repair
             .getWithRegex(
-                this.getID(Registry.ITEM)
+                this.getID(Registries.ITEM)
             )
     }
 
