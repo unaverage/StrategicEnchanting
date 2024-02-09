@@ -47,7 +47,7 @@ public class ItemStackMixin {
             if (playerStandingPos.getManhattanDistance(pointedBlock) > playerStandingPos.getManhattanDistance(placedPos)) return;
 
             //shouldn't count if the player is placing a block above themselves
-            if (playerStandingPos.getY() < placedPos.getY()) return;
+            if (playerStandingPos.getY() < placedPos.getY() - 1) return;
         }
 
         //checks if it counts as bridging from block surroundings
