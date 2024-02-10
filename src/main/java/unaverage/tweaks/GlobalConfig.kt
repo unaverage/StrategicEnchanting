@@ -138,6 +138,13 @@ object GlobalConfig: Config {
         packageToConfig["bane_of_arthropods_affects_more_mobs"] = {bane_of_arthropods_affects_more_mobs.is_enabled}
     }
 
+    object beds_dont_explode: Config{
+        var is_enabled = false
+    }
+    init {
+        packageToConfig["beds_dont_explode"] = { beds_dont_explode.is_enabled }
+    }
+
     object blocks_have_custom_hardness: Config{
         var is_enabled = false
 
