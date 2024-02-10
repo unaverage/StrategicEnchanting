@@ -198,7 +198,7 @@ object GlobalConfig: Config {
         packageToConfig["cactus_and_sugarcane_always_spawn_fully_grown"] = {cactus_and_sugarcane_always_spawn_fully_grown.is_enabled}
     }
 
-    object creepers_avoid_cats_further: Config{
+    object cats_repel_creepers_further: Config{
         var is_enabled = false
 
         @JvmStatic
@@ -210,7 +210,7 @@ object GlobalConfig: Config {
             }
     }
     init {
-        packageToConfig["creepers_avoid_cats_further"] = {creepers_avoid_cats_further.is_enabled}
+        packageToConfig["cats_repel_creepers_further"] = {cats_repel_creepers_further.is_enabled}
     }
 
     object composters_take_in_more_items: Config{
