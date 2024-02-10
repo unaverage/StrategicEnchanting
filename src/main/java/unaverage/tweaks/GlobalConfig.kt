@@ -206,6 +206,20 @@ object GlobalConfig: Config {
         packageToConfig["creepers_avoid_cats_further"] = {creepers_avoid_cats_further.is_enabled}
     }
 
+    object composters_take_in_more_items: Config{
+        var is_enabled = false
+
+        @JvmStatic
+        var items = mapOf(
+            "minecraft:bamboo" to .1,
+            "minecraft:stick" to .1,
+            "minecraft:deadbush" to .1
+        )
+    }
+    init {
+        packageToConfig["composters_take_in_more_items"] = {composters_take_in_more_items.is_enabled}
+    }
+
     object enchantments_can_transfer_to_books: Config{
         var is_enabled = false
 
