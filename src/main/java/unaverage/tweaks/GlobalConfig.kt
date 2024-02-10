@@ -357,6 +357,14 @@ object GlobalConfig: Config {
         packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback.is_enabled }
     }
 
+    object sleeping_heals: Config{
+        var is_enabled = true
+    }
+
+    init {
+        packageToConfig["sleeping_heals"] = { sleeping_heals.is_enabled }
+    }
+
     object sugarcane_no_longer_spawns_on_ice: Config{
         var is_enabled = false
     }
