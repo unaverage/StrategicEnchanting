@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.creepers_avoid_cats_further;
+package unaverage.tweaks.mixin.cats_repel_creepers_further;
 
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.CreeperEntity;
@@ -30,6 +30,6 @@ public abstract class FleeEntityMixin{
         if (!(mob instanceof CreeperEntity)) return;
         if (fleeFromType != CatEntity.class && fleeFromType != OcelotEntity.class) return;
 
-        this.fleeDistance = GlobalConfig.creepers_avoid_cats_further.getDistance();
+        this.fleeDistance = GlobalConfig.cats_repel_creepers_further.getDistance();
     }
 }
