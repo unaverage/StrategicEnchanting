@@ -21,6 +21,7 @@
     "cactus_and_sugarcane_always_spawn_fully_grown.BlockColumnMixin",
     "cactus_and_sugarcane_always_spawn_fully_grown.SimpleBlockStateProviderAccessor",
     "creepers_avoid_cats_further.FleeEntityMixin",
+    "composters_take_in_more_items.ComposterMixin",
     "enchantments_can_be_blacklisted.EnchantmentHelperMixin",
     "enchantments_can_transfer_to_books.AnvilScreenHandlerMixin",
     "endermen_can_teleport_unreachable_players_closer.EndermanMixin",
