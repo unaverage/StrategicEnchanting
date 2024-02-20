@@ -33,6 +33,7 @@
     "glowstone_dust_can_make_signs_glow.SignMixin",
     "horses_need_food_to_be_tamed.HorseBondMixin",
     "mobs_can_cross_rails.MobMixin",
+    "phantoms_dont_spawn_in_certain_biomes.PhantomSpawnerMixin",
     "phantoms_spawn_regularly.PhantomSpawnerMixin",
     "piglins_and_hoglins_are_fire_immune.EntityTypeMixin",
     "pigs_ridden_are_faster.PigMixin",
