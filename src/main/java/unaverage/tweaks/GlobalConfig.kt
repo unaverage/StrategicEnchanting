@@ -314,6 +314,12 @@ object GlobalConfig: Config {
         packageToConfig["mobs_can_cross_rails"] = { mobs_can_cross_rails.is_enabled }
     }
 
+    object phantoms_spawn_regularly: Config{
+        var is_enabled = false
+    }
+    init {
+        packageToConfig["phantoms_spawn_regularly"] = { phantoms_spawn_regularly.is_enabled }
+    }
     object piglins_and_hoglins_are_fire_immune: Config{
         var is_enabled = false
     }
