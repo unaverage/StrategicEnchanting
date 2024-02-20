@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,13 +48,12 @@ public abstract class ItemStackMixin {
         var cap = getCapacity(self.getItem());
         if (cap == null || cap < 0) return;
 
-        var text = "Enchantment Capacity: %s/%s".formatted(
-            HelperKt.toStringWithDecimalPlaces(weight, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places()),
-            HelperKt.toStringWithDecimalPlaces(cap, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places())
-        );
-
         list.add(
-            MutableText.of(new LiteralTextContent(text))
+            Text.translatable(
+                "unaverage_tweaks.enchantment_capacity",
+                HelperKt.toStringWithDecimalPlaces(weight, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places()),
+                HelperKt.toStringWithDecimalPlaces(cap, GlobalConfig.tools_have_limited_enchantment_capacity.getTool_tip_decimal_places())
+            )
         );
     }
 }
