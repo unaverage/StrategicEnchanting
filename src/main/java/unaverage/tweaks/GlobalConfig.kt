@@ -320,6 +320,19 @@ object GlobalConfig: Config {
     init {
         packageToConfig["phantoms_spawn_regularly"] = { phantoms_spawn_regularly.is_enabled }
     }
+
+    object phantoms_dont_spawn_in_certain_biomes: Config{
+        var is_enabled = false
+
+        @JvmStatic
+        var biome_blacklist = setOf(
+            "minecraft:mushroom_fields"
+        )
+    }
+    init {
+        packageToConfig["phantoms_dont_spawn_in_certain_biomes"] = { phantoms_dont_spawn_in_certain_biomes.is_enabled }
+    }
+
     object piglins_and_hoglins_are_fire_immune: Config{
         var is_enabled = false
     }
