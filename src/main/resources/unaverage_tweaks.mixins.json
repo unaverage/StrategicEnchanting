@@ -40,7 +40,6 @@
     "pillaring_is_disabled.ItemStackMixin",
     "pillaring_is_disabled.scaffolding_pillaring_is_disabled.ItemContextMixin",
     "shields_no_longer_prevent_knockback.LivingEntityMixin",
-    "sleeping_heals.PlayerMixin",
     "sugarcane_no_longer_spawns_on_ice.BlockColumnMixin",
     "sugarcane_no_longer_spawns_on_ice.SimpleBlockStateProviderAccessor",
     "thorns_no_longer_wear_down_armor.ThornsEnchantmentMixin",
