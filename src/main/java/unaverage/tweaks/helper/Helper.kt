@@ -6,7 +6,6 @@ import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.item.AirBlockItem
 import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
@@ -253,14 +252,6 @@ val EntityType<*>.newFeedList: List<Item>?
             ?.mapNotNull {
                 it.fromId(Registries.ITEM)
             }
-    }
-
-var ItemStack.decay: Double
-    get(){
-        return this.orCreateNbt.getDouble("unaverage_tweaks:total_decay")
-    }
-    set(value){
-        this.orCreateNbt.putDouble("unaverage_tweaks:total_decay", value)
     }
 
 @Suppress("SameParameterValue")
