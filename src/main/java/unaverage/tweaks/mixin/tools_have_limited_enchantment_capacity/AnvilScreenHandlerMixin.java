@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Map;
 
-import static unaverage.tweaks.HelperKt.cap;
-import static unaverage.tweaks.HelperKt.getCapacity;
+import static unaverage.tweaks.helper.HelperKt.cap;
+import static unaverage.tweaks.helper.ToolsHaveLimitedEnchantmentCapacityKt.getCapacity;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {

@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
+
+import static unaverage.tweaks.helper.AnimalsHealWhenFedKt.getHealsWhenFed;
+import static unaverage.tweaks.helper.HelperKt.getNewFeedList;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {
@@ -31,7 +33,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void preventLoveModeWhenHurt(CallbackInfoReturnable<Boolean> cir) {
-        if (!HelperKt.getHealsWhenFed(this.getType())) return;
+        if (!getHealsWhenFed(this.getType())) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
             cir.setReturnValue(false);
@@ -44,7 +46,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         cancellable = true
     )
     private void healIfHurt(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (!HelperKt.getHealsWhenFed(this.getType())) return;
+        if (!getHealsWhenFed(this.getType())) return;
         if (this.getType() == EntityType.PARROT) return;
 
         var itemInHand = player.getStackInHand(hand);

@@ -8,7 +8,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
+
+import static unaverage.tweaks.helper.BridgingIsDisabledKt.*;
+import static unaverage.tweaks.helper.PillaringIsDisabledKt.*;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -26,7 +28,7 @@ public class ItemStackMixin {
         {
             //shouldn't count if the item is explicitly exempt in the config
             var item = ((ItemStack)(Object)this).getItem();
-            if (HelperKt.isExemptFromNoBridgingConfig(item)) return;
+            if (isExempt(item)) return;
         }
 
         //checks if player is exempt
@@ -40,7 +42,7 @@ public class ItemStackMixin {
         {
             var pointedBlock = context.getBlockPos();
 
-            var playerStandingPos = HelperKt.getLastSupportingBlock(context.getPlayer(), context.getWorld());
+            var playerStandingPos = getLastSupportingBlock(context.getPlayer(), context.getWorld());
 
             //if the player's distance to the pointed block is greater than the player's distance to the next placed pos,
             //then the player is placing across the room and should not be counted as bridging

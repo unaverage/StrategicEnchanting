@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import unaverage.tweaks.HelperKt;
+import unaverage.tweaks.helper.HelperKt;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {

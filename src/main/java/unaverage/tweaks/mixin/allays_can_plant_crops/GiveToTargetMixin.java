@@ -18,9 +18,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
 
 import java.util.Map;
+
+import static unaverage.tweaks.helper.AllaysCanPlantCropsKt.getHeldItemAsCropBlock;
+import static unaverage.tweaks.helper.AllaysCanPlantCropsKt.getNearestFarmPos;
 
 @Mixin(GiveInventoryToLookTargetTask.class)
 public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> {
@@ -40,10 +42,10 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
     void injectShouldRun(ServerWorld world, E entity, CallbackInfoReturnable<Boolean> cir){
         if (!(entity instanceof AllayEntity allay)) return;
 
-        var cropBlock = HelperKt.getHeldItemAsCropBlock(allay);
+        var cropBlock = getHeldItemAsCropBlock(allay);
         if (cropBlock == null) return;
 
-        var nearestFarmland = HelperKt.getNearestFarmPos(allay.getBlockPos(), cropBlock, allay.getWorld());
+        var nearestFarmland = getNearestFarmPos(allay.getBlockPos(), cropBlock, allay.getWorld());
         if (nearestFarmland == null) return;
 
         targetFarmland = nearestFarmland;
@@ -71,7 +73,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
-        var crop = HelperKt.getHeldItemAsCropBlock(allay);
+        var crop = getHeldItemAsCropBlock(allay);
         if (crop == null){
             cir.setReturnValue(false);
             return;
@@ -100,7 +102,7 @@ public class GiveToTargetMixin<E extends LivingEntity> extends MultiTickTask<E> 
         if (!(entity instanceof AllayEntity allay)) return;
         if (targetFarmland == null) return;
 
-        var crop = HelperKt.getHeldItemAsCropBlock(allay);
+        var crop = getHeldItemAsCropBlock(allay);
         if (crop == null) return;
 
         var distSq = targetFarmland.getSquaredDistance(allay.getPos());

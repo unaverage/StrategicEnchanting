@@ -18,8 +18,8 @@ import unaverage.tweaks.GlobalConfig;
 
 import java.util.Collections;
 
-import static unaverage.tweaks.HelperKt.cap;
-import static unaverage.tweaks.HelperKt.getWeight;
+import static unaverage.tweaks.helper.HelperKt.cap;
+import static unaverage.tweaks.helper.HelperKt.getTotalWeight;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
@@ -50,7 +50,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var enchantments = EnchantmentHelper.get(input2);
         cap(
             enchantments,
-            GlobalConfig.enchantments_can_transfer_to_books.getTransfer_percentage() * getWeight(enchantments),
+            GlobalConfig.enchantments_can_transfer_to_books.getTransfer_percentage() * getTotalWeight(enchantments),
             x->false
         );
         if (enchantments.isEmpty()) return;
