@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import unaverage.tweaks.HelperKt;
+
+import static unaverage.tweaks.helper.HelperKt.*;
+import static unaverage.tweaks.helper.ToolsHaveCustomRepairRateKt.*;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
@@ -30,7 +32,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var input2 = this.input.getStack(1);
         var result = this.output.getStack(0);
 
-        var ingotsToFullyRepair = HelperKt.getIngotsToFullyRepair(input1.getItem());
+        var ingotsToFullyRepair = getIngotsToFullyRepair(input1.getItem());
         if (ingotsToFullyRepair == null) return;
 
         if (!input1.getItem().canRepair(input1, input2)) return;
@@ -38,7 +40,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
         //undos the vanilla repair
         result.setDamage(input1.getDamage());
-        HelperKt.setDecay(result, HelperKt.getDecay(input1));
+        setDecay(result, getDecay(input1));
         this.repairItemUsage = 0;
 
         //repairs the item all over again

@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
+
+import static unaverage.tweaks.helper.BlocksHaveCustomHardnessKt.*;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class AbstractBlockMixin {
@@ -19,7 +20,7 @@ public abstract class AbstractBlockMixin {
         cancellable = true
     )
     void useCustomHardness(CallbackInfoReturnable<Float> cir){
-        var result = HelperKt.getCustomHardness(this.getBlock());
+        var result = getCustomHardness(this.getBlock());
         if (result == null) return;
 
         cir.setReturnValue((float)(double)result);

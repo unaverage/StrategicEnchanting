@@ -10,7 +10,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
-import unaverage.tweaks.HelperKt;
+import unaverage.tweaks.helper.HelperKt;
+
+import static unaverage.tweaks.helper.HelperKt.*;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
@@ -28,14 +30,14 @@ public abstract class ItemStackMixin {
 
         var diff = oldDamage - newDamage;
 
-        var totalEnchantments = HelperKt.getWeight(EnchantmentHelper.get((ItemStack) (Object)this));
+        var totalEnchantments = getTotalWeight(EnchantmentHelper.get((ItemStack) (Object)this));
         if (totalEnchantments <= 0) return;
 
         var decay = (double)diff / (double) GlobalConfig.tools_max_durability_will_decay.getDecay_rate() * totalEnchantments;
 
-        HelperKt.setDecay(
+        setDecay(
             (ItemStack)(Object)this,
-            HelperKt.getDecay((ItemStack)(Object)this) + decay
+            getDecay((ItemStack)(Object)this) + decay
         );
     }
 
@@ -45,7 +47,7 @@ public abstract class ItemStackMixin {
         cancellable = true
     )
     void getMaxDamageWithDecay(CallbackInfoReturnable<Integer> cir){
-        var decay = (int)Math.floor(HelperKt.getDecay((ItemStack)(Object)this));
+        var decay = (int)Math.floor(getDecay((ItemStack)(Object)this));
         if (decay <= 0) return;
 
         var result = this.getItem().getMaxDamage() - decay;

@@ -14,9 +14,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
 
 import java.util.Set;
+
+import static unaverage.tweaks.helper.AnimalsHealWhenFedKt.*;
 
 @Mixin(ParrotEntity.class)
 public abstract class ParrotMixin extends AnimalEntity {
@@ -30,7 +31,7 @@ public abstract class ParrotMixin extends AnimalEntity {
         cancellable = true
     )
     void injectIsBreedingItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir){
-        if (!HelperKt.getHealsWhenFed(this.getType())) return;
+        if (!getHealsWhenFed(this.getType())) return;
 
         var itemInHand = player.getStackInHand(hand);
         if (!TAMING_INGREDIENTS.contains(itemInHand.getItem())) return;

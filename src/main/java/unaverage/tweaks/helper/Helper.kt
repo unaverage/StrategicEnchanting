@@ -1,32 +1,20 @@
 @file:Suppress("FoldInitializerAndIfToElvis", "LiftReturnOrAssignment")
 
-package unaverage.tweaks
+package unaverage.tweaks.helper
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.CropBlock
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.passive.AllayEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.AirBlockItem
-import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.world.WorldView
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.util.WeakHashMap
+import unaverage.tweaks.GlobalConfig
+import unaverage.tweaks.UnaverageTweaks
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 private val cachedGetID: MutableMap<Any?, String> = HashMap()
 fun <T> T.getID(r: Registry<T>): String {
@@ -65,7 +53,7 @@ fun <T> Map<String, T>.getWithRegex(itemID: String): T? {
 
 
 private val cachedContain: MutableMap<Pair<Set<String>, String>, Boolean> = HashMap()
-fun Set<String>.containsWithRegex(id: String): Boolean {
+fun Set<String>.containsRegex(id: String): Boolean {
     return cachedContain.getOrPut(this to id){
         for (testedID in this) {
             if (id == testedID) {
@@ -104,100 +92,16 @@ fun <T> String.fromId(registry: Registry<T>): T?{
     }
 }
 
-/**
- * {@return The total weights of enchantments the item can hold}
- */
-val Item.capacity: Double?
-    get() {
-        return GlobalConfig
-            .tools_have_limited_enchantment_capacity
-            .item_capacities
-            .getWithRegex(
-                this.getID(Registries.ITEM)
-            )
-    }
-
-val Item.isExemptFromNoPillaringConfig: Boolean
-    get(){
-        return GlobalConfig
-            .pillaring_is_disabled
-            .exempt_blocks
-            .containsWithRegex(
-                this.getID(Registries.ITEM)
-            )
-    }
-
-fun PlayerEntity.getLastSupportingBlock(world: WorldView): BlockPos {
-    fun isSolid(p: BlockPos): Boolean {
-        return world.getBlockState(p).isSolidSurface(world, p, this, Direction.DOWN)
-    }
-
-    this.blockPos.takeIf(::isSolid)?.let { return it }
-
-    for (y in listOf(-1, -2)){
-
-        //checks orthogonal first
-        for (x in listOf(-1, 1)) {
-            this.blockPos.add(x,y,0).takeIf(::isSolid)?.let { return it }
-        }
-        for (z in listOf(-1, 1)) {
-            this.blockPos.add(0,y,z).takeIf(::isSolid)?.let { return it }
-        }
-
-        //checks corners last
-        for (x in listOf(-1, 1)){
-            for (z in listOf(-1, 1)) {
-                this.blockPos.add(x,y,z).takeIf(::isSolid)?.let { return it }
-            }
-        }
-    }
-    return this.blockPos
-}
-
-
-
-val Item.isExemptFromNoBridgingConfig: Boolean
-    get(){
-        return GlobalConfig
-            .bridging_is_disabled
-            .exempt_blocks
-            .containsWithRegex(
-                this.getID(Registries.ITEM)
-            )
-    }
-
-val Block.customHardness: Double?
-    get(){
-        val id = Registries.BLOCK.getId(this)
-
-        return GlobalConfig
-            .blocks_have_custom_hardness
-            .blocks_affected
-            .getWithRegex(id.namespace + ":" + id.path)
-    }
-
-val Block.customBlastResistance: Double?
-    get(){
-        val id = Registries.BLOCK.getId(this)
-
-        return GlobalConfig
-            .blocks_have_custom_blast_resistance
-            .blocks_affected
-            .getWithRegex(id.namespace + ":" + id.path)
-    }
-
 
 /**
  * {@return The total weight of all the enchantments in an enchantment map}
  */
-val Map<Enchantment, Int>.weight: Double
+val Map<Enchantment, Int>.totalWeight: Double
     get() {
         fun getWeight(e: Enchantment, level: Int): Double {
 
             run{
-                val weightByID = GlobalConfig
-                    .tools_have_limited_enchantment_capacity
-                    .enchantment_weights_by_id
+                val weightByID = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_id
                     .getWithRegex(
                         e.getID(Registries.ENCHANTMENT)
                     )
@@ -209,9 +113,7 @@ val Map<Enchantment, Int>.weight: Double
             }
 
             run{
-                val weightByMax = GlobalConfig
-                    .tools_have_limited_enchantment_capacity
-                    .enchantment_weights_by_max_levels
+                val weightByMax = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_max_levels
                     .get(
                         e.maxLevel.toString()
                     )
@@ -251,7 +153,7 @@ fun MutableMap<Enchantment, Int>.cap(
 ) {
     //Returns whether the candidate is above the cap
     fun isOverCap(map: Map<Enchantment, Int>, cap: Double): Boolean {
-        val weight = map.weight
+        val weight = map.totalWeight
         val epsilon = .001
 
         //adds a small epsilon to avoid slight inaccuracies
@@ -320,7 +222,7 @@ fun MutableMap<Enchantment, Int>.cap(
             //permutations that keeps more kinds of enchantments should be considered first
             Comparator.comparing { it.keys.size },
             //candidates with more weight should be considered first
-            Comparator.comparing { it.weight },
+            Comparator.comparing { it.totalWeight },
             Comparator.comparing { it.values.sum() }
         )
     }
@@ -342,39 +244,27 @@ fun MutableMap<Enchantment, Int>.cap(
 }
 
 
-fun getNearestFarmPos(pos: BlockPos, cropBlock: BlockState, world: WorldView): BlockPos?{
-    iterateSquare(5){ i,j,k->
-        @Suppress("NAME_SHADOWING")
-        val pos = BlockPos(
-            pos.x + i,
-            pos.y + j,
-            pos.z + k
-        )
-
-        if (cropBlock.canPlaceAt(world, pos) && world.getBlockState(pos).isAir) {
-            return pos
-        }
-    }
-    return null
-}
-
-val AllayEntity.heldItemAsCropBlock: BlockState?
+val EntityType<*>.newFeedList: List<Item>?
     get() {
-        val item = inventory.getStack(0)
-        if (item == null) return null
-        if (item.count < 0) return null
+        return GlobalConfig.animals_have_custom_feeding.animals_affected
+            .getWithRegex(
+                this.getID(Registries.ENTITY_TYPE)
+            )
+            ?.mapNotNull {
+                it.fromId(Registries.ITEM)
+            }
+    }
 
-        if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
-        if (item.item !is BlockItem) return null
-
-        val crop = (item.item as BlockItem).block as? CropBlock
-        if (crop == null) return null
-
-        return crop.withAge(0)
+var ItemStack.decay: Double
+    get(){
+        return this.orCreateNbt.getDouble("unaverage_tweaks:total_decay")
+    }
+    set(value){
+        this.orCreateNbt.putDouble("unaverage_tweaks:total_decay", value)
     }
 
 @Suppress("SameParameterValue")
-private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit){
+inline fun iterateCube(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit){
     for (r in 0..maxRange) {
         for (i in -r..r) {
             for (j in -r..r) {
@@ -387,89 +277,3 @@ private inline fun iterateSquare(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit)
         }
     }
 }
-
-val EntityType<*>.isAffectedByBaneOfArthropods: Boolean
-    get() {
-        return GlobalConfig
-            .bane_of_arthropods_affects_more_mobs
-            .extra_mobs_affected
-            .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
-            )
-    }
-
-val Enchantment.isBlackListed: Boolean
-    get() {
-        return GlobalConfig
-            .enchantments_can_be_blacklisted
-            .blacklisted_enchantments
-            .containsWithRegex(
-                this.getID(Registries.ENCHANTMENT)
-            )
-    }
-
-fun getFireProtectionLavaImmunityDuration(level: Int): Int {
-    return GlobalConfig
-        .fire_protection_offers_lava_immunity
-        .seconds_of_lava_immunity_per_levels
-        .let { it * level }
-        .let{ it * 20 }
-        .roundToInt()
-}
-
-val EntityType<*>.isFireProtectionAffected: Boolean
-    get() {
-        return GlobalConfig
-            .fire_protection_offers_melee_protection
-            .mobs_protected_against
-            .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE),
-            )
-    }
-
-val EntityType<*>.newFeedList: List<Item>?
-    get() {
-        return GlobalConfig
-            .animals_have_custom_feeding
-            .animals_affected
-            .getWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
-            )
-            ?.mapNotNull {
-                it.fromId(Registries.ITEM)
-            }
-    }
-
-val EntityType<*>.healsWhenFed: Boolean
-    get() {
-        return GlobalConfig
-            .animals_heal_when_fed
-            .animals_affected
-            .containsWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
-            )
-    }
-
-val Item.ingotsToFullyRepair: Int?
-    get() {
-        return GlobalConfig
-            .tools_have_custom_repair_rate
-            .ingots_to_fully_repair
-            .getWithRegex(
-                this.getID(Registries.ITEM)
-            )
-    }
-
-fun Double.toStringWithDecimalPlaces(decimalPlace: Int): String {
-    return BigDecimal(this)
-        .setScale(decimalPlace, RoundingMode.FLOOR)
-        .toString()
-}
-
-var ItemStack.decay: Double
-    get(){
-        return this.orCreateNbt.getDouble("unaverage_tweaks:total_decay")
-    }
-    set(value){
-        this.orCreateNbt.putDouble("unaverage_tweaks:total_decay", value)
-    }

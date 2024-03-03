@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-import static unaverage.tweaks.HelperKt.isBlackListed;
+import static unaverage.tweaks.helper.EnchantmentsCanBeBlacklistedKt.isBlackListed;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {

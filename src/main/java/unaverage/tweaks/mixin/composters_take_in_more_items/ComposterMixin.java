@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import unaverage.tweaks.GlobalConfig;
+import unaverage.tweaks.helper.HelperKt;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +35,7 @@ public class ComposterMixin {
             var itemName = e.getKey();
             var chance = e.getValue();
 
-            var item = unaverage.tweaks.HelperKt.fromId(
+            var item = HelperKt.fromId(
                 itemName,
                 Registries.ITEM
             );

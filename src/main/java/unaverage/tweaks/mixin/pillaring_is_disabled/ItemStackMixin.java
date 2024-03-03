@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import unaverage.tweaks.HelperKt;
+
+import static unaverage.tweaks.helper.PillaringIsDisabledKt.*;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
@@ -21,7 +22,7 @@ public class ItemStackMixin {
     void cancelPillaring(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir){
         var item = ((ItemStack)(Object)this).getItem();
 
-        if (HelperKt.isExemptFromNoPillaringConfig(item)) return;
+        if (getCanPillarWith(item)) return;
 
         if (context.getPlayer() == null) return;
         if (context.getPlayer().isCreative()) return;
