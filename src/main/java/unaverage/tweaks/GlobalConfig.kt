@@ -376,6 +376,16 @@ object GlobalConfig: Config {
         packageToConfig["shields_no_longer_prevent_knockback"] = { shields_no_longer_prevent_knockback.is_enabled }
     }
 
+    object skeletons_also_spawn_underwater: Config{
+        var is_enabled = false
+
+        @JvmStatic
+        var spawn_chance = 0.02
+    }
+    init {
+        packageToConfig["skeletons_also_spawn_underwater"] = { skeletons_also_spawn_underwater.is_enabled }
+    }
+
     object sugarcane_no_longer_spawns_on_ice: Config{
         var is_enabled = false
     }
