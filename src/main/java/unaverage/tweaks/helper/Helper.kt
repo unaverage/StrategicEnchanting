@@ -11,8 +11,12 @@ import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
 import unaverage.tweaks.GlobalConfig
 import unaverage.tweaks.UnaverageTweaks
+import java.util.*
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
+import kotlin.Comparator
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
 
 private val cachedGetID: MutableMap<Any?, String> = HashMap()
@@ -254,6 +258,12 @@ val EntityType<*>.newFeedList: List<Item>?
             }
     }
 
+fun passesChance(chance: Double, rng: Random): Boolean{
+    val r = rng.nextDouble()
+
+    return chance > r
+}
+
 @Suppress("SameParameterValue")
 inline fun iterateCube(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit){
     for (r in 0..maxRange) {
@@ -268,3 +278,4 @@ inline fun iterateCube(maxRange: Int, fn: (x:Int, y:Int, z:Int)->Unit){
         }
     }
 }
+
