@@ -28,6 +28,7 @@
     "endermen_can_teleport_unreachable_players_closer.EndermanMixin",
     "fire_protection_offers_lava_immunity.EntityMixin",
     "fire_protection_offers_melee_protection.ProtectionEnchantmentMixin",
+    "flint_and_steel_can_be_used_with_separate_hands.ItemMixin",
     "frost_walker_melts_at_night.FrostedIceMixin",
     "glow_squids_no_longer_spawns_in_waterfalls.GlowSquidMixin",
     "glowstone_dust_can_make_signs_glow.SignMixin",

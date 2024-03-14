@@ -279,6 +279,31 @@ object GlobalConfig: Config {
         packageToConfig["fire_protection_offers_melee_protection"] = {fire_protection_offers_melee_protection.is_enabled}
     }
 
+    object flint_and_steel_can_be_used_with_separate_hands: Config{
+        var is_enabled = true
+
+        @JvmStatic
+        var iron_ingot_consume_chance = 0.0
+            set(value) {
+                if (value < 0) throw InvalidValueException();
+                if (value > 1) throw InvalidValueException();
+
+                field = value
+            }
+
+        @JvmStatic
+        var flint_consume_chance = 0.1
+            set(value) {
+                if (value < 0) throw InvalidValueException();
+                if (value > 1) throw InvalidValueException();
+
+                field = value
+            }
+    }
+    init {
+        packageToConfig["flint_and_steel_can_be_used_with_separate_hands"] = {flint_and_steel_can_be_used_with_separate_hands.is_enabled}
+    }
+
     object frost_walker_melts_at_night: Config{
         var is_enabled = false
     }
