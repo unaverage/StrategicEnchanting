@@ -32,7 +32,7 @@ public class ItemStackMixin {
 
         if (context.getPlayer().isOnGround()) return;
 
-        if (playerPos.getY() < placedPos.getY()) return;
+        if (playerPos.getY() <= placedPos.getY()) return;
 
         cir.setReturnValue(
             ActionResult.SUCCESS
