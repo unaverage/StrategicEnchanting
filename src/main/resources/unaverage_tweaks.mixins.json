@@ -25,7 +25,7 @@
     "composters_take_in_more_items.ComposterMixin",
     "enchantments_can_be_blacklisted.EnchantmentHelperMixin",
     "enchantments_can_transfer_to_books.AnvilScreenHandlerMixin",
-    "endermen_can_teleport_unreachable_players_closer.EndermanMixin",
+    "endermen_can_teleport_unreachable_players.EndermanMixin",
     "fire_protection_offers_lava_immunity.EntityMixin",
     "fire_protection_offers_melee_protection.ProtectionEnchantmentMixin",
     "flint_and_steel_can_be_used_with_separate_hands.ItemMixin",

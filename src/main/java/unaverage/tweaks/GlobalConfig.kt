@@ -254,11 +254,12 @@ object GlobalConfig: Config {
         packageToConfig["enchantments_can_be_blacklisted"] = {enchantments_can_be_blacklisted.is_enabled}
     }
 
-    object endermen_can_teleport_unreachable_players_closer: Config{
+    object endermen_can_teleport_unreachable_players: Config{
         var is_enabled = false
     }
+
     init {
-        packageToConfig["endermen_can_teleport_unreachable_players_closer"] = {endermen_can_teleport_unreachable_players_closer.is_enabled }
+        packageToConfig["endermen_can_teleport_unreachable_players"] = {endermen_can_teleport_unreachable_players.is_enabled }
     }
 
     object fire_protection_offers_lava_immunity: Config {

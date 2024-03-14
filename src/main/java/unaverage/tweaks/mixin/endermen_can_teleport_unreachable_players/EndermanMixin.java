@@ -1,4 +1,4 @@
-package unaverage.tweaks.mixin.endermen_can_teleport_unreachable_players_closer;
+package unaverage.tweaks.mixin.endermen_can_teleport_unreachable_players;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.EndermanEntity;
@@ -12,11 +12,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import unaverage.tweaks.helper.HelperKt;
+
+import static unaverage.tweaks.helper.HelperKt.*;
 
 @Mixin(EndermanEntity.class)
 public abstract class EndermanMixin extends HostileEntity {
     protected EndermanMixin(EntityType<? extends HostileEntity> entityType, World world) {super(entityType, world);}
-
 
     @Unique
     private int coolDown = 0;
@@ -56,6 +58,6 @@ public abstract class EndermanMixin extends HostileEntity {
         this.getWorld().emitGameEvent(GameEvent.TELEPORT, this.getPos(), GameEvent.Emitter.of(this));
         this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
 
-        this.coolDown = 3*20;
+        this.coolDown = 3 * TICKS_PER_SEC;
     }
 }
