@@ -407,7 +407,7 @@ object GlobalConfig: Config {
         var is_enabled = false
 
         @JvmStatic
-        var spawn_chance = 0.02
+        var spawn_chance = 0.05
     }
     init {
         packageToConfig["skeletons_also_spawn_underwater"] = { skeletons_also_spawn_underwater.is_enabled }
