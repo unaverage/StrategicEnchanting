@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static unaverage.tweaks.helper.FireProtectionOffersFireImmunityKt.getFireProtectionLavaImmunityDuration;
+import static unaverage.tweaks.helper.HelperKt.TICKS_PER_SEC;
 
 
 @Mixin(Entity.class)
@@ -70,7 +71,7 @@ public abstract class EntityMixin {
             );
 
             //30 seconds of cooldown
-            this.lavaImmunityCoolDown = 30 * 20;
+            this.lavaImmunityCoolDown = 30 * TICKS_PER_SEC;
         }
 
         //actually applies the lava immunity if the countdown is not zero

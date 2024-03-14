@@ -30,7 +30,7 @@ public class EntityTypeMixin {
         method = "<clinit>",
         at = @At("TAIL")
     )
-    private static void fn(CallbackInfo ci){
+    private static void makePiglinsAndHoglinsFireImmune(CallbackInfo ci){
         ((EntityTypeMixin)(Object)PIGLIN).fireImmune = true;
         ((EntityTypeMixin)(Object)PIGLIN_BRUTE).fireImmune = true;
         ((EntityTypeMixin)(Object)HOGLIN).fireImmune = true;

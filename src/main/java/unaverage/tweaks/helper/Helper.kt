@@ -95,6 +95,7 @@ fun <T> String.fromId(registry: Registry<T>): T?{
     }
 }
 
+const val TICKS_PER_SEC = 20;
 
 /**
  * {@return The total weight of all the enchantments in an enchantment map}

@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockColumnFeature.class)
 public abstract class BlockColumnMixin {
-
     @Inject(
         method = "generate",
         at = @At(

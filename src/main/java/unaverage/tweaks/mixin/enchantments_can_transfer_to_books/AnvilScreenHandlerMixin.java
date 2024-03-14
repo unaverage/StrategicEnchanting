@@ -30,40 +30,45 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         super(type, syncId, playerInventory, context);
     }
 
+    //TODO simplify this with helper functions
     @Inject(
         method = "updateResult",
         at = @At("RETURN")
     )
-    void transfer_to_book(CallbackInfo ci){
+    void transferToBook(CallbackInfo ci){
         if (!this.output.getStack(0).isEmpty()) return;
 
-        var input1 = this.input.getStack(0);
-        var input2 = this.input.getStack(1);
+        var inputBook = this.input.getStack(0);
+        var inputTool = this.input.getStack(1);
 
-        if (!input1.isOf(Items.BOOK)) return;
-        if (input1.getCount() != 1) return;
-        if (!EnchantmentHelper.get(input1).isEmpty()) return;
+        //check that it's a book
+        if (!inputBook.isOf(Items.BOOK)) return;
 
-        if (EnchantmentHelper.get(input2).isEmpty()) return;
+        //check that there is only one book
+        if (inputBook.getCount() != 1) return;
+
+        //Check that the book does not have any enchantment
+        if (!EnchantmentHelper.get(inputBook).isEmpty()) return;
+
+        //Check that the tool has enchantments
+        if (EnchantmentHelper.get(inputTool).isEmpty()) return;
 
         var result = Items.ENCHANTED_BOOK.getDefaultStack();
-        var enchantments = EnchantmentHelper.get(input2);
+
+        //get and cap the enchantments from the tool
+        var enchantments = EnchantmentHelper.get(inputTool);
         cap(
             enchantments,
             GlobalConfig.enchantments_can_transfer_to_books.getTransfer_percentage() * getTotalWeight(enchantments),
             x->false
         );
+
+        //do nothing if no enchantment can be transferred
         if (enchantments.isEmpty()) return;
 
-        EnchantmentHelper.set(
-            enchantments,
-            result
-        );
+        EnchantmentHelper.set(enchantments, result);
 
-        this.output.setStack(
-            0,
-            result
-        );
+        this.output.setStack(0, result);
 
         this.levelCost.set(1);
     }
@@ -78,20 +83,21 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     void toolStays(Inventory instance, int i, ItemStack stack){
         if (stack != ItemStack.EMPTY){ instance.setStack(i, stack); return;}
 
-        var input1 = this.input.getStack(0);
-        var input2 = this.input.getStack(1);
+        var inputBook = this.input.getStack(0);
+        var inputTool = this.input.getStack(1);
 
-        if (!input1.isOf(Items.BOOK)) { instance.setStack(i, stack); return;}
-        if (input1.getCount() != 1) { instance.setStack(i, stack); return;}
-        if (!EnchantmentHelper.get(input1).isEmpty()) { instance.setStack(i, stack); return;}
-        if (EnchantmentHelper.get(input2).isEmpty()) { instance.setStack(i, stack); return;}
+        //Run the default setStack behavior if it's not transferring anything to a book
+        if (!inputBook.isOf(Items.BOOK)) { instance.setStack(i, stack); return;}
+        if (inputBook.getCount() != 1) { instance.setStack(i, stack); return;}
+        if (!EnchantmentHelper.get(inputBook).isEmpty()) { instance.setStack(i, stack); return;}
+        if (EnchantmentHelper.get(inputTool).isEmpty()) { instance.setStack(i, stack); return;}
 
         if (i == 1){
             this.input.setStack(0, ItemStack.EMPTY);
 
             EnchantmentHelper.set(
                 Collections.emptyMap(),
-                input2
+                inputTool
             );
         }
     }

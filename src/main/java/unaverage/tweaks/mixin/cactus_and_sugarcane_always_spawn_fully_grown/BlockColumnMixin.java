@@ -4,7 +4,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.intprovider.BiasedToBottomIntProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +24,7 @@ public abstract class BlockColumnMixin {
         ),
         cancellable = true
     )
-    private void makeCactus3Blocks(FeatureContext<BlockColumnFeatureConfig> context, CallbackInfoReturnable<Boolean> cir) {
+    private void makeCactusAndSugarcane3BlocksHigh(FeatureContext<BlockColumnFeatureConfig> context, CallbackInfoReturnable<Boolean> cir) {
         if (context.getConfig().layers().size() != 1) return;
 
         var config = context.getConfig().layers().get(0);

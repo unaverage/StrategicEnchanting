@@ -8,6 +8,7 @@ import roland_a.simple_configs.Config
 import roland_a.simple_configs.Config.Companion.override
 import roland_a.simple_configs.Config.Companion.toMap
 import roland_a.simple_configs.InvalidValueException
+import unaverage.tweaks.helper.containsRegex
 import java.io.File
 
 const val FILE_NAME = UnaverageTweaks.MOD_ID + ".json"
@@ -188,7 +189,7 @@ object GlobalConfig: Config {
     }
     init {
         packageToConfig["bridging_is_disabled"] = { bridging_is_disabled.is_enabled }
-        packageToConfig["scaffolding_bridging_is_disabled"] = { bridging_is_disabled.is_enabled && !bridging_is_disabled.exempt_blocks.containsWithRegex("minecraft:scaffolding") }
+        packageToConfig["scaffolding_bridging_is_disabled"] = { bridging_is_disabled.is_enabled && !bridging_is_disabled.exempt_blocks.containsRegex("minecraft:scaffolding") }
     }
 
     object cactus_and_sugarcane_always_spawn_fully_grown: Config{
@@ -392,7 +393,7 @@ object GlobalConfig: Config {
     }
     init {
         packageToConfig["pillaring_is_disabled"] = {pillaring_is_disabled.is_enabled}
-        packageToConfig["scaffolding_pillaring_is_disabled"] = {pillaring_is_disabled.is_enabled && !pillaring_is_disabled.exempt_blocks.containsWithRegex("minecraft:scaffolding")}
+        packageToConfig["scaffolding_pillaring_is_disabled"] = {pillaring_is_disabled.is_enabled && !pillaring_is_disabled.exempt_blocks.containsRegex("minecraft:scaffolding")}
     }
 
     object shields_no_longer_prevent_knockback: Config{

@@ -42,15 +42,16 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void cancelVillagerGolemsTargetingMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> targetPredicate, CallbackInfo ci){
-        if (!(mob instanceof IronGolemEntity)) return;
+    public void cancelVillagerGolemsTargetingMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> originalPredicate, CallbackInfo ci){
+        if (!(mob instanceof IronGolemEntity golem)) return;
 
         if (targetClass != MobEntity.class) return;
 
         this.targetPredicate = this.targetPredicate.setPredicate(
             e -> {
-                if (((IronGolemEntity)mob).isPlayerCreated()){
-                    return targetPredicate.test(e);
+                //unfortunately, the golem can't be tested if it's village-made earlier
+                if (golem.isPlayerCreated()){
+                    return originalPredicate.test(e);
                 }
 
                 if (e instanceof ZombieEntity) return true;

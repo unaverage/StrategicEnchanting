@@ -22,14 +22,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Mixin(ComposterBlock.class)
 public class ComposterMixin {
     @Unique
-    private static final AtomicBoolean init = new AtomicBoolean(false);
+    private static final AtomicBoolean isInit = new AtomicBoolean(false);
 
     @Inject(
         method = "onUse",
         at = @At("HEAD")
     )
     void injectNewItems(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
-        if (init.getAndSet(true)) return;
+        if (isInit.getAndSet(true)) return;
 
         for (var e: GlobalConfig.composters_take_in_more_items.getItems().entrySet()){
             var itemName = e.getKey();

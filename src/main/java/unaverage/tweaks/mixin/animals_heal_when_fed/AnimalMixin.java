@@ -51,8 +51,12 @@ public abstract class AnimalMixin extends PassiveEntity {
 
         var itemInHand = player.getStackInHand(hand);
 
-        var feedingList = HelperKt.getNewFeedList(this.getType());
-        if (feedingList != null ? !feedingList.contains(itemInHand.getItem()) : !this.isBreedingItem(player.getStackInHand(hand))) return;
+        var feedingList = getNewFeedList(this.getType());
+        if (feedingList != null) {
+            if (!feedingList.contains(itemInHand.getItem())) return;
+        } else {
+            if (!this.isBreedingItem(player.getStackInHand(hand))) return;
+        }
 
         if (this.getHealth() < this.getMaxHealth()) {
             this.heal(1);
