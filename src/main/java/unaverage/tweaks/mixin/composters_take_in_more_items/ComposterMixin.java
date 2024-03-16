@@ -3,7 +3,7 @@ package unaverage.tweaks.mixin.composters_take_in_more_items;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -37,7 +37,7 @@ public class ComposterMixin {
 
             var item = HelperKt.fromId(
                 itemName,
-                Registries.ITEM
+                Registry.ITEM
             );
 
             if (item == null) continue;

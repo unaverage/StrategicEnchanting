@@ -1,7 +1,7 @@
 package unaverage.tweaks.helper
 
 import net.minecraft.item.Item
-import net.minecraft.registry.Registries
+import net.minecraft.util.registry.Registry
 import unaverage.tweaks.GlobalConfig
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -13,7 +13,7 @@ val Item.capacity: Double?
     get() {
         return GlobalConfig.tools_have_limited_enchantment_capacity.item_capacities
             .getWithRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 

@@ -6,9 +6,8 @@ import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.EntityType
 import net.minecraft.item.AirBlockItem
 import net.minecraft.item.Item
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import unaverage.tweaks.GlobalConfig
 import unaverage.tweaks.UnaverageTweaks
 import java.util.*
@@ -107,7 +106,7 @@ val Map<Enchantment, Int>.totalWeight: Double
             run{
                 val weightByID = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_id
                     .getWithRegex(
-                        e.getID(Registries.ENCHANTMENT)
+                        e.getID(Registry.ENCHANTMENT)
                     )
                     ?.get(level.toString())
 
@@ -252,10 +251,10 @@ val EntityType<*>.newFeedList: List<Item>?
     get() {
         return GlobalConfig.animals_have_custom_feeding.animals_affected
             .getWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
+                this.getID(Registry.ENTITY_TYPE)
             )
             ?.mapNotNull {
-                it.fromId(Registries.ITEM)
+                it.fromId(Registry.ITEM)
             }
     }
 

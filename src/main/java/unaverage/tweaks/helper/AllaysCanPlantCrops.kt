@@ -1,10 +1,10 @@
 package unaverage.tweaks.helper
 
+import net.fabricmc.fabric.api.registry.VillagerPlantableRegistry
 import net.minecraft.block.BlockState
 import net.minecraft.block.CropBlock
 import net.minecraft.entity.passive.AllayEntity
 import net.minecraft.item.BlockItem
-import net.minecraft.registry.tag.ItemTags
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.WorldView
 
@@ -30,7 +30,7 @@ val AllayEntity.heldItemAsCropBlock: BlockState?
         if (item == null) return null
         if (item.count < 0) return null
 
-        if (!item.isIn(ItemTags.VILLAGER_PLANTABLE_SEEDS)) return null
+        if (!VillagerPlantableRegistry.getItems().contains(item.item)) return null
         if (item.item !is BlockItem) return null
 
         val crop = (item.item as BlockItem).block as? CropBlock

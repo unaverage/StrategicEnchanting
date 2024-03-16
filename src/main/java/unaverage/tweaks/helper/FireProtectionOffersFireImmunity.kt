@@ -1,7 +1,7 @@
 package unaverage.tweaks.helper
 
 import net.minecraft.entity.EntityType
-import net.minecraft.registry.Registries
+import net.minecraft.util.registry.Registry
 import unaverage.tweaks.GlobalConfig
 import kotlin.math.roundToInt
 
@@ -16,6 +16,6 @@ val EntityType<*>.isFireProtectionAffected: Boolean
     get() {
         return GlobalConfig.fire_protection_offers_melee_protection.mobs_protected_against
             .containsRegex(
-                this.getID(Registries.ENTITY_TYPE),
+                this.getID(Registry.ENTITY_TYPE),
             )
     }

@@ -2,7 +2,7 @@ package unaverage.tweaks.helper
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
-import net.minecraft.registry.Registries
+import net.minecraft.util.registry.Registry
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldView
@@ -12,7 +12,7 @@ val Item.canPillarWith: Boolean
     get(){
         return GlobalConfig.pillaring_is_disabled.exempt_blocks
             .containsRegex(
-                this.getID(Registries.ITEM)
+                this.getID(Registry.ITEM)
             )
     }
 
