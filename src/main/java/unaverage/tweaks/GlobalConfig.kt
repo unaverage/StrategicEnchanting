@@ -89,22 +89,6 @@ object GlobalConfig: Config {
         packageToConfig["allays_can_plant_crops"] = { allays_can_plant_crops.is_enabled }
     }
 
-    object animals_have_custom_feeding: Config {
-        var is_enabled = false
-
-        var animals_affected = mapOf(
-            "minecraft:pig" to setOf(
-                "minecraft:apple",
-                "minecraft:beetroot",
-                "minecraft:carrot",
-                "minecraft:wheat",
-            )
-        )
-    }
-    init {
-        packageToConfig["animals_have_custom_feeding"] = { animals_have_custom_feeding.is_enabled }
-    }
-
     object animals_heal_when_fed: Config {
         var is_enabled = false
 

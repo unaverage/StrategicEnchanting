@@ -247,18 +247,6 @@ fun MutableMap<Enchantment, Int>.cap(
     putAll(bestCandidate)
 }
 
-
-val EntityType<*>.newFeedList: List<Item>?
-    get() {
-        return GlobalConfig.animals_have_custom_feeding.animals_affected
-            .getWithRegex(
-                this.getID(Registries.ENTITY_TYPE)
-            )
-            ?.mapNotNull {
-                it.fromId(Registries.ITEM)
-            }
-    }
-
 fun passesChance(chance: Double, rng: Random): Boolean{
     val r = rng.nextDouble()
 
