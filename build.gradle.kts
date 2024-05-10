@@ -26,6 +26,9 @@ dependencies {
 }
 
 tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "21"
+    }
 
     processResources {
         inputs.property("version", project.version)
@@ -57,11 +60,6 @@ tasks {
             // mavenLocal()
         }
     }
-
-    compileKotlin {
-        kotlinOptions.jvmTarget = "17"
-    }
-
 }
 
 java {
