@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static unaverage.tweaks.helper.FireProtectionOffersFireImmunityKt.getFireProtectionLavaImmunityDuration;
 import static unaverage.tweaks.helper.HelperKt.TICKS_PER_SEC;
+import static unaverage.tweaks.helper.HelperKt.toMap;
 
 
 @Mixin(Entity.class)
@@ -47,7 +48,7 @@ public abstract class EntityMixin {
         if (this.lavaImmunityCoolDown == 0) {
             var levels = 0;
             for (var item : thisAsLivingEntity.getArmorItems()) {
-                for (var el : EnchantmentHelper.get(item).entrySet()) {
+                for (var el : toMap(EnchantmentHelper.getEnchantments(item)).entrySet()) {
                     var e = el.getKey();
                     var l = el.getValue();
 

@@ -27,7 +27,7 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void cancelMobsTargetingVillagerGolem(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
+    public void cancelMobToVillageGolemTargeting(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<?> targetPredicate, CallbackInfo ci){
         if (mob instanceof ZombieEntity) return;
         if (mob instanceof RaiderEntity) return;
 
@@ -42,14 +42,14 @@ public abstract class ActiveTargetMixin extends TrackTargetGoal {
         method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V",
         at = @At("TAIL")
     )
-    public void cancelVillagerGolemsTargetingMobs(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> originalPredicate, CallbackInfo ci){
+    public void cancelVillagerGolemsToMobTargeting(MobEntity mob, Class<?> targetClass, int reciprocalChance, boolean checkVisibility, boolean checkCanNavigate, Predicate<LivingEntity> originalPredicate, CallbackInfo ci){
         if (!(mob instanceof IronGolemEntity golem)) return;
 
         if (targetClass != MobEntity.class) return;
 
         this.targetPredicate = this.targetPredicate.setPredicate(
             e -> {
-                //unfortunately, the golem can't be tested if it's village-made earlier
+                //unfortunately, the golem can't be tested if it's village-made much earlier
                 if (golem.isPlayerCreated()){
                     return originalPredicate.test(e);
                 }

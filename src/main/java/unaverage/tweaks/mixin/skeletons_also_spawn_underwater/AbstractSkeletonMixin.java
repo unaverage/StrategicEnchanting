@@ -66,7 +66,7 @@ public abstract class AbstractSkeletonMixin extends HostileEntity {
     }
 
     @Inject(
-        method = "attack",
+        method = "shootAt",
         at = @At("HEAD"),
         cancellable = true
     )

@@ -1,5 +1,6 @@
 package unaverage.tweaks.mixin.tools_have_limited_enchantment_capacity;
 
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Map;
 
-import static unaverage.tweaks.helper.HelperKt.cap;
+import static unaverage.tweaks.helper.HelperKt.*;
 import static unaverage.tweaks.helper.ToolsHaveLimitedEnchantmentCapacityKt.getCapacity;
 
 @Mixin(AnvilScreenHandler.class)
@@ -31,21 +32,22 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         method = "updateResult",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Ljava/util/Map;Lnet/minecraft/item/ItemStack;)V"
+            target = "Lnet/minecraft/enchantment/EnchantmentHelper;set(Lnet/minecraft/item/ItemStack;Lnet/minecraft/component/type/ItemEnchantmentsComponent;)V"
         )
     )
-    void anvilUsesDifferentCappingBehavior(Map<Enchantment, Integer> enchantments, ItemStack stack){
+    void anvilUsesDifferentCappingBehavior(ItemStack stack, ItemEnchantmentsComponent enchantments){
         var inputFromSecondSlot = this.input.getStack(1);
+
+        var map = toMap(enchantments);
 
         //applies the new capping behavior
         cap(
-            enchantments,
+            map,
             getCapacity(stack.getItem()),
             //prioritize the enchantment if its from the sacrifice item
-            e -> EnchantmentHelper.get(inputFromSecondSlot).containsKey(e)
+            e -> toMap(EnchantmentHelper.getEnchantments(inputFromSecondSlot)).containsKey(e)
         );
 
-        //EnchantmentHelper#set will still perform the default capping behavior, but it doesnt matter because it is already capped by the previous capping behavior
-        EnchantmentHelper.set(enchantments, stack);
+        EnchantmentHelper.set(stack, toComponent(map));
     }
 }

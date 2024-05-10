@@ -27,8 +27,8 @@ public class SignMixin {
         ),
         cancellable = true
     )
-    void glowstone_can_make_signs_glow(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
-        var itemStack = player.getStackInHand(hand);
+    void glowstone_can_make_signs_glow(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
+        var itemStack = player.getStackInHand(player.getActiveHand());
 
         if (!itemStack.isOf(Items.GLOWSTONE_DUST)) return;
 

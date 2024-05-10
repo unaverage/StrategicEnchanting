@@ -1,9 +1,11 @@
 package unaverage.tweaks.mixin.tools_have_limited_enchantment_capacity;
 
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,24 +23,11 @@ import static unaverage.tweaks.helper.ToolsHaveLimitedEnchantmentCapacityKt.getC
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
     /**
-     * Injects enchantment capping whenever {@link EnchantmentHelper#set(Map, ItemStack)} is called
-     * Does this by mutating the enchantment map parameter
-     */
-    @Inject(method = "set", at = @At("HEAD"))
-    private static void capEnchantmentsOnSet(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci){
-        cap(
-            enchantments,
-            getCapacity(stack.getItem()),
-            item->false
-        );
-    }
-
-    /**
-     * Injects the enchantment capping whenever {@link EnchantmentHelper#generateEnchantments(Random, ItemStack, int, boolean)} is called
+     * Injects the enchantment capping whenever {@link EnchantmentHelper#generateEnchantments(FeatureSet, Random, ItemStack, int, boolean)} is called
      * Does this by mutating the list that's being returned
      */
     @Inject(method = "generateEnchantments", at = @At("RETURN"))
-    private static void capEnchantmentsOnGenerate(Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
+    private static void capEnchantmentsOnGenerate(FeatureSet enabledFeatures, Random random, ItemStack stack, int level, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir){
         var originalList = cir.getReturnValue();
 
         //converts the list of EnchantmentLevelEntries to an enchantment map

@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static unaverage.tweaks.helper.AnimalsHealWhenFedKt.getHealsWhenFed;
-import static unaverage.tweaks.helper.HelperKt.getNewFeedList;
 
 @Mixin(AnimalEntity.class)
 public abstract class AnimalMixin extends PassiveEntity {
@@ -49,14 +48,7 @@ public abstract class AnimalMixin extends PassiveEntity {
         if (!getHealsWhenFed(this.getType())) return;
         if (this.getType() == EntityType.PARROT) return;
 
-        var itemInHand = player.getStackInHand(hand);
-
-        var feedingList = getNewFeedList(this.getType());
-        if (feedingList != null) {
-            if (!feedingList.contains(itemInHand.getItem())) return;
-        } else {
-            if (!this.isBreedingItem(player.getStackInHand(hand))) return;
-        }
+        if (!this.isBreedingItem(player.getStackInHand(hand))) return;
 
         if (this.getHealth() < this.getMaxHealth()) {
             this.heal(1);

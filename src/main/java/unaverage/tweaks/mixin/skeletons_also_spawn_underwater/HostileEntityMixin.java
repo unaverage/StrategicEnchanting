@@ -1,6 +1,8 @@
 package unaverage.tweaks.mixin.skeletons_also_spawn_underwater;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnLocation;
+import net.minecraft.entity.SpawnLocationTypes;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.world.Heightmap;
 import org.jetbrains.annotations.Nullable;
@@ -27,9 +29,9 @@ public class HostileEntityMixin {
         at = @At(value = "TAIL"),
         cancellable = true
     )
-    private static void letSkeletonsSpawnInWater(@Nullable EntityType<?> type, CallbackInfoReturnable<SpawnRestriction.Location> cir){
+    private static void letSkeletonsSpawnInWater(@Nullable EntityType<?> type, CallbackInfoReturnable<SpawnLocation> cir){
         if (type != EntityType.SKELETON) return;
 
-        cir.setReturnValue(SpawnRestriction.Location.NO_RESTRICTIONS);
+        cir.setReturnValue(SpawnLocationTypes.UNRESTRICTED);
     }
 }

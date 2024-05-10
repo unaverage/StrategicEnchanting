@@ -28,7 +28,7 @@ public class ComposterMixin {
         method = "onUse",
         at = @At("HEAD")
     )
-    void injectNewItems(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
+    void injectNewItems(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
         if (isInit.getAndSet(true)) return;
 
         for (var e: GlobalConfig.composters_take_in_more_items.getItems().entrySet()){

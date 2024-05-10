@@ -3,27 +3,23 @@ package unaverage.tweaks.mixin.animals_heal_when_fed;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.ParrotEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.TameableShoulderEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Set;
-
-import static unaverage.tweaks.helper.AnimalsHealWhenFedKt.*;
+import static unaverage.tweaks.helper.AnimalsHealWhenFedKt.getHealsWhenFed;
 
 @Mixin(ParrotEntity.class)
-public abstract class ParrotMixin extends AnimalEntity {
-    protected ParrotMixin(EntityType<? extends AnimalEntity> entityType, World world) {super(entityType, world);}
-
-    @Shadow @Final private static Set<Item> TAMING_INGREDIENTS;
+public abstract class ParrotMixin extends TameableShoulderEntity {
+    protected ParrotMixin(EntityType<? extends TameableShoulderEntity> entityType, World world) {super(entityType, world);}
 
     @Inject(
         method = "interactMob",
@@ -34,7 +30,13 @@ public abstract class ParrotMixin extends AnimalEntity {
         if (!getHealsWhenFed(this.getType())) return;
 
         var itemInHand = player.getStackInHand(hand);
-        if (!TAMING_INGREDIENTS.contains(itemInHand.getItem())) return;
+
+        if (!this.isTamed()){
+            return;
+        }
+        if (!itemInHand.isIn(ItemTags.PARROT_FOOD)){
+            return;
+        }
 
         if (this.getHealth() < this.getMaxHealth()) {
             this.heal(1);

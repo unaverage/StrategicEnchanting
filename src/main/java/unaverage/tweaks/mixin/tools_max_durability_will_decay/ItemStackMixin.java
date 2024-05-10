@@ -24,12 +24,14 @@ public abstract class ItemStackMixin {
         at = @At("HEAD")
     )
     void decayWhenRepaired(int newDamage, CallbackInfo ci){
+        var self = (ItemStack) (Object)this;
+
         var oldDamage = this.getDamage();
         if (oldDamage <= newDamage) return;
 
         var diff = oldDamage - newDamage;
 
-        var totalEnchantments = getTotalWeight(EnchantmentHelper.get((ItemStack) (Object)this));
+        var totalEnchantments = getTotalWeight(toMap(EnchantmentHelper.getEnchantments(self)));
         if (totalEnchantments <= 0) return;
 
         var decay = (double)diff / (double) GlobalConfig.tools_max_durability_will_decay.getDecay_rate() * totalEnchantments;
@@ -49,7 +51,7 @@ public abstract class ItemStackMixin {
         var decay = (int)Math.floor(unaverage.tweaks.helper.ToolMaxDurabilityWillDecayKt.getDecay((ItemStack)(Object)this));
         if (decay <= 0) return;
 
-        var result = this.getItem().getMaxDamage() - decay;
+        var result = this.getItem().getDefaultStack().getMaxDamage() - decay;
         if (result < 1){
             result = 1;
         }
