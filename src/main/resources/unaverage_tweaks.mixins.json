@@ -16,6 +16,7 @@
     "bane_of_arthropods_affects_more_mobs.PlayerEntityMixin",
     "beds_dont_explode.BedMixin",
     "blocks_have_custom_blast_resistance.BlocksMixin",
+    "blocks_have_custom_gravity.BlocksMixin",
     "blocks_have_custom_hardness.AbstractBlockMixin",
     "bridging_is_disabled.ItemStackMixin",
     "bridging_is_disabled.scaffolding_bridging_is_disabled.ItemContextMixin",

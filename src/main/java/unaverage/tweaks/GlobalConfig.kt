@@ -163,6 +163,18 @@ object GlobalConfig: Config {
         packageToConfig["blocks_have_custom_hardness"] = {blocks_have_custom_hardness.is_enabled}
     }
 
+    object blocks_have_custom_gravity: Config{
+        var is_enabled = false
+
+        var blocks_affected = setOf(
+            "minecraft:(.+_)?cobble_stone",
+            "minecraft:(.+_)?dirt(_.+)?"
+        )
+    }
+    init {
+        packageToConfig["blocks_have_custom_gravity"] = {blocks_have_custom_gravity.is_enabled}
+    }
+
     object blocks_have_custom_blast_resistance: Config{
         var is_enabled = false
 
