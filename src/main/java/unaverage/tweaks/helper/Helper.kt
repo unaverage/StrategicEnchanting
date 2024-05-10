@@ -2,10 +2,9 @@
 
 package unaverage.tweaks.helper
 
+import net.minecraft.component.type.ItemEnchantmentsComponent
 import net.minecraft.enchantment.Enchantment
-import net.minecraft.entity.EntityType
 import net.minecraft.item.AirBlockItem
-import net.minecraft.item.Item
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
@@ -14,9 +13,6 @@ import unaverage.tweaks.UnaverageTweaks
 import java.util.*
 import java.util.function.Predicate
 import java.util.regex.PatternSyntaxException
-import kotlin.Comparator
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
 
 private val cachedGetID: MutableMap<Any?, String> = HashMap()
@@ -97,52 +93,76 @@ fun <T> String.fromId(registry: Registry<T>): T?{
 
 const val TICKS_PER_SEC = 20;
 
+
+fun ItemEnchantmentsComponent.toMap(): Map<Enchantment, Int> {
+    val result = mutableMapOf<Enchantment, Int>()
+
+    this.enchantments.forEach {
+        result.put(
+            it.value(),
+            this.getLevel(it.value())
+        )
+    }
+
+    return result
+}
+
+fun Map<Enchantment, Int>.toComponent(): ItemEnchantmentsComponent {
+    var builder = ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT)
+
+    for ((k,v) in this){
+        builder.set(k, v)
+    }
+
+    return builder.build()
+}
+
+
+
+fun Enchantment.getWeight(level: Int): Double {
+    run{
+        val weightByID = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_id
+            .getWithRegex(
+                this.getID(Registries.ENCHANTMENT)
+            )
+            ?.get(level.toString())
+
+        if (weightByID == null) return@run
+
+        return weightByID
+    }
+
+    run{
+        val weightByMax = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_max_levels
+            .get(
+                this.maxLevel.toString()
+            )
+            ?.get(
+                level.toString()
+            )
+
+        if (weightByMax == null) return@run
+
+        if (this.isCursed) return -weightByMax
+
+        return weightByMax
+    }
+
+    run{
+        val weightByDefault = (level / this.maxLevel.toDouble())
+
+        if (this.isCursed) return -weightByDefault
+
+        return weightByDefault
+    }
+}
+
 /**
  * {@return The total weight of all the enchantments in an enchantment map}
  */
 val Map<Enchantment, Int>.totalWeight: Double
     get() {
-        fun getWeight(e: Enchantment, level: Int): Double {
-
-            run{
-                val weightByID = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_id
-                    .getWithRegex(
-                        e.getID(Registries.ENCHANTMENT)
-                    )
-                    ?.get(level.toString())
-
-                if (weightByID == null) return@run
-
-                return weightByID
-            }
-
-            run{
-                val weightByMax = GlobalConfig.tools_have_limited_enchantment_capacity.enchantment_weights_by_max_levels
-                    .get(
-                        e.maxLevel.toString()
-                    )
-                    ?.get(
-                        level.toString()
-                    )
-
-                if (weightByMax == null) return@run
-
-                if (e.isCursed) return -weightByMax
-
-                return weightByMax
-            }
-
-            run{
-                val weightByDefault = (level / e.maxLevel.toDouble())
-
-                if (e.isCursed) return -weightByDefault
-
-                return weightByDefault
-            }
-        }
-
-        return map { (k, v) -> getWeight(k, v) }
-            .sum()
+        return this.map { (k, v) -> k.getWeight(v) }.sum()
     }
 
 /**
