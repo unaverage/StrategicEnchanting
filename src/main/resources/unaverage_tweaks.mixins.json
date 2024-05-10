@@ -9,8 +9,6 @@
     "animals_heal_when_fed.ParrotMixin",
     "anvils_take_zero_xp.AnvilScreenHandlerMixin",
     "anvils_take_zero_xp.AnvilScreenMixin",
-    "bane_of_arthropods_affects_more_mobs.DamageEnchantmentsMixin",
-    "bane_of_arthropods_affects_more_mobs.PlayerEntityMixin",
     "beds_dont_explode.BedMixin",
     "blocks_have_custom_blast_resistance.BlocksMixin",
     "blocks_have_custom_gravity.BlocksMixin",

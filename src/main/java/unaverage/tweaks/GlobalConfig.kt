@@ -111,18 +111,6 @@ object GlobalConfig: Config {
         packageToConfig["anvils_take_zero_xp"] = {anvils_take_zero_xp.is_enabled}
     }
 
-    object bane_of_arthropods_affects_more_mobs: Config {
-        var is_enabled = false
-
-        var extra_mobs_affected = setOf(
-            "minecraft:guardian",
-            "minecraft:elder_guardian"
-        )
-    }
-    init {
-        packageToConfig["bane_of_arthropods_affects_more_mobs"] = {bane_of_arthropods_affects_more_mobs.is_enabled}
-    }
-
     object beds_dont_explode: Config{
         var is_enabled = false
     }
