@@ -45,7 +45,8 @@ public class EnchantmentHelperMixin {
         var result = originalList.stream().collect(
             Collectors.toMap(
                 o->o.enchantment,
-                o->o.level
+                o->o.level,
+                (v1, v2) -> v1
             )
         );
 
